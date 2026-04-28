@@ -1,0 +1,4 @@
+hydrocal=Sample name,opc,T,h,d2HP,d18OP,d2HL,d18OL,d2HA,d18OA,d2HR,d18OR,CkH,CkO,LEL, comment
+Sample 1,1,25,0.5,-51.6,-8.05,-40.9,-6.41,-99.9,-13.05,,,12.5,14.2,,test for known dA
+Sample 2,2,25,0.5,-51.6,-8.05,-40.9,-6.41,,,-21,-5.1,12.5,14.2,,test for known dR
+Sample 3,3,25,0.5,-51.6,-8.05,-40.9,-6.41,,,-21,-5.1,12.5,14.2,4.59,test for known dR and LEL
