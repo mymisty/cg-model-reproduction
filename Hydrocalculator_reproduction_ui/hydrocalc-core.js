@@ -149,7 +149,7 @@
       INPUT_HEADERS.forEach((name, index) => {
         const headerIndex = header.findIndex((candidate) => candidate.trim() === name);
         const sourceIndex = headerIndex >= 0 ? headerIndex : index;
-        record[name] = cells[sourceIndex] === undefined ? "" : cells[sourceIndex].trim();
+        record[name] = headerIndex < 0 || cells[sourceIndex] === undefined ? "" : cells[sourceIndex].trim();
       });
       return record;
     });
@@ -245,18 +245,8 @@
     let bestDiff = 1000;
     let selected = 1;
     const target = roundAway(targetLEL, 4);
-    const startX = 0.6001;
-    const endX = 1;
-    const startSlope = roundAway(slopeFromX(startX, values), 4);
-    const endSlope = roundAway(slopeFromX(endX, values), 4);
-    const lower = Math.min(startSlope, endSlope);
-    const upper = Math.max(startSlope, endSlope);
 
-    if (target < lower || target > upper) {
-      return Math.abs(startSlope - target) <= Math.abs(endSlope - target) ? startX : endX;
-    }
-
-    for (let i = 6001; i <= 10000; i += 1) {
+    for (let i = 6000; i <= 10000; i += 1) {
       const x = roundAway(i / 10000, 4);
       const slope = roundAway(slopeFromX(x, values), 4);
       const diff = slope - target;

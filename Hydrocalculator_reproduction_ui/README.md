@@ -12,4 +12,4 @@ Option mapping:
 
 - `opc=1`: ambient air moisture `d2HA` and `d18OA` are entered directly.
 - `opc=2`: ambient air moisture is calculated from rain isotope values.
-- `opc=3`: the app searches the original `x` adjustment range, `0.6001` to `1.0000`, and uses the first value after the LEL fit stops improving, matching the original executable's behavior.
+- `opc=3`: the app searches the original `x` adjustment range, `0.6000` to `1.0000`, and uses the first value after the LEL fit stops improving, matching the original executable's behavior.
