@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HydroCalculator 复现版</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand-block">
+        <img
+          class="brand-icon"
+          src="../Hydrocalculator_full-offline_version1-04/HydroCalculator_104_unpacked/resources/images/icona_hcalc.jpg"
+          alt=""
+        />
+        <div>
+          <h1>HydroCalculator 复现版</h1>
+          <p>Craig-Gordon 蒸发指标计算</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="loadSampleButton" class="ghost-button" type="button">加载示例</button>
+        <button id="downloadButton" class="primary-button" type="button" disabled>下载 CSV</button>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <section class="panel manual-panel" aria-labelledby="manualTitle">
+        <div class="panel-heading">
+          <div>
+            <h2 id="manualTitle">单样本计算</h2>
+            <span id="manualStatus" class="status-text">待输入</span>
+          </div>
+          <div class="segmented" role="radiogroup" aria-label="水汽选项">
+            <label>
+              <input type="radio" name="option" value="1" checked />
+              <span>已知 δA</span>
+            </label>
+            <label>
+              <input type="radio" name="option" value="2" />
+              <span>由降水估算</span>
+            </label>
+            <label>
+              <input type="radio" name="option" value="3" />
+              <span>降水 + LEL</span>
+            </label>
+          </div>
+        </div>
+
+        <form id="manualForm" class="input-grid">
+          <label>
+            <span>样本名</span>
+            <input name="hydrocal=Sample name" value="Sample 1" />
+          </label>
+          <label>
+            <span>T 温度 °C</span>
+            <input name="T" type="number" step="any" value="25" />
+          </label>
+          <label>
+            <span>h 相对湿度</span>
+            <input name="h" type="number" step="any" value="0.5" />
+          </label>
+          <label>
+            <span>CkH</span>
+            <input name="CkH" type="number" step="any" value="12.5" />
+          </label>
+          <label>
+            <span>CkO</span>
+            <input name="CkO" type="number" step="any" value="14.2" />
+          </label>
+          <label>
+            <span>δ²HP</span>
+            <input name="d2HP" type="number" step="any" value="-51.6" />
+          </label>
+          <label>
+            <span>δ¹⁸OP</span>
+            <input name="d18OP" type="number" step="any" value="-8.05" />
+          </label>
+          <label>
+            <span>δ²HL</span>
+            <input name="d2HL" type="number" step="any" value="-40.9" />
+          </label>
+          <label>
+            <span>δ¹⁸OL</span>
+            <input name="d18OL" type="number" step="any" value="-6.41" />
+          </label>
+          <label data-option-field="1">
+            <span>δ²HA</span>
+            <input name="d2HA" type="number" step="any" value="-99.9" />
+          </label>
+          <label data-option-field="1">
+            <span>δ¹⁸OA</span>
+            <input name="d18OA" type="number" step="any" value="-13.05" />
+          </label>
+          <label data-option-field="2 3">
+            <span>δ²HRain</span>
+            <input name="d2HR" type="number" step="any" value="-21" />
+          </label>
+          <label data-option-field="2 3">
+            <span>δ¹⁸ORain</span>
+            <input name="d18OR" type="number" step="any" value="-5.1" />
+          </label>
+          <label data-option-field="3">
+            <span>LEL 斜率</span>
+            <input name="LEL" type="number" step="any" value="4.59" />
+          </label>
+          <label class="wide-field">
+            <span>备注</span>
+            <input name="comment" value="manual run" />
+          </label>
+        </form>
+
+        <div class="action-row">
+          <div class="segmented compact" role="radiogroup" aria-label="模型">
+            <label>
+              <input type="radio" name="model" value="steady" checked />
+              <span>稳态 E/I</span>
+            </label>
+            <label>
+              <input type="radio" name="model" value="nonsteady" />
+              <span>非稳态 f</span>
+            </label>
+          </div>
+          <button id="calculateManualButton" class="primary-button" type="button">计算</button>
+        </div>
+      </section>
+
+      <section class="panel results-panel" aria-labelledby="resultsTitle">
+        <div class="panel-heading">
+          <div>
+            <h2 id="resultsTitle">结果</h2>
+            <span id="resultCount" class="status-text">0 条记录</span>
+          </div>
+          <div class="segmented compact" role="radiogroup" aria-label="结果字段">
+            <label>
+              <input type="radio" name="columnMode" value="primary" checked />
+              <span>主要</span>
+            </label>
+            <label>
+              <input type="radio" name="columnMode" value="all" />
+              <span>全部</span>
+            </label>
+          </div>
+        </div>
+        <div id="metricStrip" class="metric-strip"></div>
+        <div class="table-wrap">
+          <table id="resultsTable"></table>
+        </div>
+      </section>
+
+      <section class="panel batch-panel" aria-labelledby="batchTitle">
+        <div class="panel-heading">
+          <div>
+            <h2 id="batchTitle">批量 CSV</h2>
+            <span id="batchStatus" class="status-text">未载入</span>
+          </div>
+          <label class="file-button">
+            <input id="csvFileInput" type="file" accept=".csv,text/csv" />
+            选择文件
+          </label>
+        </div>
+        <textarea id="csvText" spellcheck="false"></textarea>
+        <div class="action-row">
+          <button id="calculateBatchButton" class="primary-button" type="button">批量计算</button>
+          <button id="clearButton" class="ghost-button" type="button">清空</button>
+        </div>
+      </section>
+
+      <section class="panel formula-panel" aria-labelledby="formulaTitle">
+        <div class="panel-heading">
+          <div>
+            <h2 id="formulaTitle">公式核对</h2>
+            <span class="status-text">来自 IL 反汇编</span>
+          </div>
+        </div>
+        <dl class="formula-list">
+          <div>
+            <dt>α²H</dt>
+            <dd>Horita-Wesolowski 温度函数，T 转为 K 后参与指数计算。</dd>
+          </div>
+          <div>
+            <dt>εk</dt>
+            <dd>(1 - h) × Ck</dd>
+          </div>
+          <div>
+            <dt>δ*</dt>
+            <dd>(h × δA + ε) / (h - ε / 1000)</dd>
+          </div>
+          <div>
+            <dt>E/I</dt>
+            <dd>(δL - δP) / ((δ* - δL) × m)</dd>
+          </div>
+          <div>
+            <dt>f</dt>
+            <dd>1 - ((δL - δ*) / (δP - δ*))^(1 / m)</dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+
+    <script src="./hydrocalc-core.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

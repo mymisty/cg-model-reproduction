@@ -1,0 +1,4745 @@
+﻿.type HydroCalculator.App
+
+.method Void InitializeComponent()
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldstr "MainWindow.xaml"
+  IL_0007: ldc.i4.2
+  IL_0008: newobj Void .ctor(System.String, System.UriKind)
+  IL_000D: call Void set_StartupUri(System.Uri)
+  IL_0012: nop
+  IL_0013: ret
+
+.method Void Main()
+  IL_0000: nop
+  IL_0001: newobj Void .ctor()
+  IL_0006: stloc.0
+  IL_0007: ldloc.0
+  IL_0008: callvirt Void InitializeComponent()
+  IL_000D: nop
+  IL_000E: ldloc.0
+  IL_000F: callvirt Int32 Run()
+  IL_0014: pop
+  IL_0015: ret
+
+.type HydroCalculator.MainWindow
+
+.method Void btnStartBatchCalculation_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Windows.Controls.TextBox txtBoxProgress
+  IL_0007: callvirt Void Clear()
+  IL_000C: nop
+  IL_000D: ldarg.0
+  IL_000E: ldfld System.Data.DataTable hydroDataTable
+  IL_0013: callvirt Void Clear()
+  IL_0018: nop
+  IL_0019: ldarg.0
+  IL_001A: call Void openInputFile()
+  IL_001F: nop
+  IL_0020: ldarg.0
+  IL_0021: ldc.i4.1
+  IL_0022: stfld Boolean autoExtract
+  IL_0027: ldarg.0
+  IL_0028: call Void validateBatchData()
+  IL_002D: nop
+  IL_002E: ldarg.0
+  IL_002F: call Void startCalculation()
+  IL_0034: nop
+  IL_0035: ret
+
+.method Void startCalculation()
+  IL_0000: nop
+  IL_0001: ldc.i4.0
+  IL_0002: stloc.0
+  IL_0003: ldarg.0
+  IL_0004: ldfld System.Data.DataTable hydroDataTable
+  IL_0009: callvirt System.Data.DataRowCollection get_Rows()
+  IL_000E: callvirt Int32 get_Count()
+  IL_0013: stloc.1
+  IL_0014: nop
+  IL_0015: ldarg.0
+  IL_0016: ldfld System.Data.DataTable hydroDataTable
+  IL_001B: callvirt System.Data.DataRowCollection get_Rows()
+  IL_0020: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_0025: stloc.s 20
+  IL_0027: br IL_11A2
+  IL_002C: ldloc.s 20
+  IL_002E: callvirt System.Object get_Current()
+  IL_0033: castclass System.Data.DataRow
+  IL_0038: stloc.2
+  IL_0039: nop
+  IL_003A: ldloc.0
+  IL_003B: ldc.i4.1
+  IL_003C: add
+  IL_003D: stloc.0
+  IL_003E: ldloc.2
+  IL_003F: ldstr "opc"
+  IL_0044: callvirt System.Object get_Item(System.String)
+  IL_0049: callvirt System.String ToString()
+  IL_004E: stloc.3
+  IL_004F: ldloc.3
+  IL_0050: stloc.s 21
+  IL_0052: ldloc.s 21
+  IL_0054: brfalse IL_1182
+  IL_0059: ldloc.s 21
+  IL_005B: ldstr "1"
+  IL_0060: call Boolean op_Equality(System.String, System.String)
+  IL_0065: brtrue.s IL_008E
+  IL_0067: ldloc.s 21
+  IL_0069: ldstr "2"
+  IL_006E: call Boolean op_Equality(System.String, System.String)
+  IL_0073: brtrue IL_04F6
+  IL_0078: ldloc.s 21
+  IL_007A: ldstr "3"
+  IL_007F: call Boolean op_Equality(System.String, System.String)
+  IL_0084: brtrue IL_09C9
+  IL_0089: br IL_1182
+  IL_008E: ldloc.2
+  IL_008F: ldstr "EkH"
+  IL_0094: ldloc.2
+  IL_0095: ldstr "h"
+  IL_009A: callvirt System.Object get_Item(System.String)
+  IL_009F: call Double ToDouble(System.Object)
+  IL_00A4: ldloc.2
+  IL_00A5: ldstr "CkH"
+  IL_00AA: callvirt System.Object get_Item(System.String)
+  IL_00AF: call Double ToDouble(System.Object)
+  IL_00B4: call Double EkH(Double, Double)
+  IL_00B9: box System.Double
+  IL_00BE: callvirt Void set_Item(System.String, System.Object)
+  IL_00C3: nop
+  IL_00C4: ldloc.2
+  IL_00C5: ldstr "aplusH"
+  IL_00CA: ldloc.2
+  IL_00CB: ldstr "T"
+  IL_00D0: callvirt System.Object get_Item(System.String)
+  IL_00D5: call Double ToDouble(System.Object)
+  IL_00DA: call Double aplusH(Double)
+  IL_00DF: box System.Double
+  IL_00E4: callvirt Void set_Item(System.String, System.Object)
+  IL_00E9: nop
+  IL_00EA: ldloc.2
+  IL_00EB: ldstr "EplusH"
+  IL_00F0: ldloc.2
+  IL_00F1: ldstr "aplusH"
+  IL_00F6: callvirt System.Object get_Item(System.String)
+  IL_00FB: call Double ToDouble(System.Object)
+  IL_0100: call Double EplusH(Double)
+  IL_0105: box System.Double
+  IL_010A: callvirt Void set_Item(System.String, System.Object)
+  IL_010F: nop
+  IL_0110: ldloc.2
+  IL_0111: ldstr "EH"
+  IL_0116: ldloc.2
+  IL_0117: ldstr "EkH"
+  IL_011C: callvirt System.Object get_Item(System.String)
+  IL_0121: call Double ToDouble(System.Object)
+  IL_0126: ldloc.2
+  IL_0127: ldstr "EplusH"
+  IL_012C: callvirt System.Object get_Item(System.String)
+  IL_0131: call Double ToDouble(System.Object)
+  IL_0136: ldloc.2
+  IL_0137: ldstr "aplusH"
+  IL_013C: callvirt System.Object get_Item(System.String)
+  IL_0141: call Double ToDouble(System.Object)
+  IL_0146: call Double EH(Double, Double, Double)
+  IL_014B: box System.Double
+  IL_0150: callvirt Void set_Item(System.String, System.Object)
+  IL_0155: nop
+  IL_0156: ldloc.2
+  IL_0157: ldstr "dstarH"
+  IL_015C: ldloc.2
+  IL_015D: ldstr "h"
+  IL_0162: callvirt System.Object get_Item(System.String)
+  IL_0167: call Double ToDouble(System.Object)
+  IL_016C: ldloc.2
+  IL_016D: ldstr "d2HA"
+  IL_0172: callvirt System.Object get_Item(System.String)
+  IL_0177: call Double ToDouble(System.Object)
+  IL_017C: ldloc.2
+  IL_017D: ldstr "EH"
+  IL_0182: callvirt System.Object get_Item(System.String)
+  IL_0187: call Double ToDouble(System.Object)
+  IL_018C: call Double dstarH(Double, Double, Double)
+  IL_0191: box System.Double
+  IL_0196: callvirt Void set_Item(System.String, System.Object)
+  IL_019B: nop
+  IL_019C: ldloc.2
+  IL_019D: ldstr "mH"
+  IL_01A2: ldloc.2
+  IL_01A3: ldstr "h"
+  IL_01A8: callvirt System.Object get_Item(System.String)
+  IL_01AD: call Double ToDouble(System.Object)
+  IL_01B2: ldloc.2
+  IL_01B3: ldstr "EH"
+  IL_01B8: callvirt System.Object get_Item(System.String)
+  IL_01BD: call Double ToDouble(System.Object)
+  IL_01C2: ldloc.2
+  IL_01C3: ldstr "EkH"
+  IL_01C8: callvirt System.Object get_Item(System.String)
+  IL_01CD: call Double ToDouble(System.Object)
+  IL_01D2: call Double mH(Double, Double, Double)
+  IL_01D7: box System.Double
+  IL_01DC: callvirt Void set_Item(System.String, System.Object)
+  IL_01E1: nop
+  IL_01E2: ldloc.2
+  IL_01E3: ldstr "EI_H"
+  IL_01E8: ldloc.2
+  IL_01E9: ldstr "d2HL"
+  IL_01EE: callvirt System.Object get_Item(System.String)
+  IL_01F3: call Double ToDouble(System.Object)
+  IL_01F8: ldloc.2
+  IL_01F9: ldstr "d2HP"
+  IL_01FE: callvirt System.Object get_Item(System.String)
+  IL_0203: call Double ToDouble(System.Object)
+  IL_0208: ldloc.2
+  IL_0209: ldstr "dstarH"
+  IL_020E: callvirt System.Object get_Item(System.String)
+  IL_0213: call Double ToDouble(System.Object)
+  IL_0218: ldloc.2
+  IL_0219: ldstr "mH"
+  IL_021E: callvirt System.Object get_Item(System.String)
+  IL_0223: call Double ToDouble(System.Object)
+  IL_0228: call Double EI_H(Double, Double, Double, Double)
+  IL_022D: box System.Double
+  IL_0232: callvirt Void set_Item(System.String, System.Object)
+  IL_0237: nop
+  IL_0238: ldloc.2
+  IL_0239: ldstr "f_H"
+  IL_023E: ldloc.2
+  IL_023F: ldstr "d2HL"
+  IL_0244: callvirt System.Object get_Item(System.String)
+  IL_0249: call Double ToDouble(System.Object)
+  IL_024E: ldloc.2
+  IL_024F: ldstr "dstarH"
+  IL_0254: callvirt System.Object get_Item(System.String)
+  IL_0259: call Double ToDouble(System.Object)
+  IL_025E: ldloc.2
+  IL_025F: ldstr "d2HP"
+  IL_0264: callvirt System.Object get_Item(System.String)
+  IL_0269: call Double ToDouble(System.Object)
+  IL_026E: ldloc.2
+  IL_026F: ldstr "mH"
+  IL_0274: callvirt System.Object get_Item(System.String)
+  IL_0279: call Double ToDouble(System.Object)
+  IL_027E: call Double f_H(Double, Double, Double, Double)
+  IL_0283: box System.Double
+  IL_0288: callvirt Void set_Item(System.String, System.Object)
+  IL_028D: nop
+  IL_028E: ldloc.2
+  IL_028F: ldstr "CkH"
+  IL_0294: ldloc.2
+  IL_0295: ldstr "CkH"
+  IL_029A: callvirt System.Object get_Item(System.String)
+  IL_029F: call Double ToDouble(System.Object)
+  IL_02A4: box System.Double
+  IL_02A9: callvirt Void set_Item(System.String, System.Object)
+  IL_02AE: nop
+  IL_02AF: ldloc.2
+  IL_02B0: ldstr "CkO"
+  IL_02B5: ldloc.2
+  IL_02B6: ldstr "CkO"
+  IL_02BB: callvirt System.Object get_Item(System.String)
+  IL_02C0: call Double ToDouble(System.Object)
+  IL_02C5: box System.Double
+  IL_02CA: callvirt Void set_Item(System.String, System.Object)
+  IL_02CF: nop
+  IL_02D0: ldloc.2
+  IL_02D1: ldstr "EkO"
+  IL_02D6: ldloc.2
+  IL_02D7: ldstr "h"
+  IL_02DC: callvirt System.Object get_Item(System.String)
+  IL_02E1: call Double ToDouble(System.Object)
+  IL_02E6: ldloc.2
+  IL_02E7: ldstr "CkO"
+  IL_02EC: callvirt System.Object get_Item(System.String)
+  IL_02F1: call Double ToDouble(System.Object)
+  IL_02F6: call Double EkO(Double, Double)
+  IL_02FB: box System.Double
+  IL_0300: callvirt Void set_Item(System.String, System.Object)
+  IL_0305: nop
+  IL_0306: ldloc.2
+  IL_0307: ldstr "aplusO"
+  IL_030C: ldloc.2
+  IL_030D: ldstr "T"
+  IL_0312: callvirt System.Object get_Item(System.String)
+  IL_0317: call Double ToDouble(System.Object)
+  IL_031C: call Double aplusO(Double)
+  IL_0321: box System.Double
+  IL_0326: callvirt Void set_Item(System.String, System.Object)
+  IL_032B: nop
+  IL_032C: ldloc.2
+  IL_032D: ldstr "EplusO"
+  IL_0332: ldloc.2
+  IL_0333: ldstr "aplusO"
+  IL_0338: callvirt System.Object get_Item(System.String)
+  IL_033D: call Double ToDouble(System.Object)
+  IL_0342: call Double EplusO(Double)
+  IL_0347: box System.Double
+  IL_034C: callvirt Void set_Item(System.String, System.Object)
+  IL_0351: nop
+  IL_0352: ldloc.2
+  IL_0353: ldstr "EO"
+  IL_0358: ldloc.2
+  IL_0359: ldstr "EkO"
+  IL_035E: callvirt System.Object get_Item(System.String)
+  IL_0363: call Double ToDouble(System.Object)
+  IL_0368: ldloc.2
+  IL_0369: ldstr "EplusO"
+  IL_036E: callvirt System.Object get_Item(System.String)
+  IL_0373: call Double ToDouble(System.Object)
+  IL_0378: ldloc.2
+  IL_0379: ldstr "aplusO"
+  IL_037E: callvirt System.Object get_Item(System.String)
+  IL_0383: call Double ToDouble(System.Object)
+  IL_0388: call Double EO(Double, Double, Double)
+  IL_038D: box System.Double
+  IL_0392: callvirt Void set_Item(System.String, System.Object)
+  IL_0397: nop
+  IL_0398: ldloc.2
+  IL_0399: ldstr "dstarO"
+  IL_039E: ldloc.2
+  IL_039F: ldstr "h"
+  IL_03A4: callvirt System.Object get_Item(System.String)
+  IL_03A9: call Double ToDouble(System.Object)
+  IL_03AE: ldloc.2
+  IL_03AF: ldstr "d18OA"
+  IL_03B4: callvirt System.Object get_Item(System.String)
+  IL_03B9: call Double ToDouble(System.Object)
+  IL_03BE: ldloc.2
+  IL_03BF: ldstr "EO"
+  IL_03C4: callvirt System.Object get_Item(System.String)
+  IL_03C9: call Double ToDouble(System.Object)
+  IL_03CE: call Double dstarO(Double, Double, Double)
+  IL_03D3: box System.Double
+  IL_03D8: callvirt Void set_Item(System.String, System.Object)
+  IL_03DD: nop
+  IL_03DE: ldloc.2
+  IL_03DF: ldstr "mO"
+  IL_03E4: ldloc.2
+  IL_03E5: ldstr "h"
+  IL_03EA: callvirt System.Object get_Item(System.String)
+  IL_03EF: call Double ToDouble(System.Object)
+  IL_03F4: ldloc.2
+  IL_03F5: ldstr "EO"
+  IL_03FA: callvirt System.Object get_Item(System.String)
+  IL_03FF: call Double ToDouble(System.Object)
+  IL_0404: ldloc.2
+  IL_0405: ldstr "EkO"
+  IL_040A: callvirt System.Object get_Item(System.String)
+  IL_040F: call Double ToDouble(System.Object)
+  IL_0414: call Double mH(Double, Double, Double)
+  IL_0419: box System.Double
+  IL_041E: callvirt Void set_Item(System.String, System.Object)
+  IL_0423: nop
+  IL_0424: ldloc.2
+  IL_0425: ldstr "EI_O"
+  IL_042A: ldloc.2
+  IL_042B: ldstr "d18OL"
+  IL_0430: callvirt System.Object get_Item(System.String)
+  IL_0435: call Double ToDouble(System.Object)
+  IL_043A: ldloc.2
+  IL_043B: ldstr "d18OP"
+  IL_0440: callvirt System.Object get_Item(System.String)
+  IL_0445: call Double ToDouble(System.Object)
+  IL_044A: ldloc.2
+  IL_044B: ldstr "dstarO"
+  IL_0450: callvirt System.Object get_Item(System.String)
+  IL_0455: call Double ToDouble(System.Object)
+  IL_045A: ldloc.2
+  IL_045B: ldstr "mO"
+  IL_0460: callvirt System.Object get_Item(System.String)
+  IL_0465: call Double ToDouble(System.Object)
+  IL_046A: call Double EI_O(Double, Double, Double, Double)
+  IL_046F: box System.Double
+  IL_0474: callvirt Void set_Item(System.String, System.Object)
+  IL_0479: nop
+  IL_047A: ldloc.2
+  IL_047B: ldstr "f_O"
+  IL_0480: ldloc.2
+  IL_0481: ldstr "d18OL"
+  IL_0486: callvirt System.Object get_Item(System.String)
+  IL_048B: call Double ToDouble(System.Object)
+  IL_0490: ldloc.2
+  IL_0491: ldstr "dstarO"
+  IL_0496: callvirt System.Object get_Item(System.String)
+  IL_049B: call Double ToDouble(System.Object)
+  IL_04A0: ldloc.2
+  IL_04A1: ldstr "d18OP"
+  IL_04A6: callvirt System.Object get_Item(System.String)
+  IL_04AB: call Double ToDouble(System.Object)
+  IL_04B0: ldloc.2
+  IL_04B1: ldstr "mO"
+  IL_04B6: callvirt System.Object get_Item(System.String)
+  IL_04BB: call Double ToDouble(System.Object)
+  IL_04C0: call Double f_O(Double, Double, Double, Double)
+  IL_04C5: box System.Double
+  IL_04CA: callvirt Void set_Item(System.String, System.Object)
+  IL_04CF: nop
+  IL_04D0: ldloc.2
+  IL_04D1: ldstr "CkO"
+  IL_04D6: ldloc.2
+  IL_04D7: ldstr "CkO"
+  IL_04DC: callvirt System.Object get_Item(System.String)
+  IL_04E1: call Double ToDouble(System.Object)
+  IL_04E6: box System.Double
+  IL_04EB: callvirt Void set_Item(System.String, System.Object)
+  IL_04F0: nop
+  IL_04F1: br IL_11A1
+  IL_04F6: ldloc.2
+  IL_04F7: ldstr "EkH"
+  IL_04FC: ldloc.2
+  IL_04FD: ldstr "h"
+  IL_0502: callvirt System.Object get_Item(System.String)
+  IL_0507: call Double ToDouble(System.Object)
+  IL_050C: ldloc.2
+  IL_050D: ldstr "CkH"
+  IL_0512: callvirt System.Object get_Item(System.String)
+  IL_0517: call Double ToDouble(System.Object)
+  IL_051C: call Double EkH(Double, Double)
+  IL_0521: box System.Double
+  IL_0526: callvirt Void set_Item(System.String, System.Object)
+  IL_052B: nop
+  IL_052C: ldloc.2
+  IL_052D: ldstr "aplusH"
+  IL_0532: ldloc.2
+  IL_0533: ldstr "T"
+  IL_0538: callvirt System.Object get_Item(System.String)
+  IL_053D: call Double ToDouble(System.Object)
+  IL_0542: call Double aplusH(Double)
+  IL_0547: box System.Double
+  IL_054C: callvirt Void set_Item(System.String, System.Object)
+  IL_0551: nop
+  IL_0552: ldloc.2
+  IL_0553: ldstr "EplusH"
+  IL_0558: ldloc.2
+  IL_0559: ldstr "aplusH"
+  IL_055E: callvirt System.Object get_Item(System.String)
+  IL_0563: call Double ToDouble(System.Object)
+  IL_0568: call Double EplusH(Double)
+  IL_056D: box System.Double
+  IL_0572: callvirt Void set_Item(System.String, System.Object)
+  IL_0577: nop
+  IL_0578: ldloc.2
+  IL_0579: ldstr "EH"
+  IL_057E: ldloc.2
+  IL_057F: ldstr "EkH"
+  IL_0584: callvirt System.Object get_Item(System.String)
+  IL_0589: call Double ToDouble(System.Object)
+  IL_058E: ldloc.2
+  IL_058F: ldstr "EplusH"
+  IL_0594: callvirt System.Object get_Item(System.String)
+  IL_0599: call Double ToDouble(System.Object)
+  IL_059E: ldloc.2
+  IL_059F: ldstr "aplusH"
+  IL_05A4: callvirt System.Object get_Item(System.String)
+  IL_05A9: call Double ToDouble(System.Object)
+  IL_05AE: call Double EH(Double, Double, Double)
+  IL_05B3: box System.Double
+  IL_05B8: callvirt Void set_Item(System.String, System.Object)
+  IL_05BD: nop
+  IL_05BE: ldloc.2
+  IL_05BF: ldstr "d2HA"
+  IL_05C4: ldloc.2
+  IL_05C5: ldstr "aplusH"
+  IL_05CA: callvirt System.Object get_Item(System.String)
+  IL_05CF: call Double ToDouble(System.Object)
+  IL_05D4: ldloc.2
+  IL_05D5: ldstr "d2HR"
+  IL_05DA: callvirt System.Object get_Item(System.String)
+  IL_05DF: call Double ToDouble(System.Object)
+  IL_05E4: ldloc.2
+  IL_05E5: ldstr "EplusH"
+  IL_05EA: callvirt System.Object get_Item(System.String)
+  IL_05EF: call Double ToDouble(System.Object)
+  IL_05F4: call Double d2HA_opt2(Double, Double, Double)
+  IL_05F9: box System.Double
+  IL_05FE: callvirt Void set_Item(System.String, System.Object)
+  IL_0603: nop
+  IL_0604: ldloc.2
+  IL_0605: ldstr "dstarH"
+  IL_060A: ldloc.2
+  IL_060B: ldstr "h"
+  IL_0610: callvirt System.Object get_Item(System.String)
+  IL_0615: call Double ToDouble(System.Object)
+  IL_061A: ldloc.2
+  IL_061B: ldstr "d2HA"
+  IL_0620: callvirt System.Object get_Item(System.String)
+  IL_0625: call Double ToDouble(System.Object)
+  IL_062A: ldloc.2
+  IL_062B: ldstr "EH"
+  IL_0630: callvirt System.Object get_Item(System.String)
+  IL_0635: call Double ToDouble(System.Object)
+  IL_063A: call Double dstarH(Double, Double, Double)
+  IL_063F: box System.Double
+  IL_0644: callvirt Void set_Item(System.String, System.Object)
+  IL_0649: nop
+  IL_064A: ldloc.2
+  IL_064B: ldstr "mH"
+  IL_0650: ldloc.2
+  IL_0651: ldstr "h"
+  IL_0656: callvirt System.Object get_Item(System.String)
+  IL_065B: call Double ToDouble(System.Object)
+  IL_0660: ldloc.2
+  IL_0661: ldstr "EH"
+  IL_0666: callvirt System.Object get_Item(System.String)
+  IL_066B: call Double ToDouble(System.Object)
+  IL_0670: ldloc.2
+  IL_0671: ldstr "EkH"
+  IL_0676: callvirt System.Object get_Item(System.String)
+  IL_067B: call Double ToDouble(System.Object)
+  IL_0680: call Double mH(Double, Double, Double)
+  IL_0685: box System.Double
+  IL_068A: callvirt Void set_Item(System.String, System.Object)
+  IL_068F: nop
+  IL_0690: ldloc.2
+  IL_0691: ldstr "EI_H"
+  IL_0696: ldloc.2
+  IL_0697: ldstr "d2HL"
+  IL_069C: callvirt System.Object get_Item(System.String)
+  IL_06A1: call Double ToDouble(System.Object)
+  IL_06A6: ldloc.2
+  IL_06A7: ldstr "d2HP"
+  IL_06AC: callvirt System.Object get_Item(System.String)
+  IL_06B1: call Double ToDouble(System.Object)
+  IL_06B6: ldloc.2
+  IL_06B7: ldstr "dstarH"
+  IL_06BC: callvirt System.Object get_Item(System.String)
+  IL_06C1: call Double ToDouble(System.Object)
+  IL_06C6: ldloc.2
+  IL_06C7: ldstr "mH"
+  IL_06CC: callvirt System.Object get_Item(System.String)
+  IL_06D1: call Double ToDouble(System.Object)
+  IL_06D6: call Double EI_H(Double, Double, Double, Double)
+  IL_06DB: box System.Double
+  IL_06E0: callvirt Void set_Item(System.String, System.Object)
+  IL_06E5: nop
+  IL_06E6: ldloc.2
+  IL_06E7: ldstr "f_H"
+  IL_06EC: ldloc.2
+  IL_06ED: ldstr "d2HL"
+  IL_06F2: callvirt System.Object get_Item(System.String)
+  IL_06F7: call Double ToDouble(System.Object)
+  IL_06FC: ldloc.2
+  IL_06FD: ldstr "dstarH"
+  IL_0702: callvirt System.Object get_Item(System.String)
+  IL_0707: call Double ToDouble(System.Object)
+  IL_070C: ldloc.2
+  IL_070D: ldstr "d2HP"
+  IL_0712: callvirt System.Object get_Item(System.String)
+  IL_0717: call Double ToDouble(System.Object)
+  IL_071C: ldloc.2
+  IL_071D: ldstr "mH"
+  IL_0722: callvirt System.Object get_Item(System.String)
+  IL_0727: call Double ToDouble(System.Object)
+  IL_072C: call Double f_H(Double, Double, Double, Double)
+  IL_0731: box System.Double
+  IL_0736: callvirt Void set_Item(System.String, System.Object)
+  IL_073B: nop
+  IL_073C: ldloc.2
+  IL_073D: ldstr "CkH"
+  IL_0742: ldloc.2
+  IL_0743: ldstr "CkH"
+  IL_0748: callvirt System.Object get_Item(System.String)
+  IL_074D: call Double ToDouble(System.Object)
+  IL_0752: box System.Double
+  IL_0757: callvirt Void set_Item(System.String, System.Object)
+  IL_075C: nop
+  IL_075D: ldloc.2
+  IL_075E: ldstr "EkO"
+  IL_0763: ldloc.2
+  IL_0764: ldstr "h"
+  IL_0769: callvirt System.Object get_Item(System.String)
+  IL_076E: call Double ToDouble(System.Object)
+  IL_0773: ldloc.2
+  IL_0774: ldstr "CkO"
+  IL_0779: callvirt System.Object get_Item(System.String)
+  IL_077E: call Double ToDouble(System.Object)
+  IL_0783: call Double EkO(Double, Double)
+  IL_0788: box System.Double
+  IL_078D: callvirt Void set_Item(System.String, System.Object)
+  IL_0792: nop
+  IL_0793: ldloc.2
+  IL_0794: ldstr "aplusO"
+  IL_0799: ldloc.2
+  IL_079A: ldstr "T"
+  IL_079F: callvirt System.Object get_Item(System.String)
+  IL_07A4: call Double ToDouble(System.Object)
+  IL_07A9: call Double aplusO(Double)
+  IL_07AE: box System.Double
+  IL_07B3: callvirt Void set_Item(System.String, System.Object)
+  IL_07B8: nop
+  IL_07B9: ldloc.2
+  IL_07BA: ldstr "EplusO"
+  IL_07BF: ldloc.2
+  IL_07C0: ldstr "aplusO"
+  IL_07C5: callvirt System.Object get_Item(System.String)
+  IL_07CA: call Double ToDouble(System.Object)
+  IL_07CF: call Double EplusO(Double)
+  IL_07D4: box System.Double
+  IL_07D9: callvirt Void set_Item(System.String, System.Object)
+  IL_07DE: nop
+  IL_07DF: ldloc.2
+  IL_07E0: ldstr "EO"
+  IL_07E5: ldloc.2
+  IL_07E6: ldstr "EkO"
+  IL_07EB: callvirt System.Object get_Item(System.String)
+  IL_07F0: call Double ToDouble(System.Object)
+  IL_07F5: ldloc.2
+  IL_07F6: ldstr "EplusO"
+  IL_07FB: callvirt System.Object get_Item(System.String)
+  IL_0800: call Double ToDouble(System.Object)
+  IL_0805: ldloc.2
+  IL_0806: ldstr "aplusO"
+  IL_080B: callvirt System.Object get_Item(System.String)
+  IL_0810: call Double ToDouble(System.Object)
+  IL_0815: call Double EO(Double, Double, Double)
+  IL_081A: box System.Double
+  IL_081F: callvirt Void set_Item(System.String, System.Object)
+  IL_0824: nop
+  IL_0825: ldloc.2
+  IL_0826: ldstr "d18OA"
+  IL_082B: ldloc.2
+  IL_082C: ldstr "aplusO"
+  IL_0831: callvirt System.Object get_Item(System.String)
+  IL_0836: call Double ToDouble(System.Object)
+  IL_083B: ldloc.2
+  IL_083C: ldstr "d18OR"
+  IL_0841: callvirt System.Object get_Item(System.String)
+  IL_0846: call Double ToDouble(System.Object)
+  IL_084B: ldloc.2
+  IL_084C: ldstr "EplusO"
+  IL_0851: callvirt System.Object get_Item(System.String)
+  IL_0856: call Double ToDouble(System.Object)
+  IL_085B: call Double d18OA_opt2(Double, Double, Double)
+  IL_0860: box System.Double
+  IL_0865: callvirt Void set_Item(System.String, System.Object)
+  IL_086A: nop
+  IL_086B: ldloc.2
+  IL_086C: ldstr "dstarO"
+  IL_0871: ldloc.2
+  IL_0872: ldstr "h"
+  IL_0877: callvirt System.Object get_Item(System.String)
+  IL_087C: call Double ToDouble(System.Object)
+  IL_0881: ldloc.2
+  IL_0882: ldstr "d18OA"
+  IL_0887: callvirt System.Object get_Item(System.String)
+  IL_088C: call Double ToDouble(System.Object)
+  IL_0891: ldloc.2
+  IL_0892: ldstr "EO"
+  IL_0897: callvirt System.Object get_Item(System.String)
+  IL_089C: call Double ToDouble(System.Object)
+  IL_08A1: call Double dstarO(Double, Double, Double)
+  IL_08A6: box System.Double
+  IL_08AB: callvirt Void set_Item(System.String, System.Object)
+  IL_08B0: nop
+  IL_08B1: ldloc.2
+  IL_08B2: ldstr "mO"
+  IL_08B7: ldloc.2
+  IL_08B8: ldstr "h"
+  IL_08BD: callvirt System.Object get_Item(System.String)
+  IL_08C2: call Double ToDouble(System.Object)
+  IL_08C7: ldloc.2
+  IL_08C8: ldstr "EO"
+  IL_08CD: callvirt System.Object get_Item(System.String)
+  IL_08D2: call Double ToDouble(System.Object)
+  IL_08D7: ldloc.2
+  IL_08D8: ldstr "EkO"
+  IL_08DD: callvirt System.Object get_Item(System.String)
+  IL_08E2: call Double ToDouble(System.Object)
+  IL_08E7: call Double mH(Double, Double, Double)
+  IL_08EC: box System.Double
+  IL_08F1: callvirt Void set_Item(System.String, System.Object)
+  IL_08F6: nop
+  IL_08F7: ldloc.2
+  IL_08F8: ldstr "EI_O"
+  IL_08FD: ldloc.2
+  IL_08FE: ldstr "d18OL"
+  IL_0903: callvirt System.Object get_Item(System.String)
+  IL_0908: call Double ToDouble(System.Object)
+  IL_090D: ldloc.2
+  IL_090E: ldstr "d18OP"
+  IL_0913: callvirt System.Object get_Item(System.String)
+  IL_0918: call Double ToDouble(System.Object)
+  IL_091D: ldloc.2
+  IL_091E: ldstr "dstarO"
+  IL_0923: callvirt System.Object get_Item(System.String)
+  IL_0928: call Double ToDouble(System.Object)
+  IL_092D: ldloc.2
+  IL_092E: ldstr "mO"
+  IL_0933: callvirt System.Object get_Item(System.String)
+  IL_0938: call Double ToDouble(System.Object)
+  IL_093D: call Double EI_O(Double, Double, Double, Double)
+  IL_0942: box System.Double
+  IL_0947: callvirt Void set_Item(System.String, System.Object)
+  IL_094C: nop
+  IL_094D: ldloc.2
+  IL_094E: ldstr "f_O"
+  IL_0953: ldloc.2
+  IL_0954: ldstr "d18OL"
+  IL_0959: callvirt System.Object get_Item(System.String)
+  IL_095E: call Double ToDouble(System.Object)
+  IL_0963: ldloc.2
+  IL_0964: ldstr "dstarO"
+  IL_0969: callvirt System.Object get_Item(System.String)
+  IL_096E: call Double ToDouble(System.Object)
+  IL_0973: ldloc.2
+  IL_0974: ldstr "d18OP"
+  IL_0979: callvirt System.Object get_Item(System.String)
+  IL_097E: call Double ToDouble(System.Object)
+  IL_0983: ldloc.2
+  IL_0984: ldstr "mO"
+  IL_0989: callvirt System.Object get_Item(System.String)
+  IL_098E: call Double ToDouble(System.Object)
+  IL_0993: call Double f_O(Double, Double, Double, Double)
+  IL_0998: box System.Double
+  IL_099D: callvirt Void set_Item(System.String, System.Object)
+  IL_09A2: nop
+  IL_09A3: ldloc.2
+  IL_09A4: ldstr "CkO"
+  IL_09A9: ldloc.2
+  IL_09AA: ldstr "CkO"
+  IL_09AF: callvirt System.Object get_Item(System.String)
+  IL_09B4: call Double ToDouble(System.Object)
+  IL_09B9: box System.Double
+  IL_09BE: callvirt Void set_Item(System.String, System.Object)
+  IL_09C3: nop
+  IL_09C4: br IL_11A1
+  IL_09C9: ldloc.2
+  IL_09CA: ldstr "EkH"
+  IL_09CF: ldloc.2
+  IL_09D0: ldstr "h"
+  IL_09D5: callvirt System.Object get_Item(System.String)
+  IL_09DA: call Double ToDouble(System.Object)
+  IL_09DF: ldloc.2
+  IL_09E0: ldstr "CkH"
+  IL_09E5: callvirt System.Object get_Item(System.String)
+  IL_09EA: call Double ToDouble(System.Object)
+  IL_09EF: call Double EkH(Double, Double)
+  IL_09F4: box System.Double
+  IL_09F9: callvirt Void set_Item(System.String, System.Object)
+  IL_09FE: nop
+  IL_09FF: ldloc.2
+  IL_0A00: ldstr "aplusH"
+  IL_0A05: ldloc.2
+  IL_0A06: ldstr "T"
+  IL_0A0B: callvirt System.Object get_Item(System.String)
+  IL_0A10: call Double ToDouble(System.Object)
+  IL_0A15: call Double aplusH(Double)
+  IL_0A1A: box System.Double
+  IL_0A1F: callvirt Void set_Item(System.String, System.Object)
+  IL_0A24: nop
+  IL_0A25: ldloc.2
+  IL_0A26: ldstr "EplusH"
+  IL_0A2B: ldloc.2
+  IL_0A2C: ldstr "aplusH"
+  IL_0A31: callvirt System.Object get_Item(System.String)
+  IL_0A36: call Double ToDouble(System.Object)
+  IL_0A3B: call Double EplusH(Double)
+  IL_0A40: box System.Double
+  IL_0A45: callvirt Void set_Item(System.String, System.Object)
+  IL_0A4A: nop
+  IL_0A4B: ldloc.2
+  IL_0A4C: ldstr "EH"
+  IL_0A51: ldloc.2
+  IL_0A52: ldstr "EkH"
+  IL_0A57: callvirt System.Object get_Item(System.String)
+  IL_0A5C: call Double ToDouble(System.Object)
+  IL_0A61: ldloc.2
+  IL_0A62: ldstr "EplusH"
+  IL_0A67: callvirt System.Object get_Item(System.String)
+  IL_0A6C: call Double ToDouble(System.Object)
+  IL_0A71: ldloc.2
+  IL_0A72: ldstr "aplusH"
+  IL_0A77: callvirt System.Object get_Item(System.String)
+  IL_0A7C: call Double ToDouble(System.Object)
+  IL_0A81: call Double EH(Double, Double, Double)
+  IL_0A86: box System.Double
+  IL_0A8B: callvirt Void set_Item(System.String, System.Object)
+  IL_0A90: nop
+  IL_0A91: ldloc.2
+  IL_0A92: ldstr "EkO"
+  IL_0A97: ldloc.2
+  IL_0A98: ldstr "h"
+  IL_0A9D: callvirt System.Object get_Item(System.String)
+  IL_0AA2: call Double ToDouble(System.Object)
+  IL_0AA7: ldloc.2
+  IL_0AA8: ldstr "CkO"
+  IL_0AAD: callvirt System.Object get_Item(System.String)
+  IL_0AB2: call Double ToDouble(System.Object)
+  IL_0AB7: call Double EkO(Double, Double)
+  IL_0ABC: box System.Double
+  IL_0AC1: callvirt Void set_Item(System.String, System.Object)
+  IL_0AC6: nop
+  IL_0AC7: ldloc.2
+  IL_0AC8: ldstr "aplusO"
+  IL_0ACD: ldloc.2
+  IL_0ACE: ldstr "T"
+  IL_0AD3: callvirt System.Object get_Item(System.String)
+  IL_0AD8: call Double ToDouble(System.Object)
+  IL_0ADD: call Double aplusO(Double)
+  IL_0AE2: box System.Double
+  IL_0AE7: callvirt Void set_Item(System.String, System.Object)
+  IL_0AEC: nop
+  IL_0AED: ldloc.2
+  IL_0AEE: ldstr "EplusO"
+  IL_0AF3: ldloc.2
+  IL_0AF4: ldstr "aplusO"
+  IL_0AF9: callvirt System.Object get_Item(System.String)
+  IL_0AFE: call Double ToDouble(System.Object)
+  IL_0B03: call Double EplusO(Double)
+  IL_0B08: box System.Double
+  IL_0B0D: callvirt Void set_Item(System.String, System.Object)
+  IL_0B12: nop
+  IL_0B13: ldloc.2
+  IL_0B14: ldstr "EO"
+  IL_0B19: ldloc.2
+  IL_0B1A: ldstr "EkO"
+  IL_0B1F: callvirt System.Object get_Item(System.String)
+  IL_0B24: call Double ToDouble(System.Object)
+  IL_0B29: ldloc.2
+  IL_0B2A: ldstr "EplusO"
+  IL_0B2F: callvirt System.Object get_Item(System.String)
+  IL_0B34: call Double ToDouble(System.Object)
+  IL_0B39: ldloc.2
+  IL_0B3A: ldstr "aplusO"
+  IL_0B3F: callvirt System.Object get_Item(System.String)
+  IL_0B44: call Double ToDouble(System.Object)
+  IL_0B49: call Double EO(Double, Double, Double)
+  IL_0B4E: box System.Double
+  IL_0B53: callvirt Void set_Item(System.String, System.Object)
+  IL_0B58: nop
+  IL_0B59: ldloc.2
+  IL_0B5A: ldstr "CkH"
+  IL_0B5F: ldloc.2
+  IL_0B60: ldstr "CkH"
+  IL_0B65: callvirt System.Object get_Item(System.String)
+  IL_0B6A: call Double ToDouble(System.Object)
+  IL_0B6F: box System.Double
+  IL_0B74: callvirt Void set_Item(System.String, System.Object)
+  IL_0B79: nop
+  IL_0B7A: ldloc.2
+  IL_0B7B: ldstr "CkO"
+  IL_0B80: ldloc.2
+  IL_0B81: ldstr "CkO"
+  IL_0B86: callvirt System.Object get_Item(System.String)
+  IL_0B8B: call Double ToDouble(System.Object)
+  IL_0B90: box System.Double
+  IL_0B95: callvirt Void set_Item(System.String, System.Object)
+  IL_0B9A: nop
+  IL_0B9B: ldloc.2
+  IL_0B9C: ldstr "aplusH"
+  IL_0BA1: callvirt System.Object get_Item(System.String)
+  IL_0BA6: call Double ToDouble(System.Object)
+  IL_0BAB: ldloc.2
+  IL_0BAC: ldstr "d2HR"
+  IL_0BB1: callvirt System.Object get_Item(System.String)
+  IL_0BB6: call Double ToDouble(System.Object)
+  IL_0BBB: ldloc.2
+  IL_0BBC: ldstr "EplusH"
+  IL_0BC1: callvirt System.Object get_Item(System.String)
+  IL_0BC6: call Double ToDouble(System.Object)
+  IL_0BCB: call Double calc_ambAirMoistH(Double, Double, Double)
+  IL_0BD0: stsfld Double ambAirMoistH
+  IL_0BD5: ldloc.2
+  IL_0BD6: ldstr "aplusO"
+  IL_0BDB: callvirt System.Object get_Item(System.String)
+  IL_0BE0: call Double ToDouble(System.Object)
+  IL_0BE5: ldloc.2
+  IL_0BE6: ldstr "d18OR"
+  IL_0BEB: callvirt System.Object get_Item(System.String)
+  IL_0BF0: call Double ToDouble(System.Object)
+  IL_0BF5: ldloc.2
+  IL_0BF6: ldstr "EplusO"
+  IL_0BFB: callvirt System.Object get_Item(System.String)
+  IL_0C00: call Double ToDouble(System.Object)
+  IL_0C05: call Double calc_ambAirMoistO(Double, Double, Double)
+  IL_0C0A: stsfld Double ambAirMoistO
+  IL_0C0F: ldc.i4.0
+  IL_0C10: stloc.s 4
+  IL_0C12: ldc.r8 1
+  IL_0C1B: stloc.s 5
+  IL_0C1D: ldc.r8 1000
+  IL_0C26: stloc.s 6
+  IL_0C28: ldc.r8 0.6
+  IL_0C31: stloc.s 7
+  IL_0C33: ldc.r8 0.0001
+  IL_0C3C: stloc.s 8
+  IL_0C3E: ldloc.2
+  IL_0C3F: ldstr "d2HR"
+  IL_0C44: callvirt System.Object get_Item(System.String)
+  IL_0C49: call Double ToDouble(System.Object)
+  IL_0C4E: stloc.s 9
+  IL_0C50: ldloc.2
+  IL_0C51: ldstr "d18OR"
+  IL_0C56: callvirt System.Object get_Item(System.String)
+  IL_0C5B: call Double ToDouble(System.Object)
+  IL_0C60: stloc.s 10
+  IL_0C62: ldloc.2
+  IL_0C63: ldstr "EH"
+  IL_0C68: callvirt System.Object get_Item(System.String)
+  IL_0C6D: call Double ToDouble(System.Object)
+  IL_0C72: stloc.s 11
+  IL_0C74: ldloc.2
+  IL_0C75: ldstr "EO"
+  IL_0C7A: callvirt System.Object get_Item(System.String)
+  IL_0C7F: call Double ToDouble(System.Object)
+  IL_0C84: stloc.s 12
+  IL_0C86: ldloc.2
+  IL_0C87: ldstr "h"
+  IL_0C8C: callvirt System.Object get_Item(System.String)
+  IL_0C91: call Double ToDouble(System.Object)
+  IL_0C96: stloc.s 13
+  IL_0C98: ldc.r8 0.6
+  IL_0CA1: stloc.s 14
+  IL_0CA3: br IL_0E4F
+  IL_0CA8: nop
+  IL_0CA9: ldloc.s 4
+  IL_0CAB: ldc.i4.1
+  IL_0CAC: add
+  IL_0CAD: stloc.s 4
+  IL_0CAF: ldloc.s 14
+  IL_0CB1: ldloc.s 9
+  IL_0CB3: ldloc.2
+  IL_0CB4: ldstr "EplusH"
+  IL_0CB9: callvirt System.Object get_Item(System.String)
+  IL_0CBE: call Double ToDouble(System.Object)
+  IL_0CC3: ldloc.2
+  IL_0CC4: ldstr "aplusH"
+  IL_0CC9: callvirt System.Object get_Item(System.String)
+  IL_0CCE: call Double ToDouble(System.Object)
+  IL_0CD3: call Double d2HA_opt3(Double, Double, Double, Double)
+  IL_0CD8: stsfld Double ambAirMoistHAdj
+  IL_0CDD: ldloc.s 14
+  IL_0CDF: ldloc.s 10
+  IL_0CE1: ldloc.2
+  IL_0CE2: ldstr "EplusO"
+  IL_0CE7: callvirt System.Object get_Item(System.String)
+  IL_0CEC: call Double ToDouble(System.Object)
+  IL_0CF1: ldloc.2
+  IL_0CF2: ldstr "aplusO"
+  IL_0CF7: callvirt System.Object get_Item(System.String)
+  IL_0CFC: call Double ToDouble(System.Object)
+  IL_0D01: call Double d18OA_opt3(Double, Double, Double, Double)
+  IL_0D06: stsfld Double ambAirMoistOAdj
+  IL_0D0B: ldloc.s 13
+  IL_0D0D: ldsfld Double ambAirMoistHAdj
+  IL_0D12: ldc.r8 1000
+  IL_0D1B: div
+  IL_0D1C: ldloc.s 9
+  IL_0D1E: ldc.r8 1000
+  IL_0D27: div
+  IL_0D28: sub
+  IL_0D29: mul
+  IL_0D2A: ldc.r8 1
+  IL_0D33: ldloc.s 9
+  IL_0D35: ldc.r8 1000
+  IL_0D3E: div
+  IL_0D3F: add
+  IL_0D40: ldloc.s 11
+  IL_0D42: ldc.r8 1000
+  IL_0D4B: div
+  IL_0D4C: mul
+  IL_0D4D: add
+  IL_0D4E: ldloc.s 13
+  IL_0D50: ldloc.s 11
+  IL_0D52: ldc.r8 1000
+  IL_0D5B: div
+  IL_0D5C: sub
+  IL_0D5D: div
+  IL_0D5E: call Double ToDouble(Double)
+  IL_0D63: stloc.s 15
+  IL_0D65: ldloc.s 13
+  IL_0D67: ldsfld Double ambAirMoistOAdj
+  IL_0D6C: ldc.r8 1000
+  IL_0D75: div
+  IL_0D76: ldloc.s 10
+  IL_0D78: ldc.r8 1000
+  IL_0D81: div
+  IL_0D82: sub
+  IL_0D83: mul
+  IL_0D84: ldc.r8 1
+  IL_0D8D: ldloc.s 10
+  IL_0D8F: ldc.r8 1000
+  IL_0D98: div
+  IL_0D99: add
+  IL_0D9A: ldloc.s 12
+  IL_0D9C: ldc.r8 1000
+  IL_0DA5: div
+  IL_0DA6: mul
+  IL_0DA7: add
+  IL_0DA8: ldloc.s 13
+  IL_0DAA: ldloc.s 12
+  IL_0DAC: ldc.r8 1000
+  IL_0DB5: div
+  IL_0DB6: sub
+  IL_0DB7: div
+  IL_0DB8: call Double ToDouble(Double)
+  IL_0DBD: stloc.s 16
+  IL_0DBF: ldloc.s 15
+  IL_0DC1: ldloc.s 16
+  IL_0DC3: div
+  IL_0DC4: stloc.s 17
+  IL_0DC6: ldloc.s 17
+  IL_0DC8: ldc.i4.4
+  IL_0DC9: ldc.i4.1
+  IL_0DCA: call Double Round(Double, Int32, System.MidpointRounding)
+  IL_0DCF: stloc.s 17
+  IL_0DD1: ldloc.s 14
+  IL_0DD3: ldc.i4.4
+  IL_0DD4: ldc.i4.1
+  IL_0DD5: call Double Round(Double, Int32, System.MidpointRounding)
+  IL_0DDA: stloc.s 14
+  IL_0DDC: ldloc.2
+  IL_0DDD: ldstr "LEL"
+  IL_0DE2: callvirt System.Object get_Item(System.String)
+  IL_0DE7: call Double ToDouble(System.Object)
+  IL_0DEC: stloc.s 18
+  IL_0DEE: ldloc.s 18
+  IL_0DF0: ldc.i4.4
+  IL_0DF1: ldc.i4.1
+  IL_0DF2: call Double Round(Double, Int32, System.MidpointRounding)
+  IL_0DF7: stloc.s 18
+  IL_0DF9: ldloc.s 17
+  IL_0DFB: ldloc.s 18
+  IL_0DFD: sub
+  IL_0DFE: stloc.s 19
+  IL_0E00: ldloc.s 19
+  IL_0E02: ldc.r8 0
+  IL_0E0B: <unknown 0xFE01>
+  IL_0E0D: stloc.s 22
+  IL_0E0F: ldloc.s 22
+  IL_0E11: brtrue.s IL_0E40
+  IL_0E13: nop
+  IL_0E14: ldloc.s 19
+  IL_0E16: call Double Abs(Double)
+  IL_0E1B: ldloc.s 6
+  IL_0E1D: call Double Abs(Double)
+  IL_0E22: <unknown 0xFE03>
+  IL_0E24: stloc.s 22
+  IL_0E26: ldloc.s 22
+  IL_0E28: brtrue.s IL_0E36
+  IL_0E2A: nop
+  IL_0E2B: ldloc.s 19
+  IL_0E2D: stloc.s 6
+  IL_0E2F: ldloc.s 14
+  IL_0E31: stloc.s 7
+  IL_0E33: nop
+  IL_0E34: br.s IL_0E3D
+  IL_0E36: nop
+  IL_0E37: ldloc.s 14
+  IL_0E39: stloc.s 5
+  IL_0E3B: br.s IL_0E68
+  IL_0E3D: nop
+  IL_0E3E: br.s IL_0E47
+  IL_0E40: nop
+  IL_0E41: ldloc.s 14
+  IL_0E43: stloc.s 5
+  IL_0E45: br.s IL_0E68
+  IL_0E47: nop
+  IL_0E48: ldloc.s 14
+  IL_0E4A: ldloc.s 8
+  IL_0E4C: add
+  IL_0E4D: stloc.s 14
+  IL_0E4F: ldloc.s 14
+  IL_0E51: ldc.r8 1
+  IL_0E5A: <unknown 0xFE03>
+  IL_0E5C: ldc.i4.0
+  IL_0E5D: <unknown 0xFE01>
+  IL_0E5F: stloc.s 22
+  IL_0E61: ldloc.s 22
+  IL_0E63: brtrue IL_0CA8
+  IL_0E68: ldloc.2
+  IL_0E69: ldstr "d18OA"
+  IL_0E6E: ldloc.s 5
+  IL_0E70: call Double ToDouble(Double)
+  IL_0E75: ldloc.2
+  IL_0E76: ldstr "d18OR"
+  IL_0E7B: callvirt System.Object get_Item(System.String)
+  IL_0E80: call Double ToDouble(System.Object)
+  IL_0E85: ldloc.2
+  IL_0E86: ldstr "EplusO"
+  IL_0E8B: callvirt System.Object get_Item(System.String)
+  IL_0E90: call Double ToDouble(System.Object)
+  IL_0E95: ldloc.2
+  IL_0E96: ldstr "aplusO"
+  IL_0E9B: callvirt System.Object get_Item(System.String)
+  IL_0EA0: call Double ToDouble(System.Object)
+  IL_0EA5: call Double d18OA_opt3(Double, Double, Double, Double)
+  IL_0EAA: box System.Double
+  IL_0EAF: callvirt Void set_Item(System.String, System.Object)
+  IL_0EB4: nop
+  IL_0EB5: ldloc.2
+  IL_0EB6: ldstr "d2HA"
+  IL_0EBB: ldloc.s 5
+  IL_0EBD: ldloc.2
+  IL_0EBE: ldstr "d2HR"
+  IL_0EC3: callvirt System.Object get_Item(System.String)
+  IL_0EC8: call Double ToDouble(System.Object)
+  IL_0ECD: ldloc.2
+  IL_0ECE: ldstr "EplusH"
+  IL_0ED3: callvirt System.Object get_Item(System.String)
+  IL_0ED8: call Double ToDouble(System.Object)
+  IL_0EDD: ldloc.2
+  IL_0EDE: ldstr "aplusH"
+  IL_0EE3: callvirt System.Object get_Item(System.String)
+  IL_0EE8: call Double ToDouble(System.Object)
+  IL_0EED: call Double d2HA_opt3(Double, Double, Double, Double)
+  IL_0EF2: box System.Double
+  IL_0EF7: callvirt Void set_Item(System.String, System.Object)
+  IL_0EFC: nop
+  IL_0EFD: ldloc.2
+  IL_0EFE: ldstr "dstarH"
+  IL_0F03: ldloc.2
+  IL_0F04: ldstr "h"
+  IL_0F09: callvirt System.Object get_Item(System.String)
+  IL_0F0E: call Double ToDouble(System.Object)
+  IL_0F13: ldloc.2
+  IL_0F14: ldstr "d2HA"
+  IL_0F19: callvirt System.Object get_Item(System.String)
+  IL_0F1E: call Double ToDouble(System.Object)
+  IL_0F23: ldloc.2
+  IL_0F24: ldstr "EH"
+  IL_0F29: callvirt System.Object get_Item(System.String)
+  IL_0F2E: call Double ToDouble(System.Object)
+  IL_0F33: call Double dstarH(Double, Double, Double)
+  IL_0F38: box System.Double
+  IL_0F3D: callvirt Void set_Item(System.String, System.Object)
+  IL_0F42: nop
+  IL_0F43: ldloc.2
+  IL_0F44: ldstr "mH"
+  IL_0F49: ldloc.2
+  IL_0F4A: ldstr "h"
+  IL_0F4F: callvirt System.Object get_Item(System.String)
+  IL_0F54: call Double ToDouble(System.Object)
+  IL_0F59: ldloc.2
+  IL_0F5A: ldstr "EH"
+  IL_0F5F: callvirt System.Object get_Item(System.String)
+  IL_0F64: call Double ToDouble(System.Object)
+  IL_0F69: ldloc.2
+  IL_0F6A: ldstr "EkH"
+  IL_0F6F: callvirt System.Object get_Item(System.String)
+  IL_0F74: call Double ToDouble(System.Object)
+  IL_0F79: call Double mH(Double, Double, Double)
+  IL_0F7E: box System.Double
+  IL_0F83: callvirt Void set_Item(System.String, System.Object)
+  IL_0F88: nop
+  IL_0F89: ldloc.2
+  IL_0F8A: ldstr "EI_H"
+  IL_0F8F: ldloc.2
+  IL_0F90: ldstr "d2HL"
+  IL_0F95: callvirt System.Object get_Item(System.String)
+  IL_0F9A: call Double ToDouble(System.Object)
+  IL_0F9F: ldloc.2
+  IL_0FA0: ldstr "d2HP"
+  IL_0FA5: callvirt System.Object get_Item(System.String)
+  IL_0FAA: call Double ToDouble(System.Object)
+  IL_0FAF: ldloc.2
+  IL_0FB0: ldstr "dstarH"
+  IL_0FB5: callvirt System.Object get_Item(System.String)
+  IL_0FBA: call Double ToDouble(System.Object)
+  IL_0FBF: ldloc.2
+  IL_0FC0: ldstr "mH"
+  IL_0FC5: callvirt System.Object get_Item(System.String)
+  IL_0FCA: call Double ToDouble(System.Object)
+  IL_0FCF: call Double EI_H(Double, Double, Double, Double)
+  IL_0FD4: box System.Double
+  IL_0FD9: callvirt Void set_Item(System.String, System.Object)
+  IL_0FDE: nop
+  IL_0FDF: ldloc.2
+  IL_0FE0: ldstr "f_H"
+  IL_0FE5: ldloc.2
+  IL_0FE6: ldstr "d2HL"
+  IL_0FEB: callvirt System.Object get_Item(System.String)
+  IL_0FF0: call Double ToDouble(System.Object)
+  IL_0FF5: ldloc.2
+  IL_0FF6: ldstr "dstarH"
+  IL_0FFB: callvirt System.Object get_Item(System.String)
+  IL_1000: call Double ToDouble(System.Object)
+  IL_1005: ldloc.2
+  IL_1006: ldstr "d2HP"
+  IL_100B: callvirt System.Object get_Item(System.String)
+  IL_1010: call Double ToDouble(System.Object)
+  IL_1015: ldloc.2
+  IL_1016: ldstr "mH"
+  IL_101B: callvirt System.Object get_Item(System.String)
+  IL_1020: call Double ToDouble(System.Object)
+  IL_1025: call Double f_H(Double, Double, Double, Double)
+  IL_102A: box System.Double
+  IL_102F: callvirt Void set_Item(System.String, System.Object)
+  IL_1034: nop
+  IL_1035: ldloc.2
+  IL_1036: ldstr "dstarO"
+  IL_103B: ldloc.2
+  IL_103C: ldstr "h"
+  IL_1041: callvirt System.Object get_Item(System.String)
+  IL_1046: call Double ToDouble(System.Object)
+  IL_104B: ldloc.2
+  IL_104C: ldstr "d18OA"
+  IL_1051: callvirt System.Object get_Item(System.String)
+  IL_1056: call Double ToDouble(System.Object)
+  IL_105B: ldloc.2
+  IL_105C: ldstr "EO"
+  IL_1061: callvirt System.Object get_Item(System.String)
+  IL_1066: call Double ToDouble(System.Object)
+  IL_106B: call Double dstarO(Double, Double, Double)
+  IL_1070: box System.Double
+  IL_1075: callvirt Void set_Item(System.String, System.Object)
+  IL_107A: nop
+  IL_107B: ldloc.2
+  IL_107C: ldstr "mO"
+  IL_1081: ldloc.2
+  IL_1082: ldstr "h"
+  IL_1087: callvirt System.Object get_Item(System.String)
+  IL_108C: call Double ToDouble(System.Object)
+  IL_1091: ldloc.2
+  IL_1092: ldstr "EO"
+  IL_1097: callvirt System.Object get_Item(System.String)
+  IL_109C: call Double ToDouble(System.Object)
+  IL_10A1: ldloc.2
+  IL_10A2: ldstr "EkO"
+  IL_10A7: callvirt System.Object get_Item(System.String)
+  IL_10AC: call Double ToDouble(System.Object)
+  IL_10B1: call Double mH(Double, Double, Double)
+  IL_10B6: box System.Double
+  IL_10BB: callvirt Void set_Item(System.String, System.Object)
+  IL_10C0: nop
+  IL_10C1: ldloc.2
+  IL_10C2: ldstr "EI_O"
+  IL_10C7: ldloc.2
+  IL_10C8: ldstr "d18OL"
+  IL_10CD: callvirt System.Object get_Item(System.String)
+  IL_10D2: call Double ToDouble(System.Object)
+  IL_10D7: ldloc.2
+  IL_10D8: ldstr "d18OP"
+  IL_10DD: callvirt System.Object get_Item(System.String)
+  IL_10E2: call Double ToDouble(System.Object)
+  IL_10E7: ldloc.2
+  IL_10E8: ldstr "dstarO"
+  IL_10ED: callvirt System.Object get_Item(System.String)
+  IL_10F2: call Double ToDouble(System.Object)
+  IL_10F7: ldloc.2
+  IL_10F8: ldstr "mO"
+  IL_10FD: callvirt System.Object get_Item(System.String)
+  IL_1102: call Double ToDouble(System.Object)
+  IL_1107: call Double EI_O(Double, Double, Double, Double)
+  IL_110C: box System.Double
+  IL_1111: callvirt Void set_Item(System.String, System.Object)
+  IL_1116: nop
+  IL_1117: ldloc.2
+  IL_1118: ldstr "f_O"
+  IL_111D: ldloc.2
+  IL_111E: ldstr "d18OL"
+  IL_1123: callvirt System.Object get_Item(System.String)
+  IL_1128: call Double ToDouble(System.Object)
+  IL_112D: ldloc.2
+  IL_112E: ldstr "dstarO"
+  IL_1133: callvirt System.Object get_Item(System.String)
+  IL_1138: call Double ToDouble(System.Object)
+  IL_113D: ldloc.2
+  IL_113E: ldstr "d18OP"
+  IL_1143: callvirt System.Object get_Item(System.String)
+  IL_1148: call Double ToDouble(System.Object)
+  IL_114D: ldloc.2
+  IL_114E: ldstr "mO"
+  IL_1153: callvirt System.Object get_Item(System.String)
+  IL_1158: call Double ToDouble(System.Object)
+  IL_115D: call Double f_O(Double, Double, Double, Double)
+  IL_1162: box System.Double
+  IL_1167: callvirt Void set_Item(System.String, System.Object)
+  IL_116C: nop
+  IL_116D: ldloc.2
+  IL_116E: ldstr "x"
+  IL_1173: ldloc.s 5
+  IL_1175: box System.Double
+  IL_117A: callvirt Void set_Item(System.String, System.Object)
+  IL_117F: nop
+  IL_1180: br.s IL_11A1
+  IL_1182: ldarg.0
+  IL_1183: ldstr "Invalid Option Selected! Skipping row: "
+  IL_1188: ldloc.0
+  IL_1189: ldc.i4.1
+  IL_118A: add
+  IL_118B: stloc.s 23
+  IL_118D: ldloca.s 23
+  IL_118F: call System.String ToString()
+  IL_1194: call System.String Concat(System.String, System.String)
+  IL_1199: call Void updateProgresDialog(System.String)
+  IL_119E: nop
+  IL_119F: br.s IL_11A1
+  IL_11A1: nop
+  IL_11A2: ldloc.s 20
+  IL_11A4: callvirt Boolean MoveNext()
+  IL_11A9: stloc.s 22
+  IL_11AB: ldloc.s 22
+  IL_11AD: brtrue IL_002C
+  IL_11B2: leave.s IL_11D1
+  IL_11B4: ldloc.s 20
+  IL_11B6: isinst System.IDisposable
+  IL_11BB: stloc.s 24
+  IL_11BD: ldloc.s 24
+  IL_11BF: ldnull
+  IL_11C0: <unknown 0xFE01>
+  IL_11C2: stloc.s 22
+  IL_11C4: ldloc.s 22
+  IL_11C6: brtrue.s IL_11D0
+  IL_11C8: ldloc.s 24
+  IL_11CA: callvirt Void Dispose()
+  IL_11CF: nop
+  IL_11D0: endfinally
+  IL_11D1: nop
+  IL_11D2: ldarg.0
+  IL_11D3: ldfld Boolean globalErrorFlag
+  IL_11D8: ldc.i4.0
+  IL_11D9: <unknown 0xFE01>
+  IL_11DB: stloc.s 22
+  IL_11DD: ldloc.s 22
+  IL_11DF: brtrue.s IL_11F4
+  IL_11E1: ldstr "Some error have occured! Please check the progress log."
+  IL_11E6: ldstr "Error"
+  IL_11EB: ldc.i4.0
+  IL_11EC: ldc.i4.s 48
+  IL_11EE: call System.Windows.MessageBoxResult Show(System.String, System.String, System.Windows.MessageBoxButton, System.Windows.MessageBoxImage)
+  IL_11F3: pop
+  IL_11F4: ldarg.0
+  IL_11F5: ldstr "Rows completed: "
+  IL_11FA: ldloca.s 0
+  IL_11FC: call System.String ToString()
+  IL_1201: ldstr "/"
+  IL_1206: ldloca.s 1
+  IL_1208: call System.String ToString()
+  IL_120D: call System.String Concat(System.String, System.String, System.String, System.String)
+  IL_1212: call Void updateProgresDialog(System.String)
+  IL_1217: nop
+  IL_1218: ldarg.0
+  IL_1219: ldfld Boolean autoExtract
+  IL_121E: ldc.i4.0
+  IL_121F: <unknown 0xFE01>
+  IL_1221: stloc.s 22
+  IL_1223: ldloc.s 22
+  IL_1225: brtrue.s IL_124F
+  IL_1227: nop
+  IL_1228: ldstr "Calculations complete. Select file destination."
+  IL_122D: ldstr "Save results to..."
+  IL_1232: ldc.i4.0
+  IL_1233: ldc.i4.s 64
+  IL_1235: call System.Windows.MessageBoxResult Show(System.String, System.String, System.Windows.MessageBoxButton, System.Windows.MessageBoxImage)
+  IL_123A: pop
+  IL_123B: ldarg.0
+  IL_123C: call Void roundResults()
+  IL_1241: nop
+  IL_1242: ldarg.0
+  IL_1243: ldfld System.Data.DataTable hydroDataTable
+  IL_1248: call Void ExtractData(System.Data.DataTable)
+  IL_124D: nop
+  IL_124E: nop
+  IL_124F: ret
+
+.method Void addTableHeaders()
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Data.DataTable hydroDataTable
+  IL_0007: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_000C: ldstr "hydrocal=Sample name"
+  IL_0011: callvirt System.Data.DataColumn Add(System.String)
+  IL_0016: pop
+  IL_0017: ldarg.0
+  IL_0018: ldfld System.Data.DataTable hydroDataTable
+  IL_001D: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0022: ldstr "opc"
+  IL_0027: callvirt System.Data.DataColumn Add(System.String)
+  IL_002C: pop
+  IL_002D: ldarg.0
+  IL_002E: ldfld System.Data.DataTable hydroDataTable
+  IL_0033: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0038: ldstr "T"
+  IL_003D: callvirt System.Data.DataColumn Add(System.String)
+  IL_0042: pop
+  IL_0043: ldarg.0
+  IL_0044: ldfld System.Data.DataTable hydroDataTable
+  IL_0049: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_004E: ldstr "h"
+  IL_0053: callvirt System.Data.DataColumn Add(System.String)
+  IL_0058: pop
+  IL_0059: ldarg.0
+  IL_005A: ldfld System.Data.DataTable hydroDataTable
+  IL_005F: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0064: ldstr "d2HP"
+  IL_0069: callvirt System.Data.DataColumn Add(System.String)
+  IL_006E: pop
+  IL_006F: ldarg.0
+  IL_0070: ldfld System.Data.DataTable hydroDataTable
+  IL_0075: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_007A: ldstr "d18OP"
+  IL_007F: callvirt System.Data.DataColumn Add(System.String)
+  IL_0084: pop
+  IL_0085: ldarg.0
+  IL_0086: ldfld System.Data.DataTable hydroDataTable
+  IL_008B: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0090: ldstr "d2HL"
+  IL_0095: callvirt System.Data.DataColumn Add(System.String)
+  IL_009A: pop
+  IL_009B: ldarg.0
+  IL_009C: ldfld System.Data.DataTable hydroDataTable
+  IL_00A1: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00A6: ldstr "d18OL"
+  IL_00AB: callvirt System.Data.DataColumn Add(System.String)
+  IL_00B0: pop
+  IL_00B1: ldarg.0
+  IL_00B2: ldfld System.Data.DataTable hydroDataTable
+  IL_00B7: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00BC: ldstr "d2HA"
+  IL_00C1: callvirt System.Data.DataColumn Add(System.String)
+  IL_00C6: pop
+  IL_00C7: ldarg.0
+  IL_00C8: ldfld System.Data.DataTable hydroDataTable
+  IL_00CD: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00D2: ldstr "d18OA"
+  IL_00D7: callvirt System.Data.DataColumn Add(System.String)
+  IL_00DC: pop
+  IL_00DD: ldarg.0
+  IL_00DE: ldfld System.Data.DataTable hydroDataTable
+  IL_00E3: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00E8: ldstr "d2HR"
+  IL_00ED: callvirt System.Data.DataColumn Add(System.String)
+  IL_00F2: pop
+  IL_00F3: ldarg.0
+  IL_00F4: ldfld System.Data.DataTable hydroDataTable
+  IL_00F9: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00FE: ldstr "d18OR"
+  IL_0103: callvirt System.Data.DataColumn Add(System.String)
+  IL_0108: pop
+  IL_0109: ldarg.0
+  IL_010A: ldfld System.Data.DataTable hydroDataTable
+  IL_010F: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0114: ldstr "CkH"
+  IL_0119: callvirt System.Data.DataColumn Add(System.String)
+  IL_011E: pop
+  IL_011F: ldarg.0
+  IL_0120: ldfld System.Data.DataTable hydroDataTable
+  IL_0125: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_012A: ldstr "CkO"
+  IL_012F: callvirt System.Data.DataColumn Add(System.String)
+  IL_0134: pop
+  IL_0135: ldarg.0
+  IL_0136: ldfld System.Data.DataTable hydroDataTable
+  IL_013B: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0140: ldstr "LEL"
+  IL_0145: callvirt System.Data.DataColumn Add(System.String)
+  IL_014A: pop
+  IL_014B: ldarg.0
+  IL_014C: ldfld System.Data.DataTable hydroDataTable
+  IL_0151: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0156: ldstr "comment"
+  IL_015B: callvirt System.Data.DataColumn Add(System.String)
+  IL_0160: pop
+  IL_0161: ldarg.0
+  IL_0162: ldfld System.Data.DataTable hydroDataTable
+  IL_0167: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_016C: ldstr "     "
+  IL_0171: callvirt System.Data.DataColumn Add(System.String)
+  IL_0176: pop
+  IL_0177: ldarg.0
+  IL_0178: ldfld System.Data.DataTable hydroDataTable
+  IL_017D: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0182: ldstr "EkH"
+  IL_0187: callvirt System.Data.DataColumn Add(System.String)
+  IL_018C: pop
+  IL_018D: ldarg.0
+  IL_018E: ldfld System.Data.DataTable hydroDataTable
+  IL_0193: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0198: ldstr "EkO"
+  IL_019D: callvirt System.Data.DataColumn Add(System.String)
+  IL_01A2: pop
+  IL_01A3: ldarg.0
+  IL_01A4: ldfld System.Data.DataTable hydroDataTable
+  IL_01A9: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_01AE: ldstr "EplusH"
+  IL_01B3: callvirt System.Data.DataColumn Add(System.String)
+  IL_01B8: pop
+  IL_01B9: ldarg.0
+  IL_01BA: ldfld System.Data.DataTable hydroDataTable
+  IL_01BF: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_01C4: ldstr "EplusO"
+  IL_01C9: callvirt System.Data.DataColumn Add(System.String)
+  IL_01CE: pop
+  IL_01CF: ldarg.0
+  IL_01D0: ldfld System.Data.DataTable hydroDataTable
+  IL_01D5: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_01DA: ldstr "EH"
+  IL_01DF: callvirt System.Data.DataColumn Add(System.String)
+  IL_01E4: pop
+  IL_01E5: ldarg.0
+  IL_01E6: ldfld System.Data.DataTable hydroDataTable
+  IL_01EB: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_01F0: ldstr "EO"
+  IL_01F5: callvirt System.Data.DataColumn Add(System.String)
+  IL_01FA: pop
+  IL_01FB: ldarg.0
+  IL_01FC: ldfld System.Data.DataTable hydroDataTable
+  IL_0201: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0206: ldstr "aplusH"
+  IL_020B: callvirt System.Data.DataColumn Add(System.String)
+  IL_0210: pop
+  IL_0211: ldarg.0
+  IL_0212: ldfld System.Data.DataTable hydroDataTable
+  IL_0217: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_021C: ldstr "aplusO"
+  IL_0221: callvirt System.Data.DataColumn Add(System.String)
+  IL_0226: pop
+  IL_0227: ldarg.0
+  IL_0228: ldfld System.Data.DataTable hydroDataTable
+  IL_022D: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0232: ldstr "dstarH"
+  IL_0237: callvirt System.Data.DataColumn Add(System.String)
+  IL_023C: pop
+  IL_023D: ldarg.0
+  IL_023E: ldfld System.Data.DataTable hydroDataTable
+  IL_0243: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0248: ldstr "dstarO"
+  IL_024D: callvirt System.Data.DataColumn Add(System.String)
+  IL_0252: pop
+  IL_0253: ldarg.0
+  IL_0254: ldfld System.Data.DataTable hydroDataTable
+  IL_0259: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_025E: ldstr "mH"
+  IL_0263: callvirt System.Data.DataColumn Add(System.String)
+  IL_0268: pop
+  IL_0269: ldarg.0
+  IL_026A: ldfld System.Data.DataTable hydroDataTable
+  IL_026F: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0274: ldstr "mO"
+  IL_0279: callvirt System.Data.DataColumn Add(System.String)
+  IL_027E: pop
+  IL_027F: ldarg.0
+  IL_0280: ldfld System.Data.DataTable hydroDataTable
+  IL_0285: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_028A: ldstr "x"
+  IL_028F: callvirt System.Data.DataColumn Add(System.String)
+  IL_0294: pop
+  IL_0295: ldarg.0
+  IL_0296: ldfld System.Data.DataTable hydroDataTable
+  IL_029B: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_02A0: ldstr "    "
+  IL_02A5: callvirt System.Data.DataColumn Add(System.String)
+  IL_02AA: pop
+  IL_02AB: ldarg.0
+  IL_02AC: ldfld System.Data.DataTable hydroDataTable
+  IL_02B1: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_02B6: ldstr "EI_H"
+  IL_02BB: callvirt System.Data.DataColumn Add(System.String)
+  IL_02C0: pop
+  IL_02C1: ldarg.0
+  IL_02C2: ldfld System.Data.DataTable hydroDataTable
+  IL_02C7: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_02CC: ldstr "EI_O"
+  IL_02D1: callvirt System.Data.DataColumn Add(System.String)
+  IL_02D6: pop
+  IL_02D7: ldarg.0
+  IL_02D8: ldfld System.Data.DataTable hydroDataTable
+  IL_02DD: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_02E2: ldstr "f_H"
+  IL_02E7: callvirt System.Data.DataColumn Add(System.String)
+  IL_02EC: pop
+  IL_02ED: ldarg.0
+  IL_02EE: ldfld System.Data.DataTable hydroDataTable
+  IL_02F3: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_02F8: ldstr "f_O"
+  IL_02FD: callvirt System.Data.DataColumn Add(System.String)
+  IL_0302: pop
+  IL_0303: ret
+
+.method Void roundResults()
+  IL_0000: nop
+  IL_0001: nop
+  IL_0002: ldarg.0
+  IL_0003: ldfld System.Data.DataTable hydroDataTable
+  IL_0008: callvirt System.Data.DataRowCollection get_Rows()
+  IL_000D: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_0012: stloc.3
+  IL_0013: br IL_00BB
+  IL_0018: ldloc.3
+  IL_0019: callvirt System.Object get_Current()
+  IL_001E: castclass System.Data.DataRow
+  IL_0023: stloc.0
+  IL_0024: nop
+  IL_0025: nop
+  IL_0026: ldarg.0
+  IL_0027: ldfld System.Data.DataTable hydroDataTable
+  IL_002C: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0031: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_0036: stloc.s 4
+  IL_0038: br.s IL_008D
+  IL_003A: ldloc.s 4
+  IL_003C: callvirt System.Object get_Current()
+  IL_0041: castclass System.Data.DataColumn
+  IL_0046: stloc.1
+  IL_0047: nop
+  IL_0048: ldloc.0
+  IL_0049: ldloc.1
+  IL_004A: callvirt System.Object get_Item(System.Data.DataColumn)
+  IL_004F: callvirt System.String ToString()
+  IL_0054: ldloca.s 2
+  IL_0056: call Boolean TryParse(System.String, System.Decimal ByRef)
+  IL_005B: stloc.s 5
+  IL_005D: ldloc.s 5
+  IL_005F: brtrue.s IL_0065
+  IL_0061: nop
+  IL_0062: nop
+  IL_0063: br.s IL_008C
+  IL_0065: nop
+  IL_0066: ldloc.0
+  IL_0067: ldloc.1
+  IL_0068: ldloc.0
+  IL_0069: ldloc.1
+  IL_006A: callvirt System.Object get_Item(System.Data.DataColumn)
+  IL_006F: callvirt System.String ToString()
+  IL_0074: call Double ToDouble(System.String)
+  IL_0079: ldc.i4.4
+  IL_007A: ldc.i4.1
+  IL_007B: call Double Round(Double, Int32, System.MidpointRounding)
+  IL_0080: box System.Double
+  IL_0085: callvirt Void set_Item(System.Data.DataColumn, System.Object)
+  IL_008A: nop
+  IL_008B: nop
+  IL_008C: nop
+  IL_008D: ldloc.s 4
+  IL_008F: callvirt Boolean MoveNext()
+  IL_0094: stloc.s 5
+  IL_0096: ldloc.s 5
+  IL_0098: brtrue.s IL_003A
+  IL_009A: leave.s IL_00B9
+  IL_009C: ldloc.s 4
+  IL_009E: isinst System.IDisposable
+  IL_00A3: stloc.s 6
+  IL_00A5: ldloc.s 6
+  IL_00A7: ldnull
+  IL_00A8: <unknown 0xFE01>
+  IL_00AA: stloc.s 5
+  IL_00AC: ldloc.s 5
+  IL_00AE: brtrue.s IL_00B8
+  IL_00B0: ldloc.s 6
+  IL_00B2: callvirt Void Dispose()
+  IL_00B7: nop
+  IL_00B8: endfinally
+  IL_00B9: nop
+  IL_00BA: nop
+  IL_00BB: ldloc.3
+  IL_00BC: callvirt Boolean MoveNext()
+  IL_00C1: stloc.s 5
+  IL_00C3: ldloc.s 5
+  IL_00C5: brtrue IL_0018
+  IL_00CA: leave.s IL_00E8
+  IL_00CC: ldloc.3
+  IL_00CD: isinst System.IDisposable
+  IL_00D2: stloc.s 6
+  IL_00D4: ldloc.s 6
+  IL_00D6: ldnull
+  IL_00D7: <unknown 0xFE01>
+  IL_00D9: stloc.s 5
+  IL_00DB: ldloc.s 5
+  IL_00DD: brtrue.s IL_00E7
+  IL_00DF: ldloc.s 6
+  IL_00E1: callvirt Void Dispose()
+  IL_00E6: nop
+  IL_00E7: endfinally
+  IL_00E8: nop
+  IL_00E9: ret
+
+.method Void ExtractData(DataTable hydroData)
+  IL_0000: nop
+  IL_0001: newobj Void .ctor()
+  IL_0006: stloc.0
+  IL_0007: ldstr ""
+  IL_000C: stloc.1
+  IL_000D: ldstr ""
+  IL_0012: stloc.2
+  IL_0013: nop
+  IL_0014: ldarg.0
+  IL_0015: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_001A: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_001F: stloc.s 6
+  IL_0021: br.s IL_0044
+  IL_0023: ldloc.s 6
+  IL_0025: callvirt System.Object get_Current()
+  IL_002A: castclass System.Data.DataColumn
+  IL_002F: stloc.3
+  IL_0030: nop
+  IL_0031: ldloc.2
+  IL_0032: ldstr ","
+  IL_0037: ldloc.3
+  IL_0038: callvirt System.String ToString()
+  IL_003D: call System.String Concat(System.String, System.String, System.String)
+  IL_0042: stloc.2
+  IL_0043: nop
+  IL_0044: ldloc.s 6
+  IL_0046: callvirt Boolean MoveNext()
+  IL_004B: stloc.s 7
+  IL_004D: ldloc.s 7
+  IL_004F: brtrue.s IL_0023
+  IL_0051: leave.s IL_0070
+  IL_0053: ldloc.s 6
+  IL_0055: isinst System.IDisposable
+  IL_005A: stloc.s 8
+  IL_005C: ldloc.s 8
+  IL_005E: ldnull
+  IL_005F: <unknown 0xFE01>
+  IL_0061: stloc.s 7
+  IL_0063: ldloc.s 7
+  IL_0065: brtrue.s IL_006F
+  IL_0067: ldloc.s 8
+  IL_0069: callvirt Void Dispose()
+  IL_006E: nop
+  IL_006F: endfinally
+  IL_0070: nop
+  IL_0071: ldloc.2
+  IL_0072: ldc.i4.0
+  IL_0073: ldc.i4.1
+  IL_0074: callvirt System.String Remove(Int32, Int32)
+  IL_0079: stloc.2
+  IL_007A: ldloc.0
+  IL_007B: ldloc.2
+  IL_007C: callvirt System.Text.StringBuilder AppendLine(System.String)
+  IL_0081: pop
+  IL_0082: nop
+  IL_0083: nop
+  IL_0084: ldarg.0
+  IL_0085: callvirt System.Data.DataRowCollection get_Rows()
+  IL_008A: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_008F: stloc.s 6
+  IL_0091: br IL_0122
+  IL_0096: ldloc.s 6
+  IL_0098: callvirt System.Object get_Current()
+  IL_009D: castclass System.Data.DataRow
+  IL_00A2: stloc.s 4
+  IL_00A4: nop
+  IL_00A5: nop
+  IL_00A6: ldarg.0
+  IL_00A7: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_00AC: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_00B1: stloc.s 9
+  IL_00B3: br.s IL_00DD
+  IL_00B5: ldloc.s 9
+  IL_00B7: callvirt System.Object get_Current()
+  IL_00BC: castclass System.Data.DataColumn
+  IL_00C1: stloc.3
+  IL_00C2: nop
+  IL_00C3: ldloc.1
+  IL_00C4: ldstr ","
+  IL_00C9: ldloc.s 4
+  IL_00CB: ldloc.3
+  IL_00CC: callvirt System.Object get_Item(System.Data.DataColumn)
+  IL_00D1: callvirt System.String ToString()
+  IL_00D6: call System.String Concat(System.String, System.String, System.String)
+  IL_00DB: stloc.1
+  IL_00DC: nop
+  IL_00DD: ldloc.s 9
+  IL_00DF: callvirt Boolean MoveNext()
+  IL_00E4: stloc.s 7
+  IL_00E6: ldloc.s 7
+  IL_00E8: brtrue.s IL_00B5
+  IL_00EA: leave.s IL_0109
+  IL_00EC: ldloc.s 9
+  IL_00EE: isinst System.IDisposable
+  IL_00F3: stloc.s 8
+  IL_00F5: ldloc.s 8
+  IL_00F7: ldnull
+  IL_00F8: <unknown 0xFE01>
+  IL_00FA: stloc.s 7
+  IL_00FC: ldloc.s 7
+  IL_00FE: brtrue.s IL_0108
+  IL_0100: ldloc.s 8
+  IL_0102: callvirt Void Dispose()
+  IL_0107: nop
+  IL_0108: endfinally
+  IL_0109: nop
+  IL_010A: ldloc.1
+  IL_010B: ldc.i4.0
+  IL_010C: ldc.i4.1
+  IL_010D: callvirt System.String Remove(Int32, Int32)
+  IL_0112: stloc.1
+  IL_0113: ldloc.0
+  IL_0114: ldloc.1
+  IL_0115: callvirt System.Text.StringBuilder AppendLine(System.String)
+  IL_011A: pop
+  IL_011B: ldstr ""
+  IL_0120: stloc.1
+  IL_0121: nop
+  IL_0122: ldloc.s 6
+  IL_0124: callvirt Boolean MoveNext()
+  IL_0129: stloc.s 7
+  IL_012B: ldloc.s 7
+  IL_012D: brtrue IL_0096
+  IL_0132: leave.s IL_0151
+  IL_0134: ldloc.s 6
+  IL_0136: isinst System.IDisposable
+  IL_013B: stloc.s 8
+  IL_013D: ldloc.s 8
+  IL_013F: ldnull
+  IL_0140: <unknown 0xFE01>
+  IL_0142: stloc.s 7
+  IL_0144: ldloc.s 7
+  IL_0146: brtrue.s IL_0150
+  IL_0148: ldloc.s 8
+  IL_014A: callvirt Void Dispose()
+  IL_014F: nop
+  IL_0150: endfinally
+  IL_0151: nop
+  IL_0152: nop
+  IL_0153: leave.s IL_0168
+  IL_0155: stloc.s 5
+  IL_0157: nop
+  IL_0158: ldloc.s 5
+  IL_015A: callvirt System.String get_Message()
+  IL_015F: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0164: pop
+  IL_0165: nop
+  IL_0166: leave.s IL_0168
+  IL_0168: nop
+  IL_0169: ldloc.0
+  IL_016A: call Void SaveRecordsToFile(System.Text.StringBuilder)
+  IL_016F: nop
+  IL_0170: ret
+
+.method Void updateProgresDialog(String msg)
+  IL_0000: newobj Void .ctor()
+  IL_0005: stloc.0
+  IL_0006: ldloc.0
+  IL_0007: ldarg.1
+  IL_0008: stfld System.String msg
+  IL_000D: ldloc.0
+  IL_000E: ldarg.0
+  IL_000F: stfld HydroCalculator.MainWindow <>4__this
+  IL_0014: nop
+  IL_0015: ldarg.0
+  IL_0016: ldfld System.Windows.Controls.TextBox txtBoxProgress
+  IL_001B: callvirt System.Windows.Threading.Dispatcher get_Dispatcher()
+  IL_0020: ldc.i4.4
+  IL_0021: ldloc.0
+  IL_0022: <unknown 0xFE06>
+  IL_0024: bne.un IL_73060029
+  IL_0029: beq IL_6F0A002E
+  IL_002E: bge IL_260A0033
+  IL_0033: nop
+  IL_0034: ret
+
+.method Void SaveRecordsToFile(StringBuilder sb)
+  IL_0000: nop
+  IL_0001: newobj Void .ctor()
+  IL_0006: stloc.0
+  IL_0007: ldloc.0
+  IL_0008: ldstr ".csv"
+  IL_000D: callvirt Void set_DefaultExt(System.String)
+  IL_0012: nop
+  IL_0013: ldloc.0
+  IL_0014: callvirt System.Nullable`1[System.Boolean] ShowDialog()
+  IL_0019: stloc.1
+  IL_001A: ldstr ""
+  IL_001F: stloc.2
+  IL_0020: ldloc.1
+  IL_0021: stloc.s 6
+  IL_0023: ldloca.s 6
+  IL_0025: call Boolean GetValueOrDefault()
+  IL_002A: brfalse.s IL_0035
+  IL_002C: ldloca.s 6
+  IL_002E: call Boolean get_HasValue()
+  IL_0033: br.s IL_0036
+  IL_0035: ldc.i4.0
+  IL_0036: ldc.i4.0
+  IL_0037: <unknown 0xFE01>
+  IL_0039: stloc.s 7
+  IL_003B: ldloc.s 7
+  IL_003D: brtrue.s IL_00B0
+  IL_003F: nop
+  IL_0040: ldloc.0
+  IL_0041: callvirt System.String get_FileName()
+  IL_0046: stloc.2
+  IL_0047: nop
+  IL_0048: ldloc.2
+  IL_0049: newobj Void .ctor(System.String)
+  IL_004E: stloc.3
+  IL_004F: nop
+  IL_0050: ldloc.3
+  IL_0051: ldarg.0
+  IL_0052: callvirt System.String ToString()
+  IL_0057: callvirt Void Write(System.String)
+  IL_005C: nop
+  IL_005D: nop
+  IL_005E: leave.s IL_0072
+  IL_0060: ldloc.3
+  IL_0061: ldnull
+  IL_0062: <unknown 0xFE01>
+  IL_0064: stloc.s 7
+  IL_0066: ldloc.s 7
+  IL_0068: brtrue.s IL_0071
+  IL_006A: ldloc.3
+  IL_006B: callvirt Void Dispose()
+  IL_0070: nop
+  IL_0071: endfinally
+  IL_0072: nop
+  IL_0073: nop
+  IL_0074: leave.s IL_00AE
+  IL_0076: stloc.s 4
+  IL_0078: nop
+  IL_0079: ldloc.s 4
+  IL_007B: callvirt System.String get_Message()
+  IL_0080: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0085: pop
+  IL_0086: nop
+  IL_0087: leave.s IL_00AE
+  IL_0089: stloc.s 5
+  IL_008B: nop
+  IL_008C: ldstr "Error:
+
+"
+  IL_0091: ldloc.s 5
+  IL_0093: callvirt System.String get_Message()
+  IL_0098: call System.String Concat(System.String, System.String)
+  IL_009D: ldstr "Error"
+  IL_00A2: ldc.i4.0
+  IL_00A3: ldc.i4.s 16
+  IL_00A5: call System.Windows.MessageBoxResult Show(System.String, System.String, System.Windows.MessageBoxButton, System.Windows.MessageBoxImage)
+  IL_00AA: pop
+  IL_00AB: nop
+  IL_00AC: leave.s IL_00AE
+  IL_00AE: nop
+  IL_00AF: nop
+  IL_00B0: ret
+
+.method Double calc_ambAirMoistH(Double aplusH, Double d2HR, Double estarH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: mul
+  IL_0004: ldarg.2
+  IL_0005: sub
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double calc_ambAirMoistHAdj(Double d2HR, Double estarH, Double lelParam)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldarg.2
+  IL_0004: mul
+  IL_0005: sub
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double calc_ambAirMoistO(Double ao, Double d18OR, Double estarO)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: mul
+  IL_0004: ldarg.2
+  IL_0005: sub
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double calc_ambAirMoistOAdj(Double d18OR, Double estarO, Double lelParam)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldarg.2
+  IL_0004: mul
+  IL_0005: sub
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double d2HA_opt2(Double ah, Double d2hr, Double estarH)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: ldarg.2
+  IL_0003: sub
+  IL_0004: ldarg.0
+  IL_0005: div
+  IL_0006: call Double ToDouble(Double)
+  IL_000B: stloc.0
+  IL_000C: br.s IL_000E
+  IL_000E: ldloc.0
+  IL_000F: ret
+
+.method Double d2HA_opt3(Double lelParam, Double d2hr, Double estarH, Double aplusH)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: ldarg.2
+  IL_0003: ldarg.0
+  IL_0004: mul
+  IL_0005: sub
+  IL_0006: ldc.r8 1
+  IL_000F: ldarg.0
+  IL_0010: ldarg.2
+  IL_0011: mul
+  IL_0012: ldc.r8 1000
+  IL_001B: div
+  IL_001C: add
+  IL_001D: div
+  IL_001E: stloc.0
+  IL_001F: br.s IL_0021
+  IL_0021: ldloc.0
+  IL_0022: ret
+
+.method Double d18OA_opt3(Double lelparam, Double d18OR, Double estarO, Double aplusO)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: ldarg.2
+  IL_0003: ldarg.0
+  IL_0004: mul
+  IL_0005: sub
+  IL_0006: ldc.r8 1
+  IL_000F: ldarg.0
+  IL_0010: ldarg.2
+  IL_0011: mul
+  IL_0012: ldc.r8 1000
+  IL_001B: div
+  IL_001C: add
+  IL_001D: div
+  IL_001E: call Double ToDouble(Double)
+  IL_0023: stloc.0
+  IL_0024: br.s IL_0026
+  IL_0026: ldloc.0
+  IL_0027: ret
+
+.method Double d18OA_opt2(Double ao, Double d18OR, Double estarO)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: ldarg.2
+  IL_0003: sub
+  IL_0004: ldarg.0
+  IL_0005: div
+  IL_0006: call Double ToDouble(Double)
+  IL_000B: stloc.0
+  IL_000C: br.s IL_000E
+  IL_000E: ldloc.0
+  IL_000F: ret
+
+.method Double EkH(Double h, Double CkH)
+  IL_0000: nop
+  IL_0001: ldc.r8 1
+  IL_000A: ldarg.0
+  IL_000B: sub
+  IL_000C: ldarg.1
+  IL_000D: mul
+  IL_000E: call Double ToDouble(Double)
+  IL_0013: stloc.0
+  IL_0014: br.s IL_0016
+  IL_0016: ldloc.0
+  IL_0017: ret
+
+.method Double EkO(Double h, Double CkO)
+  IL_0000: nop
+  IL_0001: ldc.r8 1
+  IL_000A: ldarg.0
+  IL_000B: sub
+  IL_000C: ldarg.1
+  IL_000D: mul
+  IL_000E: call Double ToDouble(Double)
+  IL_0013: stloc.0
+  IL_0014: br.s IL_0016
+  IL_0016: ldloc.0
+  IL_0017: ret
+
+.method Double EplusO(Double ao)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldc.r8 1
+  IL_000B: sub
+  IL_000C: ldc.r8 1000
+  IL_0015: mul
+  IL_0016: call Double ToDouble(Double)
+  IL_001B: stloc.0
+  IL_001C: br.s IL_001E
+  IL_001E: ldloc.0
+  IL_001F: ret
+
+.method Double EplusH(Double aplusH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldc.r8 1
+  IL_000B: sub
+  IL_000C: ldc.r8 1000
+  IL_0015: mul
+  IL_0016: stloc.0
+  IL_0017: br.s IL_0019
+  IL_0019: ldloc.0
+  IL_001A: ret
+
+.method Double EH(Double ekh, Double estarh, Double aplusH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldarg.2
+  IL_0004: div
+  IL_0005: add
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double EO(Double eko, Double estaro, Double aplusO)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldarg.2
+  IL_0004: div
+  IL_0005: add
+  IL_0006: stloc.0
+  IL_0007: br.s IL_0009
+  IL_0009: ldloc.0
+  IL_000A: ret
+
+.method Double aplusH(Double T)
+  IL_0000: nop
+  IL_0001: ldc.r8 1158.8
+  IL_000A: ldarg.0
+  IL_000B: ldc.r8 273.15
+  IL_0014: add
+  IL_0015: ldc.r8 3
+  IL_001E: call Double Pow(Double, Double)
+  IL_0023: ldc.r8 10
+  IL_002C: ldc.r8 9
+  IL_0035: call Double Pow(Double, Double)
+  IL_003A: div
+  IL_003B: mul
+  IL_003C: ldc.r8 1620.1
+  IL_0045: ldarg.0
+  IL_0046: ldc.r8 273.15
+  IL_004F: add
+  IL_0050: ldc.r8 2
+  IL_0059: call Double Pow(Double, Double)
+  IL_005E: ldc.r8 1000000
+  IL_0067: div
+  IL_0068: mul
+  IL_0069: sub
+  IL_006A: ldc.r8 794.84
+  IL_0073: ldarg.0
+  IL_0074: ldc.r8 273.15
+  IL_007D: add
+  IL_007E: ldc.r8 1000
+  IL_0087: div
+  IL_0088: mul
+  IL_0089: add
+  IL_008A: ldc.r8 161.04
+  IL_0093: sub
+  IL_0094: ldc.r8 2.9992
+  IL_009D: ldc.r8 10
+  IL_00A6: ldc.r8 9
+  IL_00AF: call Double Pow(Double, Double)
+  IL_00B4: ldarg.0
+  IL_00B5: ldc.r8 273.15
+  IL_00BE: add
+  IL_00BF: ldc.r8 3
+  IL_00C8: call Double Pow(Double, Double)
+  IL_00CD: div
+  IL_00CE: mul
+  IL_00CF: add
+  IL_00D0: ldc.r8 1000
+  IL_00D9: div
+  IL_00DA: call Double Exp(Double)
+  IL_00DF: stloc.0
+  IL_00E0: br.s IL_00E2
+  IL_00E2: ldloc.0
+  IL_00E3: ret
+
+.method Double aplusO(Double T)
+  IL_0000: nop
+  IL_0001: ldc.r8 -7.685
+  IL_000A: ldc.r8 6.7123
+  IL_0013: ldc.r8 1000
+  IL_001C: ldarg.0
+  IL_001D: ldc.r8 273.15
+  IL_0026: add
+  IL_0027: div
+  IL_0028: mul
+  IL_0029: add
+  IL_002A: ldc.r8 1.6664
+  IL_0033: ldc.r8 1000000
+  IL_003C: ldarg.0
+  IL_003D: ldc.r8 273.15
+  IL_0046: add
+  IL_0047: ldc.r8 2
+  IL_0050: call Double Pow(Double, Double)
+  IL_0055: div
+  IL_0056: mul
+  IL_0057: sub
+  IL_0058: ldc.r8 0.35041
+  IL_0061: ldc.r8 10
+  IL_006A: ldc.r8 9
+  IL_0073: call Double Pow(Double, Double)
+  IL_0078: ldarg.0
+  IL_0079: ldc.r8 273.15
+  IL_0082: add
+  IL_0083: ldc.r8 3
+  IL_008C: call Double Pow(Double, Double)
+  IL_0091: div
+  IL_0092: mul
+  IL_0093: add
+  IL_0094: ldc.r8 1000
+  IL_009D: div
+  IL_009E: call Double Exp(Double)
+  IL_00A3: stloc.0
+  IL_00A4: br.s IL_00A6
+  IL_00A6: ldloc.0
+  IL_00A7: ret
+
+.method Double dstarH(Double h, Double d2HA, Double EH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: mul
+  IL_0004: ldarg.2
+  IL_0005: add
+  IL_0006: ldarg.0
+  IL_0007: ldarg.2
+  IL_0008: ldc.r8 1000
+  IL_0011: div
+  IL_0012: sub
+  IL_0013: div
+  IL_0014: stloc.0
+  IL_0015: br.s IL_0017
+  IL_0017: ldloc.0
+  IL_0018: ret
+
+.method Double dstarO(Double h, Double d18OA, Double EO)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: mul
+  IL_0004: ldarg.2
+  IL_0005: add
+  IL_0006: ldarg.0
+  IL_0007: ldarg.2
+  IL_0008: ldc.r8 1000
+  IL_0011: div
+  IL_0012: sub
+  IL_0013: div
+  IL_0014: stloc.0
+  IL_0015: br.s IL_0017
+  IL_0017: ldloc.0
+  IL_0018: ret
+
+.method Double mH(Double h, Double EH, Double EkH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldc.r8 1000
+  IL_000C: div
+  IL_000D: sub
+  IL_000E: ldc.r8 1
+  IL_0017: ldarg.0
+  IL_0018: sub
+  IL_0019: ldarg.2
+  IL_001A: ldc.r8 1000
+  IL_0023: div
+  IL_0024: add
+  IL_0025: div
+  IL_0026: stloc.0
+  IL_0027: br.s IL_0029
+  IL_0029: ldloc.0
+  IL_002A: ret
+
+.method Double mO(Double h, Double EO, Double EkO)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: ldc.r8 1000
+  IL_000C: div
+  IL_000D: sub
+  IL_000E: ldc.r8 1
+  IL_0017: ldarg.0
+  IL_0018: sub
+  IL_0019: ldarg.2
+  IL_001A: ldc.r8 1000
+  IL_0023: div
+  IL_0024: add
+  IL_0025: div
+  IL_0026: stloc.0
+  IL_0027: br.s IL_0029
+  IL_0029: ldloc.0
+  IL_002A: ret
+
+.method Double EI_H(Double d2HL, Double d2HP, Double dstarH, Double mH)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: sub
+  IL_0004: ldarg.2
+  IL_0005: ldarg.0
+  IL_0006: sub
+  IL_0007: ldarg.3
+  IL_0008: mul
+  IL_0009: div
+  IL_000A: stloc.0
+  IL_000B: br.s IL_000D
+  IL_000D: ldloc.0
+  IL_000E: ret
+
+.method Double EI_O(Double d18OL, Double d18OP, Double dstarO, Double mO)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldarg.1
+  IL_0003: sub
+  IL_0004: ldarg.2
+  IL_0005: ldarg.0
+  IL_0006: sub
+  IL_0007: ldarg.3
+  IL_0008: mul
+  IL_0009: div
+  IL_000A: stloc.0
+  IL_000B: br.s IL_000D
+  IL_000D: ldloc.0
+  IL_000E: ret
+
+.method Double f_H(Double d2HL, Double dstarH, Double d2HP, Double mH)
+  IL_0000: nop
+  IL_0001: ldc.r8 1
+  IL_000A: ldarg.0
+  IL_000B: ldarg.1
+  IL_000C: sub
+  IL_000D: ldarg.2
+  IL_000E: ldarg.1
+  IL_000F: sub
+  IL_0010: div
+  IL_0011: ldc.r8 1
+  IL_001A: ldarg.3
+  IL_001B: div
+  IL_001C: call Double Pow(Double, Double)
+  IL_0021: sub
+  IL_0022: stloc.0
+  IL_0023: br.s IL_0025
+  IL_0025: ldloc.0
+  IL_0026: ret
+
+.method Double f_O(Double d18OL, Double dstarO, Double d18OP, Double mO)
+  IL_0000: nop
+  IL_0001: ldc.r8 1
+  IL_000A: ldarg.0
+  IL_000B: ldarg.1
+  IL_000C: sub
+  IL_000D: ldarg.2
+  IL_000E: ldarg.1
+  IL_000F: sub
+  IL_0010: div
+  IL_0011: ldc.r8 1
+  IL_001A: ldarg.3
+  IL_001B: div
+  IL_001C: call Double Pow(Double, Double)
+  IL_0021: sub
+  IL_0022: stloc.0
+  IL_0023: br.s IL_0025
+  IL_0025: ldloc.0
+  IL_0026: ret
+
+.method Boolean testDecimalValues(String s)
+  IL_0000: nop
+  IL_0001: ldc.i4.0
+  IL_0002: stloc.1
+  IL_0003: ldarg.0
+  IL_0004: ldloca.s 0
+  IL_0006: call Boolean TryParse(System.String, System.Decimal ByRef)
+  IL_000B: stloc.3
+  IL_000C: ldloc.3
+  IL_000D: brtrue.s IL_0015
+  IL_000F: nop
+  IL_0010: ldc.i4.0
+  IL_0011: stloc.1
+  IL_0012: nop
+  IL_0013: br.s IL_0019
+  IL_0015: nop
+  IL_0016: ldc.i4.1
+  IL_0017: stloc.1
+  IL_0018: nop
+  IL_0019: ldloc.1
+  IL_001A: stloc.2
+  IL_001B: br.s IL_001D
+  IL_001D: ldloc.2
+  IL_001E: ret
+
+.method Void openInputFile()
+  IL_0000: nop
+  IL_0001: newobj Void .ctor()
+  IL_0006: stloc.0
+  IL_0007: ldloc.0
+  IL_0008: ldstr ".csv"
+  IL_000D: callvirt Void set_DefaultExt(System.String)
+  IL_0012: nop
+  IL_0013: ldloc.0
+  IL_0014: callvirt System.Nullable`1[System.Boolean] ShowDialog()
+  IL_0019: stloc.1
+  IL_001A: ldloc.1
+  IL_001B: stloc.2
+  IL_001C: ldloca.s 2
+  IL_001E: call Boolean GetValueOrDefault()
+  IL_0023: brfalse.s IL_002E
+  IL_0025: ldloca.s 2
+  IL_0027: call Boolean get_HasValue()
+  IL_002C: br.s IL_002F
+  IL_002E: ldc.i4.0
+  IL_002F: ldc.i4.0
+  IL_0030: <unknown 0xFE01>
+  IL_0032: stloc.3
+  IL_0033: ldloc.3
+  IL_0034: brtrue.s IL_0057
+  IL_0036: nop
+  IL_0037: ldarg.0
+  IL_0038: ldfld System.Windows.Controls.TextBox txtBoxFileName
+  IL_003D: ldloc.0
+  IL_003E: callvirt System.String get_FileName()
+  IL_0043: callvirt Void set_Text(System.String)
+  IL_0048: nop
+  IL_0049: ldarg.0
+  IL_004A: ldloc.0
+  IL_004B: callvirt System.String get_FileName()
+  IL_0050: call Void GetDataFromCSVFile(System.String)
+  IL_0055: nop
+  IL_0056: nop
+  IL_0057: ret
+
+.method Void GetDataFromCSVFile(String csv_file_path)
+  IL_0000: nop
+  IL_0001: nop
+  IL_0002: ldarg.1
+  IL_0003: newobj Void .ctor(System.String)
+  IL_0008: stloc.0
+  IL_0009: nop
+  IL_000A: ldloc.0
+  IL_000B: ldc.i4.1
+  IL_000C: newarr System.String
+  IL_0011: stloc.3
+  IL_0012: ldloc.3
+  IL_0013: ldc.i4.0
+  IL_0014: ldstr ","
+  IL_0019: stelem.ref
+  IL_001A: ldloc.3
+  IL_001B: callvirt Void SetDelimiters(System.String[])
+  IL_0020: nop
+  IL_0021: ldloc.0
+  IL_0022: ldc.i4.0
+  IL_0023: callvirt Void set_HasFieldsEnclosedInQuotes(Boolean)
+  IL_0028: nop
+  IL_0029: br.s IL_005C
+  IL_002B: nop
+  IL_002C: ldloc.0
+  IL_002D: callvirt System.String[] ReadFields()
+  IL_0032: stloc.1
+  IL_0033: ldloc.0
+  IL_0034: callvirt Int64 get_LineNumber()
+  IL_0039: call Int32 ToInt32(Int64)
+  IL_003E: ldc.i4.2
+  IL_003F: <unknown 0xFE01>
+  IL_0041: stloc.s 4
+  IL_0043: ldloc.s 4
+  IL_0045: brtrue.s IL_005B
+  IL_0047: nop
+  IL_0048: ldarg.0
+  IL_0049: ldfld System.Data.DataTable hydroDataTable
+  IL_004E: callvirt System.Data.DataRowCollection get_Rows()
+  IL_0053: ldloc.1
+  IL_0054: callvirt System.Data.DataRow Add(System.Object[])
+  IL_0059: pop
+  IL_005A: nop
+  IL_005B: nop
+  IL_005C: ldloc.0
+  IL_005D: callvirt Boolean get_EndOfData()
+  IL_0062: ldc.i4.0
+  IL_0063: <unknown 0xFE01>
+  IL_0065: stloc.s 4
+  IL_0067: ldloc.s 4
+  IL_0069: brtrue.s IL_002B
+  IL_006B: nop
+  IL_006C: leave.s IL_0080
+  IL_006E: ldloc.0
+  IL_006F: ldnull
+  IL_0070: <unknown 0xFE01>
+  IL_0072: stloc.s 4
+  IL_0074: ldloc.s 4
+  IL_0076: brtrue.s IL_007F
+  IL_0078: ldloc.0
+  IL_0079: callvirt Void Dispose()
+  IL_007E: nop
+  IL_007F: endfinally
+  IL_0080: nop
+  IL_0081: nop
+  IL_0082: leave.s IL_0095
+  IL_0084: stloc.2
+  IL_0085: nop
+  IL_0086: ldloc.2
+  IL_0087: callvirt System.String get_Message()
+  IL_008C: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0091: pop
+  IL_0092: nop
+  IL_0093: leave.s IL_0095
+  IL_0095: nop
+  IL_0096: ret
+
+.method Void validateBatchData()
+  IL_0000: nop
+  IL_0001: ldc.i4.1
+  IL_0002: stloc.0
+  IL_0003: ldarg.0
+  IL_0004: ldfld System.Data.DataTable hydroDataTable
+  IL_0009: callvirt System.Data.DataRowCollection get_Rows()
+  IL_000E: callvirt Int32 get_Count()
+  IL_0013: stloc.1
+  IL_0014: nop
+  IL_0015: ldarg.0
+  IL_0016: ldfld System.Data.DataTable hydroDataTable
+  IL_001B: callvirt System.Data.DataRowCollection get_Rows()
+  IL_0020: callvirt System.Collections.IEnumerator GetEnumerator()
+  IL_0025: stloc.s 4
+  IL_0027: br IL_04B7
+  IL_002C: ldloc.s 4
+  IL_002E: callvirt System.Object get_Current()
+  IL_0033: castclass System.Data.DataRow
+  IL_0038: stloc.2
+  IL_0039: nop
+  IL_003A: ldloc.0
+  IL_003B: ldc.i4.1
+  IL_003C: add
+  IL_003D: stloc.0
+  IL_003E: ldloc.2
+  IL_003F: ldstr "opc"
+  IL_0044: callvirt System.Object get_Item(System.String)
+  IL_0049: callvirt System.String ToString()
+  IL_004E: stloc.3
+  IL_004F: ldloc.3
+  IL_0050: ldstr "1"
+  IL_0055: call Boolean op_Equality(System.String, System.String)
+  IL_005A: ldloc.3
+  IL_005B: ldstr "2"
+  IL_0060: call Boolean op_Equality(System.String, System.String)
+  IL_0065: or
+  IL_0066: ldloc.3
+  IL_0067: ldstr "3"
+  IL_006C: call Boolean op_Equality(System.String, System.String)
+  IL_0071: or
+  IL_0072: ldc.i4.0
+  IL_0073: <unknown 0xFE01>
+  IL_0075: stloc.s 5
+  IL_0077: ldloc.s 5
+  IL_0079: brtrue IL_024E
+  IL_007E: nop
+  IL_007F: ldloc.2
+  IL_0080: ldstr "T"
+  IL_0085: callvirt System.Object get_Item(System.String)
+  IL_008A: callvirt System.String ToString()
+  IL_008F: call Boolean testDecimalValues(System.String)
+  IL_0094: stloc.s 5
+  IL_0096: ldloc.s 5
+  IL_0098: brtrue.s IL_00CC
+  IL_009A: nop
+  IL_009B: ldloc.2
+  IL_009C: ldstr "T"
+  IL_00A1: ldstr "0"
+  IL_00A6: callvirt Void set_Item(System.String, System.Object)
+  IL_00AB: nop
+  IL_00AC: ldarg.0
+  IL_00AD: ldstr "Data not a decimal! Assuming 0 for value in column: 'T' on row: "
+  IL_00B2: ldloca.s 0
+  IL_00B4: call System.String ToString()
+  IL_00B9: call System.String Concat(System.String, System.String)
+  IL_00BE: call Void updateProgresDialog(System.String)
+  IL_00C3: nop
+  IL_00C4: ldarg.0
+  IL_00C5: ldc.i4.1
+  IL_00C6: stfld Boolean globalErrorFlag
+  IL_00CB: nop
+  IL_00CC: ldloc.2
+  IL_00CD: ldstr "h"
+  IL_00D2: callvirt System.Object get_Item(System.String)
+  IL_00D7: callvirt System.String ToString()
+  IL_00DC: call Boolean testDecimalValues(System.String)
+  IL_00E1: stloc.s 5
+  IL_00E3: ldloc.s 5
+  IL_00E5: brtrue.s IL_0119
+  IL_00E7: nop
+  IL_00E8: ldloc.2
+  IL_00E9: ldstr "h"
+  IL_00EE: ldstr "0"
+  IL_00F3: callvirt Void set_Item(System.String, System.Object)
+  IL_00F8: nop
+  IL_00F9: ldarg.0
+  IL_00FA: ldstr "Data not a decimal! Assuming 0 for value in column: 'h' on row: "
+  IL_00FF: ldloca.s 0
+  IL_0101: call System.String ToString()
+  IL_0106: call System.String Concat(System.String, System.String)
+  IL_010B: call Void updateProgresDialog(System.String)
+  IL_0110: nop
+  IL_0111: ldarg.0
+  IL_0112: ldc.i4.1
+  IL_0113: stfld Boolean globalErrorFlag
+  IL_0118: nop
+  IL_0119: ldloc.2
+  IL_011A: ldstr "d2HP"
+  IL_011F: callvirt System.Object get_Item(System.String)
+  IL_0124: callvirt System.String ToString()
+  IL_0129: call Boolean testDecimalValues(System.String)
+  IL_012E: stloc.s 5
+  IL_0130: ldloc.s 5
+  IL_0132: brtrue.s IL_0166
+  IL_0134: nop
+  IL_0135: ldloc.2
+  IL_0136: ldstr "d2HP"
+  IL_013B: ldstr "0"
+  IL_0140: callvirt Void set_Item(System.String, System.Object)
+  IL_0145: nop
+  IL_0146: ldarg.0
+  IL_0147: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HP' on row: "
+  IL_014C: ldloca.s 0
+  IL_014E: call System.String ToString()
+  IL_0153: call System.String Concat(System.String, System.String)
+  IL_0158: call Void updateProgresDialog(System.String)
+  IL_015D: nop
+  IL_015E: ldarg.0
+  IL_015F: ldc.i4.1
+  IL_0160: stfld Boolean globalErrorFlag
+  IL_0165: nop
+  IL_0166: ldloc.2
+  IL_0167: ldstr "d18OP"
+  IL_016C: callvirt System.Object get_Item(System.String)
+  IL_0171: callvirt System.String ToString()
+  IL_0176: call Boolean testDecimalValues(System.String)
+  IL_017B: stloc.s 5
+  IL_017D: ldloc.s 5
+  IL_017F: brtrue.s IL_01B3
+  IL_0181: nop
+  IL_0182: ldloc.2
+  IL_0183: ldstr "d2HP"
+  IL_0188: ldstr "0"
+  IL_018D: callvirt Void set_Item(System.String, System.Object)
+  IL_0192: nop
+  IL_0193: ldarg.0
+  IL_0194: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HP' on row: "
+  IL_0199: ldloca.s 0
+  IL_019B: call System.String ToString()
+  IL_01A0: call System.String Concat(System.String, System.String)
+  IL_01A5: call Void updateProgresDialog(System.String)
+  IL_01AA: nop
+  IL_01AB: ldarg.0
+  IL_01AC: ldc.i4.1
+  IL_01AD: stfld Boolean globalErrorFlag
+  IL_01B2: nop
+  IL_01B3: ldloc.2
+  IL_01B4: ldstr "d2HL"
+  IL_01B9: callvirt System.Object get_Item(System.String)
+  IL_01BE: callvirt System.String ToString()
+  IL_01C3: call Boolean testDecimalValues(System.String)
+  IL_01C8: stloc.s 5
+  IL_01CA: ldloc.s 5
+  IL_01CC: brtrue.s IL_0200
+  IL_01CE: nop
+  IL_01CF: ldloc.2
+  IL_01D0: ldstr "d2HL"
+  IL_01D5: ldstr "0"
+  IL_01DA: callvirt Void set_Item(System.String, System.Object)
+  IL_01DF: nop
+  IL_01E0: ldarg.0
+  IL_01E1: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HL' on row: "
+  IL_01E6: ldloca.s 0
+  IL_01E8: call System.String ToString()
+  IL_01ED: call System.String Concat(System.String, System.String)
+  IL_01F2: call Void updateProgresDialog(System.String)
+  IL_01F7: nop
+  IL_01F8: ldarg.0
+  IL_01F9: ldc.i4.1
+  IL_01FA: stfld Boolean globalErrorFlag
+  IL_01FF: nop
+  IL_0200: ldloc.2
+  IL_0201: ldstr "d18OL"
+  IL_0206: callvirt System.Object get_Item(System.String)
+  IL_020B: callvirt System.String ToString()
+  IL_0210: call Boolean testDecimalValues(System.String)
+  IL_0215: stloc.s 5
+  IL_0217: ldloc.s 5
+  IL_0219: brtrue.s IL_024D
+  IL_021B: nop
+  IL_021C: ldloc.2
+  IL_021D: ldstr "d18OL"
+  IL_0222: ldstr "0"
+  IL_0227: callvirt Void set_Item(System.String, System.Object)
+  IL_022C: nop
+  IL_022D: ldarg.0
+  IL_022E: ldstr "Data not a decimal! Assuming 0 for value in column: 'd18OL' on row: "
+  IL_0233: ldloca.s 0
+  IL_0235: call System.String ToString()
+  IL_023A: call System.String Concat(System.String, System.String)
+  IL_023F: call Void updateProgresDialog(System.String)
+  IL_0244: nop
+  IL_0245: ldarg.0
+  IL_0246: ldc.i4.1
+  IL_0247: stfld Boolean globalErrorFlag
+  IL_024C: nop
+  IL_024D: nop
+  IL_024E: ldloc.3
+  IL_024F: stloc.s 6
+  IL_0251: ldloc.s 6
+  IL_0253: brfalse IL_04B4
+  IL_0258: ldloc.s 6
+  IL_025A: ldstr "1"
+  IL_025F: call Boolean op_Equality(System.String, System.String)
+  IL_0264: brtrue.s IL_028D
+  IL_0266: ldloc.s 6
+  IL_0268: ldstr "2"
+  IL_026D: call Boolean op_Equality(System.String, System.String)
+  IL_0272: brtrue IL_032C
+  IL_0277: ldloc.s 6
+  IL_0279: ldstr "3"
+  IL_027E: call Boolean op_Equality(System.String, System.String)
+  IL_0283: brtrue IL_03CB
+  IL_0288: br IL_04B4
+  IL_028D: ldloc.2
+  IL_028E: ldstr "d2HA"
+  IL_0293: callvirt System.Object get_Item(System.String)
+  IL_0298: callvirt System.String ToString()
+  IL_029D: call Boolean testDecimalValues(System.String)
+  IL_02A2: stloc.s 5
+  IL_02A4: ldloc.s 5
+  IL_02A6: brtrue.s IL_02DA
+  IL_02A8: nop
+  IL_02A9: ldloc.2
+  IL_02AA: ldstr "d2HA"
+  IL_02AF: ldstr "0"
+  IL_02B4: callvirt Void set_Item(System.String, System.Object)
+  IL_02B9: nop
+  IL_02BA: ldarg.0
+  IL_02BB: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HA' on row: "
+  IL_02C0: ldloca.s 0
+  IL_02C2: call System.String ToString()
+  IL_02C7: call System.String Concat(System.String, System.String)
+  IL_02CC: call Void updateProgresDialog(System.String)
+  IL_02D1: nop
+  IL_02D2: ldarg.0
+  IL_02D3: ldc.i4.1
+  IL_02D4: stfld Boolean globalErrorFlag
+  IL_02D9: nop
+  IL_02DA: ldloc.2
+  IL_02DB: ldstr "d18OA"
+  IL_02E0: callvirt System.Object get_Item(System.String)
+  IL_02E5: callvirt System.String ToString()
+  IL_02EA: call Boolean testDecimalValues(System.String)
+  IL_02EF: stloc.s 5
+  IL_02F1: ldloc.s 5
+  IL_02F3: brtrue.s IL_0327
+  IL_02F5: nop
+  IL_02F6: ldloc.2
+  IL_02F7: ldstr "d18OA"
+  IL_02FC: ldstr "0"
+  IL_0301: callvirt Void set_Item(System.String, System.Object)
+  IL_0306: nop
+  IL_0307: ldarg.0
+  IL_0308: ldstr "Data not a decimal! Assuming 0 for value in column: 'd18OA' on row: "
+  IL_030D: ldloca.s 0
+  IL_030F: call System.String ToString()
+  IL_0314: call System.String Concat(System.String, System.String)
+  IL_0319: call Void updateProgresDialog(System.String)
+  IL_031E: nop
+  IL_031F: ldarg.0
+  IL_0320: ldc.i4.1
+  IL_0321: stfld Boolean globalErrorFlag
+  IL_0326: nop
+  IL_0327: br IL_04B6
+  IL_032C: ldloc.2
+  IL_032D: ldstr "d2HR"
+  IL_0332: callvirt System.Object get_Item(System.String)
+  IL_0337: callvirt System.String ToString()
+  IL_033C: call Boolean testDecimalValues(System.String)
+  IL_0341: stloc.s 5
+  IL_0343: ldloc.s 5
+  IL_0345: brtrue.s IL_0379
+  IL_0347: nop
+  IL_0348: ldloc.2
+  IL_0349: ldstr "d2HR"
+  IL_034E: ldstr "0"
+  IL_0353: callvirt Void set_Item(System.String, System.Object)
+  IL_0358: nop
+  IL_0359: ldarg.0
+  IL_035A: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HR' on row: "
+  IL_035F: ldloca.s 0
+  IL_0361: call System.String ToString()
+  IL_0366: call System.String Concat(System.String, System.String)
+  IL_036B: call Void updateProgresDialog(System.String)
+  IL_0370: nop
+  IL_0371: ldarg.0
+  IL_0372: ldc.i4.1
+  IL_0373: stfld Boolean globalErrorFlag
+  IL_0378: nop
+  IL_0379: ldloc.2
+  IL_037A: ldstr "d18OR"
+  IL_037F: callvirt System.Object get_Item(System.String)
+  IL_0384: callvirt System.String ToString()
+  IL_0389: call Boolean testDecimalValues(System.String)
+  IL_038E: stloc.s 5
+  IL_0390: ldloc.s 5
+  IL_0392: brtrue.s IL_03C6
+  IL_0394: nop
+  IL_0395: ldloc.2
+  IL_0396: ldstr "d18OR"
+  IL_039B: ldstr "0"
+  IL_03A0: callvirt Void set_Item(System.String, System.Object)
+  IL_03A5: nop
+  IL_03A6: ldarg.0
+  IL_03A7: ldstr "Data not a decimal! Assuming 0 for value in column: 'd18OR' on row: "
+  IL_03AC: ldloca.s 0
+  IL_03AE: call System.String ToString()
+  IL_03B3: call System.String Concat(System.String, System.String)
+  IL_03B8: call Void updateProgresDialog(System.String)
+  IL_03BD: nop
+  IL_03BE: ldarg.0
+  IL_03BF: ldc.i4.1
+  IL_03C0: stfld Boolean globalErrorFlag
+  IL_03C5: nop
+  IL_03C6: br IL_04B6
+  IL_03CB: ldloc.2
+  IL_03CC: ldstr "d2HR"
+  IL_03D1: callvirt System.Object get_Item(System.String)
+  IL_03D6: callvirt System.String ToString()
+  IL_03DB: call Boolean testDecimalValues(System.String)
+  IL_03E0: stloc.s 5
+  IL_03E2: ldloc.s 5
+  IL_03E4: brtrue.s IL_0418
+  IL_03E6: nop
+  IL_03E7: ldloc.2
+  IL_03E8: ldstr "d2HR"
+  IL_03ED: ldstr "0"
+  IL_03F2: callvirt Void set_Item(System.String, System.Object)
+  IL_03F7: nop
+  IL_03F8: ldarg.0
+  IL_03F9: ldstr "Data not a decimal! Assuming 0 for value in column: 'd2HR' on row: "
+  IL_03FE: ldloca.s 0
+  IL_0400: call System.String ToString()
+  IL_0405: call System.String Concat(System.String, System.String)
+  IL_040A: call Void updateProgresDialog(System.String)
+  IL_040F: nop
+  IL_0410: ldarg.0
+  IL_0411: ldc.i4.1
+  IL_0412: stfld Boolean globalErrorFlag
+  IL_0417: nop
+  IL_0418: ldloc.2
+  IL_0419: ldstr "d18OR"
+  IL_041E: callvirt System.Object get_Item(System.String)
+  IL_0423: callvirt System.String ToString()
+  IL_0428: call Boolean testDecimalValues(System.String)
+  IL_042D: stloc.s 5
+  IL_042F: ldloc.s 5
+  IL_0431: brtrue.s IL_0465
+  IL_0433: nop
+  IL_0434: ldloc.2
+  IL_0435: ldstr "d18OR"
+  IL_043A: ldstr "0"
+  IL_043F: callvirt Void set_Item(System.String, System.Object)
+  IL_0444: nop
+  IL_0445: ldarg.0
+  IL_0446: ldstr "Data not a decimal! Assuming 0 for value in column: 'd18OR' on row: "
+  IL_044B: ldloca.s 0
+  IL_044D: call System.String ToString()
+  IL_0452: call System.String Concat(System.String, System.String)
+  IL_0457: call Void updateProgresDialog(System.String)
+  IL_045C: nop
+  IL_045D: ldarg.0
+  IL_045E: ldc.i4.1
+  IL_045F: stfld Boolean globalErrorFlag
+  IL_0464: nop
+  IL_0465: ldloc.2
+  IL_0466: ldstr "LEL"
+  IL_046B: callvirt System.Object get_Item(System.String)
+  IL_0470: callvirt System.String ToString()
+  IL_0475: call Boolean testDecimalValues(System.String)
+  IL_047A: stloc.s 5
+  IL_047C: ldloc.s 5
+  IL_047E: brtrue.s IL_04B2
+  IL_0480: nop
+  IL_0481: ldloc.2
+  IL_0482: ldstr "LEL"
+  IL_0487: ldstr "0"
+  IL_048C: callvirt Void set_Item(System.String, System.Object)
+  IL_0491: nop
+  IL_0492: ldarg.0
+  IL_0493: ldstr "Data not a decimal! Assuming 0 for value in column: 'LEL' on row: "
+  IL_0498: ldloca.s 0
+  IL_049A: call System.String ToString()
+  IL_049F: call System.String Concat(System.String, System.String)
+  IL_04A4: call Void updateProgresDialog(System.String)
+  IL_04A9: nop
+  IL_04AA: ldarg.0
+  IL_04AB: ldc.i4.1
+  IL_04AC: stfld Boolean globalErrorFlag
+  IL_04B1: nop
+  IL_04B2: br.s IL_04B6
+  IL_04B4: br.s IL_04B6
+  IL_04B6: nop
+  IL_04B7: ldloc.s 4
+  IL_04B9: callvirt Boolean MoveNext()
+  IL_04BE: stloc.s 5
+  IL_04C0: ldloc.s 5
+  IL_04C2: brtrue IL_002C
+  IL_04C7: leave.s IL_04E6
+  IL_04C9: ldloc.s 4
+  IL_04CB: isinst System.IDisposable
+  IL_04D0: stloc.s 7
+  IL_04D2: ldloc.s 7
+  IL_04D4: ldnull
+  IL_04D5: <unknown 0xFE01>
+  IL_04D7: stloc.s 5
+  IL_04D9: ldloc.s 5
+  IL_04DB: brtrue.s IL_04E5
+  IL_04DD: ldloc.s 7
+  IL_04DF: callvirt Void Dispose()
+  IL_04E4: nop
+  IL_04E5: endfinally
+  IL_04E6: nop
+  IL_04E7: ret
+
+.method DataTable GetDataTabletFromCSVFile2(String csv_file_path)
+  IL_0000: nop
+  IL_0001: newobj Void .ctor()
+  IL_0006: stloc.0
+  IL_0007: nop
+  IL_0008: ldarg.1
+  IL_0009: newobj Void .ctor(System.String)
+  IL_000E: stloc.1
+  IL_000F: nop
+  IL_0010: ldloc.1
+  IL_0011: ldc.i4.1
+  IL_0012: newarr System.String
+  IL_0017: stloc.s 9
+  IL_0019: ldloc.s 9
+  IL_001B: ldc.i4.0
+  IL_001C: ldstr ","
+  IL_0021: stelem.ref
+  IL_0022: ldloc.s 9
+  IL_0024: callvirt Void SetDelimiters(System.String[])
+  IL_0029: nop
+  IL_002A: ldloc.1
+  IL_002B: ldc.i4.1
+  IL_002C: callvirt Void set_HasFieldsEnclosedInQuotes(Boolean)
+  IL_0031: nop
+  IL_0032: ldloc.1
+  IL_0033: callvirt System.String[] ReadFields()
+  IL_0038: stloc.2
+  IL_0039: ldloc.2
+  IL_003A: ldlen
+  IL_003B: conv.i4
+  IL_003C: stloc.s 10
+  IL_003E: ldloca.s 10
+  IL_0040: call System.String ToString()
+  IL_0045: call System.Windows.MessageBoxResult Show(System.String)
+  IL_004A: pop
+  IL_004B: ldc.i4.0
+  IL_004C: stloc.3
+  IL_004D: br.s IL_0076
+  IL_004F: nop
+  IL_0050: ldloc.2
+  IL_0051: ldloc.3
+  IL_0052: ldelem.ref
+  IL_0053: newobj Void .ctor(System.String)
+  IL_0058: stloc.s 4
+  IL_005A: ldloc.s 4
+  IL_005C: ldc.i4.1
+  IL_005D: callvirt Void set_AllowDBNull(Boolean)
+  IL_0062: nop
+  IL_0063: ldloc.0
+  IL_0064: callvirt System.Data.DataColumnCollection get_Columns()
+  IL_0069: ldloc.s 4
+  IL_006B: callvirt Void Add(System.Data.DataColumn)
+  IL_0070: nop
+  IL_0071: nop
+  IL_0072: ldloc.3
+  IL_0073: ldc.i4.1
+  IL_0074: add
+  IL_0075: stloc.3
+  IL_0076: ldloc.3
+  IL_0077: ldc.i4.s 13
+  IL_0079: <unknown 0xFE04>
+  IL_007B: stloc.s 11
+  IL_007D: ldloc.s 11
+  IL_007F: brtrue.s IL_004F
+  IL_0081: ldc.i4.0
+  IL_0082: stloc.s 5
+  IL_0084: br IL_0132
+  IL_0089: nop
+  IL_008A: ldloca.s 5
+  IL_008C: call System.String ToString()
+  IL_0091: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0096: pop
+  IL_0097: ldloc.1
+  IL_0098: callvirt System.String[] ReadFields()
+  IL_009D: stloc.s 6
+  IL_009F: ldc.i4.0
+  IL_00A0: stloc.3
+  IL_00A1: br.s IL_0105
+  IL_00A3: nop
+  IL_00A4: ldloc.s 6
+  IL_00A6: ldloc.3
+  IL_00A7: ldelem.ref
+  IL_00A8: ldstr ""
+  IL_00AD: call Boolean op_Equality(System.String, System.String)
+  IL_00B2: ldc.i4.0
+  IL_00B3: <unknown 0xFE01>
+  IL_00B5: stloc.s 11
+  IL_00B7: ldloc.s 11
+  IL_00B9: brtrue.s IL_00C8
+  IL_00BB: nop
+  IL_00BC: ldloc.s 6
+  IL_00BE: ldloc.3
+  IL_00BF: ldstr "0"
+  IL_00C4: stelem.ref
+  IL_00C5: nop
+  IL_00C6: br.s IL_0100
+  IL_00C8: ldloc.3
+  IL_00C9: ldc.i4.0
+  IL_00CA: ble.s IL_00D6
+  IL_00CC: ldloc.3
+  IL_00CD: ldc.i4.s 13
+  IL_00CF: <unknown 0xFE04>
+  IL_00D1: ldc.i4.0
+  IL_00D2: <unknown 0xFE01>
+  IL_00D4: br.s IL_00D7
+  IL_00D6: ldc.i4.1
+  IL_00D7: stloc.s 11
+  IL_00D9: ldloc.s 11
+  IL_00DB: brtrue.s IL_0100
+  IL_00DD: nop
+  IL_00DE: ldloc.s 6
+  IL_00E0: ldloc.3
+  IL_00E1: ldelem.ref
+  IL_00E2: call Boolean testDecimalValues(System.String)
+  IL_00E7: stloc.s 11
+  IL_00E9: ldloc.s 11
+  IL_00EB: brtrue.s IL_00FF
+  IL_00ED: nop
+  IL_00EE: ldloc.s 6
+  IL_00F0: ldloc.3
+  IL_00F1: ldstr "0"
+  IL_00F6: stelem.ref
+  IL_00F7: ldarg.0
+  IL_00F8: ldc.i4.1
+  IL_00F9: stfld Boolean globalErrorFlag
+  IL_00FE: nop
+  IL_00FF: nop
+  IL_0100: nop
+  IL_0101: ldloc.3
+  IL_0102: ldc.i4.1
+  IL_0103: add
+  IL_0104: stloc.3
+  IL_0105: ldloc.3
+  IL_0106: ldloc.s 6
+  IL_0108: ldlen
+  IL_0109: conv.i4
+  IL_010A: <unknown 0xFE04>
+  IL_010C: stloc.s 11
+  IL_010E: ldloc.s 11
+  IL_0110: brtrue.s IL_00A3
+  IL_0112: ldstr "before aaa"
+  IL_0117: call System.Windows.MessageBoxResult Show(System.String)
+  IL_011C: pop
+  IL_011D: ldloc.0
+  IL_011E: callvirt System.Data.DataRowCollection get_Rows()
+  IL_0123: ldloc.s 6
+  IL_0125: callvirt System.Data.DataRow Add(System.Object[])
+  IL_012A: pop
+  IL_012B: ldloc.s 5
+  IL_012D: ldc.i4.1
+  IL_012E: add
+  IL_012F: stloc.s 5
+  IL_0131: nop
+  IL_0132: ldloc.1
+  IL_0133: callvirt Boolean get_EndOfData()
+  IL_0138: ldc.i4.0
+  IL_0139: <unknown 0xFE01>
+  IL_013B: stloc.s 11
+  IL_013D: ldloc.s 11
+  IL_013F: brtrue IL_0089
+  IL_0144: nop
+  IL_0145: leave.s IL_0159
+  IL_0147: ldloc.1
+  IL_0148: ldnull
+  IL_0149: <unknown 0xFE01>
+  IL_014B: stloc.s 11
+  IL_014D: ldloc.s 11
+  IL_014F: brtrue.s IL_0158
+  IL_0151: ldloc.1
+  IL_0152: callvirt Void Dispose()
+  IL_0157: nop
+  IL_0158: endfinally
+  IL_0159: nop
+  IL_015A: nop
+  IL_015B: leave.s IL_0170
+  IL_015D: stloc.s 7
+  IL_015F: nop
+  IL_0160: ldloc.s 7
+  IL_0162: callvirt System.String get_Message()
+  IL_0167: call System.Windows.MessageBoxResult Show(System.String)
+  IL_016C: pop
+  IL_016D: nop
+  IL_016E: leave.s IL_0170
+  IL_0170: nop
+  IL_0171: ldloc.0
+  IL_0172: stloc.s 8
+  IL_0174: br.s IL_0176
+  IL_0176: ldloc.s 8
+  IL_0178: ret
+
+.method Void btnExit_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: call Void Close()
+  IL_0007: nop
+  IL_0008: ret
+
+.method Boolean readManualInputValues()
+  IL_0000: nop
+  IL_0001: ldc.i4.0
+  IL_0002: stloc.0
+  IL_0003: ldarg.0
+  IL_0004: ldfld System.Data.DataTable hydroDataTable
+  IL_0009: callvirt System.Data.DataRow NewRow()
+  IL_000E: stloc.1
+  IL_000F: ldloc.1
+  IL_0010: ldstr "hydrocal=Sample name"
+  IL_0015: call System.DateTime get_Now()
+  IL_001A: stloc.3
+  IL_001B: ldloca.s 3
+  IL_001D: <unknown 0xFE16>
+  IL_001F: ldind.i2
+  IL_0020: nop
+  IL_0021: nop
+  IL_0022: break
+  IL_0023: callvirt System.String ToString()
+  IL_0028: callvirt Void set_Item(System.String, System.Object)
+  IL_002D: nop
+  IL_002E: ldarg.0
+  IL_002F: ldfld System.Windows.Controls.TextBox txtKineticF_H
+  IL_0034: callvirt System.String get_Text()
+  IL_0039: ldstr ""
+  IL_003E: call Boolean op_Inequality(System.String, System.String)
+  IL_0043: brfalse.s IL_005A
+  IL_0045: ldarg.0
+  IL_0046: ldfld System.Windows.Controls.TextBox txtKineticF_H
+  IL_004B: callvirt System.String get_Text()
+  IL_0050: call Boolean testDecimalValues(System.String)
+  IL_0055: ldc.i4.0
+  IL_0056: <unknown 0xFE01>
+  IL_0058: br.s IL_005B
+  IL_005A: ldc.i4.1
+  IL_005B: stloc.s 4
+  IL_005D: ldloc.s 4
+  IL_005F: brtrue.s IL_00BB
+  IL_0061: nop
+  IL_0062: ldarg.0
+  IL_0063: ldfld System.Windows.Controls.TextBox txtKineticF_H
+  IL_0068: callvirt System.String get_Text()
+  IL_006D: call System.Decimal Parse(System.String)
+  IL_0072: box System.Decimal
+  IL_0077: ldstr "12.5"
+  IL_007C: call System.Decimal Parse(System.String)
+  IL_0081: box System.Decimal
+  IL_0086: call Boolean Equals(System.Object, System.Object)
+  IL_008B: stloc.s 4
+  IL_008D: ldloc.s 4
+  IL_008F: brtrue.s IL_00A3
+  IL_0091: nop
+  IL_0092: ldstr "Warning: typical Ck value for surface water evaporation is d2H=12.50"
+  IL_0097: ldstr "i"
+  IL_009C: call System.Windows.MessageBoxResult Show(System.String, System.String)
+  IL_00A1: pop
+  IL_00A2: nop
+  IL_00A3: ldloc.1
+  IL_00A4: ldstr "CkH"
+  IL_00A9: ldarg.0
+  IL_00AA: ldfld System.Windows.Controls.TextBox txtKineticF_H
+  IL_00AF: callvirt System.String get_Text()
+  IL_00B4: callvirt Void set_Item(System.String, System.Object)
+  IL_00B9: nop
+  IL_00BA: nop
+  IL_00BB: ldarg.0
+  IL_00BC: ldfld System.Windows.Controls.TextBox txtKineticF_O
+  IL_00C1: callvirt System.String get_Text()
+  IL_00C6: ldstr ""
+  IL_00CB: call Boolean op_Inequality(System.String, System.String)
+  IL_00D0: brfalse.s IL_00E7
+  IL_00D2: ldarg.0
+  IL_00D3: ldfld System.Windows.Controls.TextBox txtKineticF_O
+  IL_00D8: callvirt System.String get_Text()
+  IL_00DD: call Boolean testDecimalValues(System.String)
+  IL_00E2: ldc.i4.0
+  IL_00E3: <unknown 0xFE01>
+  IL_00E5: br.s IL_00E8
+  IL_00E7: ldc.i4.1
+  IL_00E8: stloc.s 4
+  IL_00EA: ldloc.s 4
+  IL_00EC: brtrue.s IL_0148
+  IL_00EE: nop
+  IL_00EF: ldarg.0
+  IL_00F0: ldfld System.Windows.Controls.TextBox txtKineticF_O
+  IL_00F5: callvirt System.String get_Text()
+  IL_00FA: call System.Decimal Parse(System.String)
+  IL_00FF: box System.Decimal
+  IL_0104: ldstr "14.2"
+  IL_0109: call System.Decimal Parse(System.String)
+  IL_010E: box System.Decimal
+  IL_0113: call Boolean Equals(System.Object, System.Object)
+  IL_0118: stloc.s 4
+  IL_011A: ldloc.s 4
+  IL_011C: brtrue.s IL_0130
+  IL_011E: nop
+  IL_011F: ldstr "Warning: typical Ck value for surface water evaporation is d18O=14.20"
+  IL_0124: ldstr "i"
+  IL_0129: call System.Windows.MessageBoxResult Show(System.String, System.String)
+  IL_012E: pop
+  IL_012F: nop
+  IL_0130: ldloc.1
+  IL_0131: ldstr "CkO"
+  IL_0136: ldarg.0
+  IL_0137: ldfld System.Windows.Controls.TextBox txtKineticF_O
+  IL_013C: callvirt System.String get_Text()
+  IL_0141: callvirt Void set_Item(System.String, System.Object)
+  IL_0146: nop
+  IL_0147: nop
+  IL_0148: ldarg.0
+  IL_0149: ldfld System.Windows.Controls.TextBox txtTemperature
+  IL_014E: callvirt System.String get_Text()
+  IL_0153: ldstr ""
+  IL_0158: call Boolean op_Inequality(System.String, System.String)
+  IL_015D: brfalse.s IL_0174
+  IL_015F: ldarg.0
+  IL_0160: ldfld System.Windows.Controls.TextBox txtTemperature
+  IL_0165: callvirt System.String get_Text()
+  IL_016A: call Boolean testDecimalValues(System.String)
+  IL_016F: ldc.i4.0
+  IL_0170: <unknown 0xFE01>
+  IL_0172: br.s IL_0175
+  IL_0174: ldc.i4.1
+  IL_0175: stloc.s 4
+  IL_0177: ldloc.s 4
+  IL_0179: brtrue.s IL_0196
+  IL_017B: nop
+  IL_017C: ldloc.1
+  IL_017D: ldstr "T"
+  IL_0182: ldarg.0
+  IL_0183: ldfld System.Windows.Controls.TextBox txtTemperature
+  IL_0188: callvirt System.String get_Text()
+  IL_018D: callvirt Void set_Item(System.String, System.Object)
+  IL_0192: nop
+  IL_0193: nop
+  IL_0194: br.s IL_01A5
+  IL_0196: nop
+  IL_0197: ldstr "Please enter a valid temperature (T) value. Example: 24.68"
+  IL_019C: call System.Windows.MessageBoxResult Show(System.String)
+  IL_01A1: pop
+  IL_01A2: ldc.i4.1
+  IL_01A3: stloc.0
+  IL_01A4: nop
+  IL_01A5: ldarg.0
+  IL_01A6: ldfld System.Windows.Controls.TextBox txtRelativeHumidity
+  IL_01AB: callvirt System.String get_Text()
+  IL_01B0: ldstr ""
+  IL_01B5: call Boolean op_Inequality(System.String, System.String)
+  IL_01BA: brfalse.s IL_01D1
+  IL_01BC: ldarg.0
+  IL_01BD: ldfld System.Windows.Controls.TextBox txtRelativeHumidity
+  IL_01C2: callvirt System.String get_Text()
+  IL_01C7: call Boolean testDecimalValues(System.String)
+  IL_01CC: ldc.i4.0
+  IL_01CD: <unknown 0xFE01>
+  IL_01CF: br.s IL_01D2
+  IL_01D1: ldc.i4.1
+  IL_01D2: stloc.s 4
+  IL_01D4: ldloc.s 4
+  IL_01D6: brtrue.s IL_01F3
+  IL_01D8: nop
+  IL_01D9: ldloc.1
+  IL_01DA: ldstr "h"
+  IL_01DF: ldarg.0
+  IL_01E0: ldfld System.Windows.Controls.TextBox txtRelativeHumidity
+  IL_01E5: callvirt System.String get_Text()
+  IL_01EA: callvirt Void set_Item(System.String, System.Object)
+  IL_01EF: nop
+  IL_01F0: nop
+  IL_01F1: br.s IL_0202
+  IL_01F3: nop
+  IL_01F4: ldstr "Please enter a valid relative humidity (h) value. Example: 0.32"
+  IL_01F9: call System.Windows.MessageBoxResult Show(System.String)
+  IL_01FE: pop
+  IL_01FF: ldc.i4.1
+  IL_0200: stloc.0
+  IL_0201: nop
+  IL_0202: ldarg.0
+  IL_0203: ldfld System.Windows.Controls.TextBox txtPoolStartH
+  IL_0208: callvirt System.String get_Text()
+  IL_020D: ldstr ""
+  IL_0212: call Boolean op_Inequality(System.String, System.String)
+  IL_0217: brfalse.s IL_022E
+  IL_0219: ldarg.0
+  IL_021A: ldfld System.Windows.Controls.TextBox txtPoolStartH
+  IL_021F: callvirt System.String get_Text()
+  IL_0224: call Boolean testDecimalValues(System.String)
+  IL_0229: ldc.i4.0
+  IL_022A: <unknown 0xFE01>
+  IL_022C: br.s IL_022F
+  IL_022E: ldc.i4.1
+  IL_022F: stloc.s 4
+  IL_0231: ldloc.s 4
+  IL_0233: brtrue.s IL_0250
+  IL_0235: nop
+  IL_0236: ldloc.1
+  IL_0237: ldstr "d2HP"
+  IL_023C: ldarg.0
+  IL_023D: ldfld System.Windows.Controls.TextBox txtPoolStartH
+  IL_0242: callvirt System.String get_Text()
+  IL_0247: callvirt Void set_Item(System.String, System.Object)
+  IL_024C: nop
+  IL_024D: nop
+  IL_024E: br.s IL_025F
+  IL_0250: nop
+  IL_0251: ldstr "Please enter a valid pool starting value. Example: -51.60"
+  IL_0256: call System.Windows.MessageBoxResult Show(System.String)
+  IL_025B: pop
+  IL_025C: ldc.i4.1
+  IL_025D: stloc.0
+  IL_025E: nop
+  IL_025F: ldarg.0
+  IL_0260: ldfld System.Windows.Controls.TextBox txtPoolStartO
+  IL_0265: callvirt System.String get_Text()
+  IL_026A: ldstr ""
+  IL_026F: call Boolean op_Inequality(System.String, System.String)
+  IL_0274: brfalse.s IL_028B
+  IL_0276: ldarg.0
+  IL_0277: ldfld System.Windows.Controls.TextBox txtPoolStartO
+  IL_027C: callvirt System.String get_Text()
+  IL_0281: call Boolean testDecimalValues(System.String)
+  IL_0286: ldc.i4.0
+  IL_0287: <unknown 0xFE01>
+  IL_0289: br.s IL_028C
+  IL_028B: ldc.i4.1
+  IL_028C: stloc.s 4
+  IL_028E: ldloc.s 4
+  IL_0290: brtrue.s IL_02AD
+  IL_0292: nop
+  IL_0293: ldloc.1
+  IL_0294: ldstr "d18OP"
+  IL_0299: ldarg.0
+  IL_029A: ldfld System.Windows.Controls.TextBox txtPoolStartO
+  IL_029F: callvirt System.String get_Text()
+  IL_02A4: callvirt Void set_Item(System.String, System.Object)
+  IL_02A9: nop
+  IL_02AA: nop
+  IL_02AB: br.s IL_02BC
+  IL_02AD: nop
+  IL_02AE: ldstr "Please enter a valid pool starting value. Example: -8.05"
+  IL_02B3: call System.Windows.MessageBoxResult Show(System.String)
+  IL_02B8: pop
+  IL_02B9: ldc.i4.1
+  IL_02BA: stloc.0
+  IL_02BB: nop
+  IL_02BC: ldarg.0
+  IL_02BD: ldfld System.Windows.Controls.TextBox txtPoolFinalH
+  IL_02C2: callvirt System.String get_Text()
+  IL_02C7: ldstr ""
+  IL_02CC: call Boolean op_Inequality(System.String, System.String)
+  IL_02D1: brfalse.s IL_02E8
+  IL_02D3: ldarg.0
+  IL_02D4: ldfld System.Windows.Controls.TextBox txtPoolFinalH
+  IL_02D9: callvirt System.String get_Text()
+  IL_02DE: call Boolean testDecimalValues(System.String)
+  IL_02E3: ldc.i4.0
+  IL_02E4: <unknown 0xFE01>
+  IL_02E6: br.s IL_02E9
+  IL_02E8: ldc.i4.1
+  IL_02E9: stloc.s 4
+  IL_02EB: ldloc.s 4
+  IL_02ED: brtrue.s IL_030A
+  IL_02EF: nop
+  IL_02F0: ldloc.1
+  IL_02F1: ldstr "d2HL"
+  IL_02F6: ldarg.0
+  IL_02F7: ldfld System.Windows.Controls.TextBox txtPoolFinalH
+  IL_02FC: callvirt System.String get_Text()
+  IL_0301: callvirt Void set_Item(System.String, System.Object)
+  IL_0306: nop
+  IL_0307: nop
+  IL_0308: br.s IL_0319
+  IL_030A: nop
+  IL_030B: ldstr "Please enter a valid pool final value. Example: -40.09"
+  IL_0310: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0315: pop
+  IL_0316: ldc.i4.1
+  IL_0317: stloc.0
+  IL_0318: nop
+  IL_0319: ldarg.0
+  IL_031A: ldfld System.Windows.Controls.TextBox txtPoolFinalO
+  IL_031F: callvirt System.String get_Text()
+  IL_0324: ldstr ""
+  IL_0329: call Boolean op_Inequality(System.String, System.String)
+  IL_032E: brfalse.s IL_0345
+  IL_0330: ldarg.0
+  IL_0331: ldfld System.Windows.Controls.TextBox txtPoolFinalO
+  IL_0336: callvirt System.String get_Text()
+  IL_033B: call Boolean testDecimalValues(System.String)
+  IL_0340: ldc.i4.0
+  IL_0341: <unknown 0xFE01>
+  IL_0343: br.s IL_0346
+  IL_0345: ldc.i4.1
+  IL_0346: stloc.s 4
+  IL_0348: ldloc.s 4
+  IL_034A: brtrue.s IL_0367
+  IL_034C: nop
+  IL_034D: ldloc.1
+  IL_034E: ldstr "d18OL"
+  IL_0353: ldarg.0
+  IL_0354: ldfld System.Windows.Controls.TextBox txtPoolFinalO
+  IL_0359: callvirt System.String get_Text()
+  IL_035E: callvirt Void set_Item(System.String, System.Object)
+  IL_0363: nop
+  IL_0364: nop
+  IL_0365: br.s IL_0376
+  IL_0367: nop
+  IL_0368: ldstr "Please enter a valid pool final value. Example: -6.41"
+  IL_036D: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0372: pop
+  IL_0373: ldc.i4.1
+  IL_0374: stloc.0
+  IL_0375: nop
+  IL_0376: ldarg.0
+  IL_0377: ldfld System.Windows.Controls.RadioButton radioButtonAmbientAir
+  IL_037C: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_0381: stloc.s 5
+  IL_0383: ldloca.s 5
+  IL_0385: call Boolean GetValueOrDefault()
+  IL_038A: brfalse.s IL_0395
+  IL_038C: ldloca.s 5
+  IL_038E: call Boolean get_HasValue()
+  IL_0393: br.s IL_0396
+  IL_0395: ldc.i4.0
+  IL_0396: ldc.i4.0
+  IL_0397: <unknown 0xFE01>
+  IL_0399: stloc.s 4
+  IL_039B: ldloc.s 4
+  IL_039D: brtrue IL_0470
+  IL_03A2: nop
+  IL_03A3: ldloc.1
+  IL_03A4: ldstr "opc"
+  IL_03A9: ldc.i4.1
+  IL_03AA: box System.Int32
+  IL_03AF: callvirt Void set_Item(System.String, System.Object)
+  IL_03B4: nop
+  IL_03B5: ldarg.0
+  IL_03B6: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_03BB: callvirt System.String get_Text()
+  IL_03C0: ldstr ""
+  IL_03C5: call Boolean op_Inequality(System.String, System.String)
+  IL_03CA: brfalse.s IL_03E1
+  IL_03CC: ldarg.0
+  IL_03CD: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_03D2: callvirt System.String get_Text()
+  IL_03D7: call Boolean testDecimalValues(System.String)
+  IL_03DC: ldc.i4.0
+  IL_03DD: <unknown 0xFE01>
+  IL_03DF: br.s IL_03E2
+  IL_03E1: ldc.i4.1
+  IL_03E2: stloc.s 4
+  IL_03E4: ldloc.s 4
+  IL_03E6: brtrue.s IL_0403
+  IL_03E8: nop
+  IL_03E9: ldloc.1
+  IL_03EA: ldstr "d2HA"
+  IL_03EF: ldarg.0
+  IL_03F0: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_03F5: callvirt System.String get_Text()
+  IL_03FA: callvirt Void set_Item(System.String, System.Object)
+  IL_03FF: nop
+  IL_0400: nop
+  IL_0401: br.s IL_0412
+  IL_0403: nop
+  IL_0404: ldstr "Please enter a valid value for ambient moisture mean between samples #1 and #2. Example: -91.10"
+  IL_0409: call System.Windows.MessageBoxResult Show(System.String)
+  IL_040E: pop
+  IL_040F: ldc.i4.1
+  IL_0410: stloc.0
+  IL_0411: nop
+  IL_0412: ldarg.0
+  IL_0413: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_0418: callvirt System.String get_Text()
+  IL_041D: ldstr ""
+  IL_0422: call Boolean op_Inequality(System.String, System.String)
+  IL_0427: brfalse.s IL_043E
+  IL_0429: ldarg.0
+  IL_042A: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_042F: callvirt System.String get_Text()
+  IL_0434: call Boolean testDecimalValues(System.String)
+  IL_0439: ldc.i4.0
+  IL_043A: <unknown 0xFE01>
+  IL_043C: br.s IL_043F
+  IL_043E: ldc.i4.1
+  IL_043F: stloc.s 4
+  IL_0441: ldloc.s 4
+  IL_0443: brtrue.s IL_0460
+  IL_0445: nop
+  IL_0446: ldloc.1
+  IL_0447: ldstr "d18OA"
+  IL_044C: ldarg.0
+  IL_044D: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_0452: callvirt System.String get_Text()
+  IL_0457: callvirt Void set_Item(System.String, System.Object)
+  IL_045C: nop
+  IL_045D: nop
+  IL_045E: br.s IL_046F
+  IL_0460: nop
+  IL_0461: ldstr "Please enter a valid value for ambient moisture mean between samples #1 and #2. Example: -12.28"
+  IL_0466: call System.Windows.MessageBoxResult Show(System.String)
+  IL_046B: pop
+  IL_046C: ldc.i4.1
+  IL_046D: stloc.0
+  IL_046E: nop
+  IL_046F: nop
+  IL_0470: ldarg.0
+  IL_0471: ldfld System.Windows.Controls.RadioButton radioButtonPrecipitation
+  IL_0476: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_047B: stloc.s 5
+  IL_047D: ldloca.s 5
+  IL_047F: call Boolean GetValueOrDefault()
+  IL_0484: brfalse.s IL_048F
+  IL_0486: ldloca.s 5
+  IL_0488: call Boolean get_HasValue()
+  IL_048D: br.s IL_0490
+  IL_048F: ldc.i4.0
+  IL_0490: ldc.i4.0
+  IL_0491: <unknown 0xFE01>
+  IL_0493: stloc.s 4
+  IL_0495: ldloc.s 4
+  IL_0497: brtrue IL_056A
+  IL_049C: nop
+  IL_049D: ldloc.1
+  IL_049E: ldstr "opc"
+  IL_04A3: ldc.i4.2
+  IL_04A4: box System.Int32
+  IL_04A9: callvirt Void set_Item(System.String, System.Object)
+  IL_04AE: nop
+  IL_04AF: ldarg.0
+  IL_04B0: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_04B5: callvirt System.String get_Text()
+  IL_04BA: ldstr ""
+  IL_04BF: call Boolean op_Inequality(System.String, System.String)
+  IL_04C4: brfalse.s IL_04DB
+  IL_04C6: ldarg.0
+  IL_04C7: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_04CC: callvirt System.String get_Text()
+  IL_04D1: call Boolean testDecimalValues(System.String)
+  IL_04D6: ldc.i4.0
+  IL_04D7: <unknown 0xFE01>
+  IL_04D9: br.s IL_04DC
+  IL_04DB: ldc.i4.1
+  IL_04DC: stloc.s 4
+  IL_04DE: ldloc.s 4
+  IL_04E0: brtrue.s IL_04FD
+  IL_04E2: nop
+  IL_04E3: ldloc.1
+  IL_04E4: ldstr "d2HR"
+  IL_04E9: ldarg.0
+  IL_04EA: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_04EF: callvirt System.String get_Text()
+  IL_04F4: callvirt Void set_Item(System.String, System.Object)
+  IL_04F9: nop
+  IL_04FA: nop
+  IL_04FB: br.s IL_050C
+  IL_04FD: nop
+  IL_04FE: ldstr "Please enter a valid value for precipitation mean between samples #1 and #2. Example: -21"
+  IL_0503: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0508: pop
+  IL_0509: ldc.i4.1
+  IL_050A: stloc.0
+  IL_050B: nop
+  IL_050C: ldarg.0
+  IL_050D: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0512: callvirt System.String get_Text()
+  IL_0517: ldstr ""
+  IL_051C: call Boolean op_Inequality(System.String, System.String)
+  IL_0521: brfalse.s IL_0538
+  IL_0523: ldarg.0
+  IL_0524: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0529: callvirt System.String get_Text()
+  IL_052E: call Boolean testDecimalValues(System.String)
+  IL_0533: ldc.i4.0
+  IL_0534: <unknown 0xFE01>
+  IL_0536: br.s IL_0539
+  IL_0538: ldc.i4.1
+  IL_0539: stloc.s 4
+  IL_053B: ldloc.s 4
+  IL_053D: brtrue.s IL_055A
+  IL_053F: nop
+  IL_0540: ldloc.1
+  IL_0541: ldstr "d18OR"
+  IL_0546: ldarg.0
+  IL_0547: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_054C: callvirt System.String get_Text()
+  IL_0551: callvirt Void set_Item(System.String, System.Object)
+  IL_0556: nop
+  IL_0557: nop
+  IL_0558: br.s IL_0569
+  IL_055A: nop
+  IL_055B: ldstr "Please enter a valid value for precipitation mean between samples #1 and #2. Example: -3.6"
+  IL_0560: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0565: pop
+  IL_0566: ldc.i4.1
+  IL_0567: stloc.0
+  IL_0568: nop
+  IL_0569: nop
+  IL_056A: ldarg.0
+  IL_056B: ldfld System.Windows.Controls.RadioButton radioButtonLEL
+  IL_0570: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_0575: stloc.s 5
+  IL_0577: ldloca.s 5
+  IL_0579: call Boolean GetValueOrDefault()
+  IL_057E: brfalse.s IL_0589
+  IL_0580: ldloca.s 5
+  IL_0582: call Boolean get_HasValue()
+  IL_0587: br.s IL_058A
+  IL_0589: ldc.i4.0
+  IL_058A: ldc.i4.0
+  IL_058B: <unknown 0xFE01>
+  IL_058D: stloc.s 4
+  IL_058F: ldloc.s 4
+  IL_0591: brtrue IL_06C1
+  IL_0596: nop
+  IL_0597: ldloc.1
+  IL_0598: ldstr "opc"
+  IL_059D: ldc.i4.3
+  IL_059E: box System.Int32
+  IL_05A3: callvirt Void set_Item(System.String, System.Object)
+  IL_05A8: nop
+  IL_05A9: ldarg.0
+  IL_05AA: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_05AF: callvirt System.String get_Text()
+  IL_05B4: ldstr ""
+  IL_05B9: call Boolean op_Inequality(System.String, System.String)
+  IL_05BE: brfalse.s IL_05D5
+  IL_05C0: ldarg.0
+  IL_05C1: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_05C6: callvirt System.String get_Text()
+  IL_05CB: call Boolean testDecimalValues(System.String)
+  IL_05D0: ldc.i4.0
+  IL_05D1: <unknown 0xFE01>
+  IL_05D3: br.s IL_05D6
+  IL_05D5: ldc.i4.1
+  IL_05D6: stloc.s 4
+  IL_05D8: ldloc.s 4
+  IL_05DA: brtrue.s IL_05F7
+  IL_05DC: nop
+  IL_05DD: ldloc.1
+  IL_05DE: ldstr "d2HR"
+  IL_05E3: ldarg.0
+  IL_05E4: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_05E9: callvirt System.String get_Text()
+  IL_05EE: callvirt Void set_Item(System.String, System.Object)
+  IL_05F3: nop
+  IL_05F4: nop
+  IL_05F5: br.s IL_0606
+  IL_05F7: nop
+  IL_05F8: ldstr "Please enter a valid value for precipitation mean between samples #1 and #2. Example: -21"
+  IL_05FD: call System.Windows.MessageBoxResult Show(System.String)
+  IL_0602: pop
+  IL_0603: ldc.i4.1
+  IL_0604: stloc.0
+  IL_0605: nop
+  IL_0606: ldarg.0
+  IL_0607: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_060C: callvirt System.String get_Text()
+  IL_0611: ldstr ""
+  IL_0616: call Boolean op_Inequality(System.String, System.String)
+  IL_061B: brfalse.s IL_0632
+  IL_061D: ldarg.0
+  IL_061E: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0623: callvirt System.String get_Text()
+  IL_0628: call Boolean testDecimalValues(System.String)
+  IL_062D: ldc.i4.0
+  IL_062E: <unknown 0xFE01>
+  IL_0630: br.s IL_0633
+  IL_0632: ldc.i4.1
+  IL_0633: stloc.s 4
+  IL_0635: ldloc.s 4
+  IL_0637: brtrue.s IL_0654
+  IL_0639: nop
+  IL_063A: ldloc.1
+  IL_063B: ldstr "d18OR"
+  IL_0640: ldarg.0
+  IL_0641: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0646: callvirt System.String get_Text()
+  IL_064B: callvirt Void set_Item(System.String, System.Object)
+  IL_0650: nop
+  IL_0651: nop
+  IL_0652: br.s IL_0663
+  IL_0654: nop
+  IL_0655: ldstr "Please enter a valid value for precipitation mean between samples #1 and #2. Example: -3.6"
+  IL_065A: call System.Windows.MessageBoxResult Show(System.String)
+  IL_065F: pop
+  IL_0660: ldc.i4.1
+  IL_0661: stloc.0
+  IL_0662: nop
+  IL_0663: ldarg.0
+  IL_0664: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_0669: callvirt System.String get_Text()
+  IL_066E: ldstr ""
+  IL_0673: call Boolean op_Inequality(System.String, System.String)
+  IL_0678: brfalse.s IL_068F
+  IL_067A: ldarg.0
+  IL_067B: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_0680: callvirt System.String get_Text()
+  IL_0685: call Boolean testDecimalValues(System.String)
+  IL_068A: ldc.i4.0
+  IL_068B: <unknown 0xFE01>
+  IL_068D: br.s IL_0690
+  IL_068F: ldc.i4.1
+  IL_0690: stloc.s 4
+  IL_0692: ldloc.s 4
+  IL_0694: brtrue.s IL_06B1
+  IL_0696: nop
+  IL_0697: ldloc.1
+  IL_0698: ldstr "LEL"
+  IL_069D: ldarg.0
+  IL_069E: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_06A3: callvirt System.String get_Text()
+  IL_06A8: callvirt Void set_Item(System.String, System.Object)
+  IL_06AD: nop
+  IL_06AE: nop
+  IL_06AF: br.s IL_06C0
+  IL_06B1: nop
+  IL_06B2: ldstr "Please enter a valid LEL value. Example: 4.59"
+  IL_06B7: call System.Windows.MessageBoxResult Show(System.String)
+  IL_06BC: pop
+  IL_06BD: ldc.i4.1
+  IL_06BE: stloc.0
+  IL_06BF: nop
+  IL_06C0: nop
+  IL_06C1: ldarg.0
+  IL_06C2: ldfld System.Data.DataTable hydroDataTable
+  IL_06C7: callvirt System.Data.DataRowCollection get_Rows()
+  IL_06CC: ldloc.1
+  IL_06CD: callvirt Void Add(System.Data.DataRow)
+  IL_06D2: nop
+  IL_06D3: ldloc.0
+  IL_06D4: stloc.2
+  IL_06D5: br.s IL_06D7
+  IL_06D7: ldloc.2
+  IL_06D8: ret
+
+.method Void btnManualCalculation_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Data.DataTable hydroDataTable
+  IL_0007: callvirt Void Clear()
+  IL_000C: nop
+  IL_000D: ldc.i4.1
+  IL_000E: stloc.0
+  IL_000F: ldc.i4.1
+  IL_0010: stloc.1
+  IL_0011: ldarg.0
+  IL_0012: ldfld System.Windows.Controls.RadioButton radioButtonSteadyState
+  IL_0017: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_001C: stloc.3
+  IL_001D: ldloca.s 3
+  IL_001F: call Boolean GetValueOrDefault()
+  IL_0024: brfalse.s IL_002F
+  IL_0026: ldloca.s 3
+  IL_0028: call Boolean get_HasValue()
+  IL_002D: br.s IL_0030
+  IL_002F: ldc.i4.0
+  IL_0030: ldc.i4.0
+  IL_0031: <unknown 0xFE01>
+  IL_0033: stloc.s 4
+  IL_0035: ldloc.s 4
+  IL_0037: brtrue.s IL_003D
+  IL_0039: ldc.i4.1
+  IL_003A: stloc.0
+  IL_003B: br.s IL_003F
+  IL_003D: ldc.i4.2
+  IL_003E: stloc.0
+  IL_003F: ldarg.0
+  IL_0040: ldfld System.Windows.Controls.RadioButton radioButtonAmbientAir
+  IL_0045: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_004A: stloc.3
+  IL_004B: ldloca.s 3
+  IL_004D: call Boolean GetValueOrDefault()
+  IL_0052: brfalse.s IL_005D
+  IL_0054: ldloca.s 3
+  IL_0056: call Boolean get_HasValue()
+  IL_005B: br.s IL_005E
+  IL_005D: ldc.i4.0
+  IL_005E: ldc.i4.0
+  IL_005F: <unknown 0xFE01>
+  IL_0061: stloc.s 4
+  IL_0063: ldloc.s 4
+  IL_0065: brtrue.s IL_0069
+  IL_0067: ldc.i4.1
+  IL_0068: stloc.1
+  IL_0069: ldarg.0
+  IL_006A: ldfld System.Windows.Controls.RadioButton radioButtonPrecipitation
+  IL_006F: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_0074: stloc.3
+  IL_0075: ldloca.s 3
+  IL_0077: call Boolean GetValueOrDefault()
+  IL_007C: brfalse.s IL_0087
+  IL_007E: ldloca.s 3
+  IL_0080: call Boolean get_HasValue()
+  IL_0085: br.s IL_0088
+  IL_0087: ldc.i4.0
+  IL_0088: ldc.i4.0
+  IL_0089: <unknown 0xFE01>
+  IL_008B: stloc.s 4
+  IL_008D: ldloc.s 4
+  IL_008F: brtrue.s IL_0093
+  IL_0091: ldc.i4.2
+  IL_0092: stloc.1
+  IL_0093: ldarg.0
+  IL_0094: ldfld System.Windows.Controls.RadioButton radioButtonLEL
+  IL_0099: callvirt System.Nullable`1[System.Boolean] get_IsChecked()
+  IL_009E: stloc.3
+  IL_009F: ldloca.s 3
+  IL_00A1: call Boolean GetValueOrDefault()
+  IL_00A6: brfalse.s IL_00B1
+  IL_00A8: ldloca.s 3
+  IL_00AA: call Boolean get_HasValue()
+  IL_00AF: br.s IL_00B2
+  IL_00B1: ldc.i4.0
+  IL_00B2: ldc.i4.0
+  IL_00B3: <unknown 0xFE01>
+  IL_00B5: stloc.s 4
+  IL_00B7: ldloc.s 4
+  IL_00B9: brtrue.s IL_00BD
+  IL_00BB: ldc.i4.3
+  IL_00BC: stloc.1
+  IL_00BD: ldarg.0
+  IL_00BE: call Boolean readManualInputValues()
+  IL_00C3: stloc.s 4
+  IL_00C5: ldloc.s 4
+  IL_00C7: brtrue.s IL_00F5
+  IL_00C9: nop
+  IL_00CA: ldarg.0
+  IL_00CB: ldc.i4.0
+  IL_00CC: stfld Boolean autoExtract
+  IL_00D1: ldarg.0
+  IL_00D2: call Void startCalculation()
+  IL_00D7: nop
+  IL_00D8: ldarg.0
+  IL_00D9: call Void roundResults()
+  IL_00DE: nop
+  IL_00DF: ldarg.0
+  IL_00E0: ldfld System.Data.DataTable hydroDataTable
+  IL_00E5: ldloc.0
+  IL_00E6: ldloc.1
+  IL_00E7: newobj Void .ctor(System.Data.DataTable, Int32, Int32)
+  IL_00EC: stloc.2
+  IL_00ED: ldloc.2
+  IL_00EE: callvirt Void Show()
+  IL_00F3: nop
+  IL_00F4: nop
+  IL_00F5: ret
+
+.method Void radioButtonAmbientAir_Checked(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_0007: ldc.i4.0
+  IL_0008: callvirt Void set_IsEnabled(Boolean)
+  IL_000D: nop
+  IL_000E: ldarg.0
+  IL_000F: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0014: ldc.i4.0
+  IL_0015: callvirt Void set_IsEnabled(Boolean)
+  IL_001A: nop
+  IL_001B: ldarg.0
+  IL_001C: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_0021: ldc.i4.1
+  IL_0022: callvirt Void set_IsEnabled(Boolean)
+  IL_0027: nop
+  IL_0028: ldarg.0
+  IL_0029: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_002E: ldc.i4.1
+  IL_002F: callvirt Void set_IsEnabled(Boolean)
+  IL_0034: nop
+  IL_0035: ldarg.0
+  IL_0036: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_003B: ldc.i4.0
+  IL_003C: callvirt Void set_IsEnabled(Boolean)
+  IL_0041: nop
+  IL_0042: ret
+
+.method Void radioButtonPrecipitation_Checked(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_0007: ldc.i4.1
+  IL_0008: callvirt Void set_IsEnabled(Boolean)
+  IL_000D: nop
+  IL_000E: ldarg.0
+  IL_000F: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0014: ldc.i4.1
+  IL_0015: callvirt Void set_IsEnabled(Boolean)
+  IL_001A: nop
+  IL_001B: ldarg.0
+  IL_001C: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_0021: ldc.i4.0
+  IL_0022: callvirt Void set_IsEnabled(Boolean)
+  IL_0027: nop
+  IL_0028: ldarg.0
+  IL_0029: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_002E: ldc.i4.0
+  IL_002F: callvirt Void set_IsEnabled(Boolean)
+  IL_0034: nop
+  IL_0035: ldarg.0
+  IL_0036: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_003B: ldc.i4.0
+  IL_003C: callvirt Void set_IsEnabled(Boolean)
+  IL_0041: nop
+  IL_0042: ret
+
+.method Void radioButtonLEL_Checked(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_0007: ldc.i4.1
+  IL_0008: callvirt Void set_IsEnabled(Boolean)
+  IL_000D: nop
+  IL_000E: ldarg.0
+  IL_000F: ldfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_0014: ldc.i4.1
+  IL_0015: callvirt Void set_IsEnabled(Boolean)
+  IL_001A: nop
+  IL_001B: ldarg.0
+  IL_001C: ldfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_0021: ldc.i4.0
+  IL_0022: callvirt Void set_IsEnabled(Boolean)
+  IL_0027: nop
+  IL_0028: ldarg.0
+  IL_0029: ldfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_002E: ldc.i4.0
+  IL_002F: callvirt Void set_IsEnabled(Boolean)
+  IL_0034: nop
+  IL_0035: ldarg.0
+  IL_0036: ldfld System.Windows.Controls.TextBox txtLEL
+  IL_003B: ldc.i4.1
+  IL_003C: callvirt Void set_IsEnabled(Boolean)
+  IL_0041: nop
+  IL_0042: ret
+
+.method Void btnBatchHelp_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldstr "HydroCalc_batchhelp.pdf"
+  IL_0006: call Boolean Exists(System.String)
+  IL_000B: ldc.i4.0
+  IL_000C: <unknown 0xFE01>
+  IL_000E: stloc.0
+  IL_000F: ldloc.0
+  IL_0010: brtrue.s IL_0021
+  IL_0012: nop
+  IL_0013: ldstr "HydroCalc_batchhelp.pdf"
+  IL_0018: call System.Diagnostics.Process Start(System.String)
+  IL_001D: pop
+  IL_001E: nop
+  IL_001F: br.s IL_0036
+  IL_0021: nop
+  IL_0022: ldstr "Help file - HydroCalc_batchhelp.pdf - not found!"
+  IL_0027: ldstr "Missing help file!"
+  IL_002C: ldc.i4.0
+  IL_002D: ldc.i4.s 16
+  IL_002F: call System.Windows.MessageBoxResult Show(System.String, System.String, System.Windows.MessageBoxButton, System.Windows.MessageBoxImage)
+  IL_0034: pop
+  IL_0035: nop
+  IL_0036: ret
+
+.method Void btnShowTemplate_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldstr "inputdata.csv"
+  IL_0006: call Boolean Exists(System.String)
+  IL_000B: ldc.i4.0
+  IL_000C: <unknown 0xFE01>
+  IL_000E: stloc.0
+  IL_000F: ldloc.0
+  IL_0010: brtrue.s IL_0021
+  IL_0012: nop
+  IL_0013: ldstr "inputdata.csv"
+  IL_0018: call System.Diagnostics.Process Start(System.String)
+  IL_001D: pop
+  IL_001E: nop
+  IL_001F: br.s IL_0036
+  IL_0021: nop
+  IL_0022: ldstr "Template file - inputdata.csv-  not found!"
+  IL_0027: ldstr "Missing help file!"
+  IL_002C: ldc.i4.0
+  IL_002D: ldc.i4.s 16
+  IL_002F: call System.Windows.MessageBoxResult Show(System.String, System.String, System.Windows.MessageBoxButton, System.Windows.MessageBoxImage)
+  IL_0034: pop
+  IL_0035: nop
+  IL_0036: ret
+
+.method Void InitializeComponent()
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld Boolean _contentLoaded
+  IL_0007: ldc.i4.0
+  IL_0008: <unknown 0xFE01>
+  IL_000A: stloc.1
+  IL_000B: ldloc.1
+  IL_000C: brtrue.s IL_0011
+  IL_000E: nop
+  IL_000F: br.s IL_002C
+  IL_0011: ldarg.0
+  IL_0012: ldc.i4.1
+  IL_0013: stfld Boolean _contentLoaded
+  IL_0018: ldstr "/HydroCalculator;component/mainwindow.xaml"
+  IL_001D: ldc.i4.2
+  IL_001E: newobj Void .ctor(System.String, System.UriKind)
+  IL_0023: stloc.0
+  IL_0024: ldarg.0
+  IL_0025: ldloc.0
+  IL_0026: call Void LoadComponent(System.Object, System.Uri)
+  IL_002B: nop
+  IL_002C: ret
+
+.method Void System.Windows.Markup.IComponentConnector.Connect(Int32 connectionId, Object target)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: stloc.0
+  IL_0003: ldloc.0
+  IL_0004: ldc.i4.1
+  IL_0005: sub
+  IL_0006: switch IL_0114, IL_0125, IL_0136, IL_0147, IL_0158, IL_0169, IL_017A, IL_018B, IL_019C, IL_01AD, IL_01D6, IL_01E7, IL_01F8, IL_0209, IL_021A, IL_0243, IL_026C, IL_027D, IL_028E, IL_029F, IL_02B0, IL_02C1, IL_02D2, IL_02E3, IL_02F4, IL_0305, IL_032E, IL_0357, IL_0368, IL_0379, IL_03A2, IL_03B3, IL_03C4, IL_03D5, IL_03FE, IL_040F, IL_0420, IL_0431, IL_0442, IL_0453, IL_0464, IL_0475, IL_0486, IL_0497, IL_04A8, IL_04B9, IL_04CA, IL_04DB, IL_04EC, IL_04FD, IL_050E, IL_051F, IL_0530, IL_0541, IL_0552, IL_0563, IL_0574, IL_0582, IL_0590, IL_059E, IL_05AC, IL_05BA, IL_05C8, IL_05D6, IL_05E4
+  IL_010F: br IL_05F2
+  IL_0114: ldarg.0
+  IL_0115: ldarg.2
+  IL_0116: castclass System.Windows.Controls.TabControl
+  IL_011B: stfld System.Windows.Controls.TabControl tabControl1
+  IL_0120: br IL_05F9
+  IL_0125: ldarg.0
+  IL_0126: ldarg.2
+  IL_0127: castclass System.Windows.Controls.TabItem
+  IL_012C: stfld System.Windows.Controls.TabItem tabItemAbout
+  IL_0131: br IL_05F9
+  IL_0136: ldarg.0
+  IL_0137: ldarg.2
+  IL_0138: castclass System.Windows.Controls.TextBlock
+  IL_013D: stfld System.Windows.Controls.TextBlock textBlock1
+  IL_0142: br IL_05F9
+  IL_0147: ldarg.0
+  IL_0148: ldarg.2
+  IL_0149: castclass System.Windows.Controls.TextBlock
+  IL_014E: stfld System.Windows.Controls.TextBlock textBlock4
+  IL_0153: br IL_05F9
+  IL_0158: ldarg.0
+  IL_0159: ldarg.2
+  IL_015A: castclass System.Windows.Controls.Label
+  IL_015F: stfld System.Windows.Controls.Label label9
+  IL_0164: br IL_05F9
+  IL_0169: ldarg.0
+  IL_016A: ldarg.2
+  IL_016B: castclass System.Windows.Controls.TextBlock
+  IL_0170: stfld System.Windows.Controls.TextBlock textBlock16
+  IL_0175: br IL_05F9
+  IL_017A: ldarg.0
+  IL_017B: ldarg.2
+  IL_017C: castclass System.Windows.Controls.TextBlock
+  IL_0181: stfld System.Windows.Controls.TextBlock textBlock17
+  IL_0186: br IL_05F9
+  IL_018B: ldarg.0
+  IL_018C: ldarg.2
+  IL_018D: castclass System.Windows.Controls.TextBlock
+  IL_0192: stfld System.Windows.Controls.TextBlock textBlock18
+  IL_0197: br IL_05F9
+  IL_019C: ldarg.0
+  IL_019D: ldarg.2
+  IL_019E: castclass System.Windows.Controls.TabItem
+  IL_01A3: stfld System.Windows.Controls.TabItem tabItemBatch
+  IL_01A8: br IL_05F9
+  IL_01AD: ldarg.0
+  IL_01AE: ldarg.2
+  IL_01AF: castclass System.Windows.Controls.Button
+  IL_01B4: stfld System.Windows.Controls.Button btnStartBatchCalculation
+  IL_01B9: ldarg.0
+  IL_01BA: ldfld System.Windows.Controls.Button btnStartBatchCalculation
+  IL_01BF: ldarg.0
+  IL_01C0: <unknown 0xFE06>
+  IL_01C2: ldarg.0
+  IL_01C3: nop
+  IL_01C4: nop
+  IL_01C5: ldloc.0
+  IL_01C6: newobj Void .ctor(System.Object, IntPtr)
+  IL_01CB: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_01D0: nop
+  IL_01D1: br IL_05F9
+  IL_01D6: ldarg.0
+  IL_01D7: ldarg.2
+  IL_01D8: castclass System.Windows.Controls.TextBox
+  IL_01DD: stfld System.Windows.Controls.TextBox txtBoxFileName
+  IL_01E2: br IL_05F9
+  IL_01E7: ldarg.0
+  IL_01E8: ldarg.2
+  IL_01E9: castclass System.Windows.Controls.Label
+  IL_01EE: stfld System.Windows.Controls.Label lblPricingFilePath
+  IL_01F3: br IL_05F9
+  IL_01F8: ldarg.0
+  IL_01F9: ldarg.2
+  IL_01FA: castclass System.Windows.Controls.Label
+  IL_01FF: stfld System.Windows.Controls.Label label1
+  IL_0204: br IL_05F9
+  IL_0209: ldarg.0
+  IL_020A: ldarg.2
+  IL_020B: castclass System.Windows.Controls.TextBox
+  IL_0210: stfld System.Windows.Controls.TextBox txtBoxProgress
+  IL_0215: br IL_05F9
+  IL_021A: ldarg.0
+  IL_021B: ldarg.2
+  IL_021C: castclass System.Windows.Controls.Button
+  IL_0221: stfld System.Windows.Controls.Button btnBatchHelp
+  IL_0226: ldarg.0
+  IL_0227: ldfld System.Windows.Controls.Button btnBatchHelp
+  IL_022C: ldarg.0
+  IL_022D: <unknown 0xFE06>
+  IL_022F: brfalse.s IL_0231
+  IL_0231: nop
+  IL_0232: ldloc.0
+  IL_0233: newobj Void .ctor(System.Object, IntPtr)
+  IL_0238: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_023D: nop
+  IL_023E: br IL_05F9
+  IL_0243: ldarg.0
+  IL_0244: ldarg.2
+  IL_0245: castclass System.Windows.Controls.Button
+  IL_024A: stfld System.Windows.Controls.Button btnShowTemplate
+  IL_024F: ldarg.0
+  IL_0250: ldfld System.Windows.Controls.Button btnShowTemplate
+  IL_0255: ldarg.0
+  IL_0256: <unknown 0xFE06>
+  IL_0258: brtrue.s IL_025A
+  IL_025A: nop
+  IL_025B: ldloc.0
+  IL_025C: newobj Void .ctor(System.Object, IntPtr)
+  IL_0261: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_0266: nop
+  IL_0267: br IL_05F9
+  IL_026C: ldarg.0
+  IL_026D: ldarg.2
+  IL_026E: castclass System.Windows.Controls.TextBlock
+  IL_0273: stfld System.Windows.Controls.TextBlock textBlock3
+  IL_0278: br IL_05F9
+  IL_027D: ldarg.0
+  IL_027E: ldarg.2
+  IL_027F: castclass System.Windows.Controls.TabItem
+  IL_0284: stfld System.Windows.Controls.TabItem tabItemManual
+  IL_0289: br IL_05F9
+  IL_028E: ldarg.0
+  IL_028F: ldarg.2
+  IL_0290: castclass System.Windows.Controls.GroupBox
+  IL_0295: stfld System.Windows.Controls.GroupBox groupBox1
+  IL_029A: br IL_05F9
+  IL_029F: ldarg.0
+  IL_02A0: ldarg.2
+  IL_02A1: castclass System.Windows.Controls.RadioButton
+  IL_02A6: stfld System.Windows.Controls.RadioButton radioButtonSteadyState
+  IL_02AB: br IL_05F9
+  IL_02B0: ldarg.0
+  IL_02B1: ldarg.2
+  IL_02B2: castclass System.Windows.Controls.RadioButton
+  IL_02B7: stfld System.Windows.Controls.RadioButton radioButtonNonSteadyState
+  IL_02BC: br IL_05F9
+  IL_02C1: ldarg.0
+  IL_02C2: ldarg.2
+  IL_02C3: castclass System.Windows.Controls.TextBlock
+  IL_02C8: stfld System.Windows.Controls.TextBlock textBlock2
+  IL_02CD: br IL_05F9
+  IL_02D2: ldarg.0
+  IL_02D3: ldarg.2
+  IL_02D4: castclass System.Windows.Controls.TextBlock
+  IL_02D9: stfld System.Windows.Controls.TextBlock textBlock5
+  IL_02DE: br IL_05F9
+  IL_02E3: ldarg.0
+  IL_02E4: ldarg.2
+  IL_02E5: castclass System.Windows.Controls.TextBlock
+  IL_02EA: stfld System.Windows.Controls.TextBlock textBlock6
+  IL_02EF: br IL_05F9
+  IL_02F4: ldarg.0
+  IL_02F5: ldarg.2
+  IL_02F6: castclass System.Windows.Controls.GroupBox
+  IL_02FB: stfld System.Windows.Controls.GroupBox groupBox2
+  IL_0300: br IL_05F9
+  IL_0305: ldarg.0
+  IL_0306: ldarg.2
+  IL_0307: castclass System.Windows.Controls.RadioButton
+  IL_030C: stfld System.Windows.Controls.RadioButton radioButtonAmbientAir
+  IL_0311: ldarg.0
+  IL_0312: ldfld System.Windows.Controls.RadioButton radioButtonAmbientAir
+  IL_0317: ldarg.0
+  IL_0318: <unknown 0xFE06>
+  IL_031A: calli 0x73060000
+  IL_031F: shr.un
+  IL_0320: nop
+  IL_0321: nop
+  IL_0322: stloc.0
+  IL_0323: callvirt Void add_Checked(System.Windows.RoutedEventHandler)
+  IL_0328: nop
+  IL_0329: br IL_05F9
+  IL_032E: ldarg.0
+  IL_032F: ldarg.2
+  IL_0330: castclass System.Windows.Controls.RadioButton
+  IL_0335: stfld System.Windows.Controls.RadioButton radioButtonPrecipitation
+  IL_033A: ldarg.0
+  IL_033B: ldfld System.Windows.Controls.RadioButton radioButtonPrecipitation
+  IL_0340: ldarg.0
+  IL_0341: <unknown 0xFE06>
+  IL_0343: ret
+  IL_0344: nop
+  IL_0345: nop
+  IL_0346: ldloc.0
+  IL_0347: newobj Void .ctor(System.Object, IntPtr)
+  IL_034C: callvirt Void add_Checked(System.Windows.RoutedEventHandler)
+  IL_0351: nop
+  IL_0352: br IL_05F9
+  IL_0357: ldarg.0
+  IL_0358: ldarg.2
+  IL_0359: castclass System.Windows.Controls.TextBlock
+  IL_035E: stfld System.Windows.Controls.TextBlock textBlock7
+  IL_0363: br IL_05F9
+  IL_0368: ldarg.0
+  IL_0369: ldarg.2
+  IL_036A: castclass System.Windows.Controls.TextBlock
+  IL_036F: stfld System.Windows.Controls.TextBlock textBlock8
+  IL_0374: br IL_05F9
+  IL_0379: ldarg.0
+  IL_037A: ldarg.2
+  IL_037B: castclass System.Windows.Controls.RadioButton
+  IL_0380: stfld System.Windows.Controls.RadioButton radioButtonLEL
+  IL_0385: ldarg.0
+  IL_0386: ldfld System.Windows.Controls.RadioButton radioButtonLEL
+  IL_038B: ldarg.0
+  IL_038C: <unknown 0xFE06>
+  IL_038E: br.s IL_0390
+  IL_0390: nop
+  IL_0391: ldloc.0
+  IL_0392: newobj Void .ctor(System.Object, IntPtr)
+  IL_0397: callvirt Void add_Checked(System.Windows.RoutedEventHandler)
+  IL_039C: nop
+  IL_039D: br IL_05F9
+  IL_03A2: ldarg.0
+  IL_03A3: ldarg.2
+  IL_03A4: castclass System.Windows.Controls.TextBlock
+  IL_03A9: stfld System.Windows.Controls.TextBlock textBlock10
+  IL_03AE: br IL_05F9
+  IL_03B3: ldarg.0
+  IL_03B4: ldarg.2
+  IL_03B5: castclass System.Windows.Controls.TextBlock
+  IL_03BA: stfld System.Windows.Controls.TextBlock textBlock9
+  IL_03BF: br IL_05F9
+  IL_03C4: ldarg.0
+  IL_03C5: ldarg.2
+  IL_03C6: castclass System.Windows.Controls.GroupBox
+  IL_03CB: stfld System.Windows.Controls.GroupBox groupBox3
+  IL_03D0: br IL_05F9
+  IL_03D5: ldarg.0
+  IL_03D6: ldarg.2
+  IL_03D7: castclass System.Windows.Controls.Button
+  IL_03DC: stfld System.Windows.Controls.Button btnManualCalculation
+  IL_03E1: ldarg.0
+  IL_03E2: ldfld System.Windows.Controls.Button btnManualCalculation
+  IL_03E7: ldarg.0
+  IL_03E8: <unknown 0xFE06>
+  IL_03EA: call 0x73060000
+  IL_03EF: shr.un
+  IL_03F0: nop
+  IL_03F1: nop
+  IL_03F2: stloc.0
+  IL_03F3: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_03F8: nop
+  IL_03F9: br IL_05F9
+  IL_03FE: ldarg.0
+  IL_03FF: ldarg.2
+  IL_0400: castclass System.Windows.Controls.Label
+  IL_0405: stfld System.Windows.Controls.Label label2
+  IL_040A: br IL_05F9
+  IL_040F: ldarg.0
+  IL_0410: ldarg.2
+  IL_0411: castclass System.Windows.Controls.TextBlock
+  IL_0416: stfld System.Windows.Controls.TextBlock textBlock11
+  IL_041B: br IL_05F9
+  IL_0420: ldarg.0
+  IL_0421: ldarg.2
+  IL_0422: castclass System.Windows.Controls.TextBox
+  IL_0427: stfld System.Windows.Controls.TextBox txtTemperature
+  IL_042C: br IL_05F9
+  IL_0431: ldarg.0
+  IL_0432: ldarg.2
+  IL_0433: castclass System.Windows.Controls.Label
+  IL_0438: stfld System.Windows.Controls.Label label3
+  IL_043D: br IL_05F9
+  IL_0442: ldarg.0
+  IL_0443: ldarg.2
+  IL_0444: castclass System.Windows.Controls.Label
+  IL_0449: stfld System.Windows.Controls.Label label4
+  IL_044E: br IL_05F9
+  IL_0453: ldarg.0
+  IL_0454: ldarg.2
+  IL_0455: castclass System.Windows.Controls.TextBox
+  IL_045A: stfld System.Windows.Controls.TextBox txtRelativeHumidity
+  IL_045F: br IL_05F9
+  IL_0464: ldarg.0
+  IL_0465: ldarg.2
+  IL_0466: castclass System.Windows.Controls.Label
+  IL_046B: stfld System.Windows.Controls.Label label5
+  IL_0470: br IL_05F9
+  IL_0475: ldarg.0
+  IL_0476: ldarg.2
+  IL_0477: castclass System.Windows.Controls.TextBlock
+  IL_047C: stfld System.Windows.Controls.TextBlock textBlock12
+  IL_0481: br IL_05F9
+  IL_0486: ldarg.0
+  IL_0487: ldarg.2
+  IL_0488: castclass System.Windows.Controls.TextBlock
+  IL_048D: stfld System.Windows.Controls.TextBlock textBlock13
+  IL_0492: br IL_05F9
+  IL_0497: ldarg.0
+  IL_0498: ldarg.2
+  IL_0499: castclass System.Windows.Controls.TextBlock
+  IL_049E: stfld System.Windows.Controls.TextBlock textBlock14
+  IL_04A3: br IL_05F9
+  IL_04A8: ldarg.0
+  IL_04A9: ldarg.2
+  IL_04AA: castclass System.Windows.Controls.TextBox
+  IL_04AF: stfld System.Windows.Controls.TextBox txtPoolStartO
+  IL_04B4: br IL_05F9
+  IL_04B9: ldarg.0
+  IL_04BA: ldarg.2
+  IL_04BB: castclass System.Windows.Controls.TextBox
+  IL_04C0: stfld System.Windows.Controls.TextBox txtPoolStartH
+  IL_04C5: br IL_05F9
+  IL_04CA: ldarg.0
+  IL_04CB: ldarg.2
+  IL_04CC: castclass System.Windows.Controls.TextBox
+  IL_04D1: stfld System.Windows.Controls.TextBox txtPoolFinalO
+  IL_04D6: br IL_05F9
+  IL_04DB: ldarg.0
+  IL_04DC: ldarg.2
+  IL_04DD: castclass System.Windows.Controls.TextBox
+  IL_04E2: stfld System.Windows.Controls.TextBox txtPoolFinalH
+  IL_04E7: br IL_05F9
+  IL_04EC: ldarg.0
+  IL_04ED: ldarg.2
+  IL_04EE: castclass System.Windows.Controls.TextBox
+  IL_04F3: stfld System.Windows.Controls.TextBox txtAmbientBetweenO
+  IL_04F8: br IL_05F9
+  IL_04FD: ldarg.0
+  IL_04FE: ldarg.2
+  IL_04FF: castclass System.Windows.Controls.TextBox
+  IL_0504: stfld System.Windows.Controls.TextBox txtAmbientBetweenH
+  IL_0509: br IL_05F9
+  IL_050E: ldarg.0
+  IL_050F: ldarg.2
+  IL_0510: castclass System.Windows.Controls.Label
+  IL_0515: stfld System.Windows.Controls.Label label6
+  IL_051A: br IL_05F9
+  IL_051F: ldarg.0
+  IL_0520: ldarg.2
+  IL_0521: castclass System.Windows.Controls.Label
+  IL_0526: stfld System.Windows.Controls.Label label7
+  IL_052B: br IL_05F9
+  IL_0530: ldarg.0
+  IL_0531: ldarg.2
+  IL_0532: castclass System.Windows.Controls.TextBlock
+  IL_0537: stfld System.Windows.Controls.TextBlock textBlock15
+  IL_053C: br IL_05F9
+  IL_0541: ldarg.0
+  IL_0542: ldarg.2
+  IL_0543: castclass System.Windows.Controls.TextBox
+  IL_0548: stfld System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  IL_054D: br IL_05F9
+  IL_0552: ldarg.0
+  IL_0553: ldarg.2
+  IL_0554: castclass System.Windows.Controls.TextBox
+  IL_0559: stfld System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  IL_055E: br IL_05F9
+  IL_0563: ldarg.0
+  IL_0564: ldarg.2
+  IL_0565: castclass System.Windows.Controls.TextBox
+  IL_056A: stfld System.Windows.Controls.TextBox txtLEL
+  IL_056F: br IL_05F9
+  IL_0574: ldarg.0
+  IL_0575: ldarg.2
+  IL_0576: castclass System.Windows.Controls.Label
+  IL_057B: stfld System.Windows.Controls.Label label8
+  IL_0580: br.s IL_05F9
+  IL_0582: ldarg.0
+  IL_0583: ldarg.2
+  IL_0584: castclass System.Windows.Controls.Label
+  IL_0589: stfld System.Windows.Controls.Label label10
+  IL_058E: br.s IL_05F9
+  IL_0590: ldarg.0
+  IL_0591: ldarg.2
+  IL_0592: castclass System.Windows.Controls.Label
+  IL_0597: stfld System.Windows.Controls.Label label11
+  IL_059C: br.s IL_05F9
+  IL_059E: ldarg.0
+  IL_059F: ldarg.2
+  IL_05A0: castclass System.Windows.Controls.Label
+  IL_05A5: stfld System.Windows.Controls.Label label12
+  IL_05AA: br.s IL_05F9
+  IL_05AC: ldarg.0
+  IL_05AD: ldarg.2
+  IL_05AE: castclass System.Windows.Controls.Label
+  IL_05B3: stfld System.Windows.Controls.Label label13
+  IL_05B8: br.s IL_05F9
+  IL_05BA: ldarg.0
+  IL_05BB: ldarg.2
+  IL_05BC: castclass System.Windows.Controls.TextBlock
+  IL_05C1: stfld System.Windows.Controls.TextBlock textBlock19
+  IL_05C6: br.s IL_05F9
+  IL_05C8: ldarg.0
+  IL_05C9: ldarg.2
+  IL_05CA: castclass System.Windows.Controls.TextBox
+  IL_05CF: stfld System.Windows.Controls.TextBox txtKineticF_O
+  IL_05D4: br.s IL_05F9
+  IL_05D6: ldarg.0
+  IL_05D7: ldarg.2
+  IL_05D8: castclass System.Windows.Controls.TextBox
+  IL_05DD: stfld System.Windows.Controls.TextBox txtKineticF_H
+  IL_05E2: br.s IL_05F9
+  IL_05E4: ldarg.0
+  IL_05E5: ldarg.2
+  IL_05E6: castclass System.Windows.Controls.Label
+  IL_05EB: stfld System.Windows.Controls.Label label14
+  IL_05F0: br.s IL_05F9
+  IL_05F2: ldarg.0
+  IL_05F3: ldc.i4.1
+  IL_05F4: stfld Boolean _contentLoaded
+  IL_05F9: ret
+
+.type HydroCalculator.MainWindow+<>c__DisplayClass1
+
+.method Void <updateProgresDialog>b__0()
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld HydroCalculator.MainWindow <>4__this
+  IL_0007: ldfld System.Windows.Controls.TextBox txtBoxProgress
+  IL_000C: dup
+  IL_000D: callvirt System.String get_Text()
+  IL_0012: ldarg.0
+  IL_0013: ldfld System.String msg
+  IL_0018: ldstr "
+"
+  IL_001D: call System.String Concat(System.String, System.String, System.String)
+  IL_0022: callvirt Void set_Text(System.String)
+  IL_0027: nop
+  IL_0028: ret
+
+.type HydroCalculator.ManualResults
+
+.method Void btnExtractCSV_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld System.Data.DataTable hydroData
+  IL_0007: call Void ExtractData(System.Data.DataTable)
+  IL_000C: nop
+  IL_000D: ret
+
+.method Void btnClose_Click(Object sender, RoutedEventArgs e)
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: call Void Close()
+  IL_0007: nop
+  IL_0008: ret
+
+.method Void InitializeComponent()
+  IL_0000: nop
+  IL_0001: ldarg.0
+  IL_0002: ldfld Boolean _contentLoaded
+  IL_0007: ldc.i4.0
+  IL_0008: <unknown 0xFE01>
+  IL_000A: stloc.1
+  IL_000B: ldloc.1
+  IL_000C: brtrue.s IL_0011
+  IL_000E: nop
+  IL_000F: br.s IL_002C
+  IL_0011: ldarg.0
+  IL_0012: ldc.i4.1
+  IL_0013: stfld Boolean _contentLoaded
+  IL_0018: ldstr "/HydroCalculator;component/manualresults.xaml"
+  IL_001D: ldc.i4.2
+  IL_001E: newobj Void .ctor(System.String, System.UriKind)
+  IL_0023: stloc.0
+  IL_0024: ldarg.0
+  IL_0025: ldloc.0
+  IL_0026: call Void LoadComponent(System.Object, System.Uri)
+  IL_002B: nop
+  IL_002C: ret
+
+.method Void System.Windows.Markup.IComponentConnector.Connect(Int32 connectionId, Object target)
+  IL_0000: nop
+  IL_0001: ldarg.1
+  IL_0002: stloc.0
+  IL_0003: ldloc.0
+  IL_0004: ldc.i4.1
+  IL_0005: sub
+  IL_0006: switch IL_00C8, IL_00D9, IL_00EA, IL_00FB, IL_010C, IL_011D, IL_012E, IL_013F, IL_0150, IL_0161, IL_0172, IL_0183, IL_0194, IL_01A5, IL_01B6, IL_01C7, IL_01D8, IL_01E9, IL_01FA, IL_020B, IL_021C, IL_022D, IL_023E, IL_024F, IL_0260, IL_0271, IL_0282, IL_0293, IL_02A4, IL_02B5, IL_02C6, IL_02D7, IL_02E8, IL_02F9, IL_030A, IL_031B, IL_032C, IL_033D, IL_034E, IL_0377, IL_039D, IL_03AB, IL_03B9, IL_03C7, IL_03D5, IL_03E3
+  IL_00C3: br IL_03F1
+  IL_00C8: ldarg.0
+  IL_00C9: ldarg.2
+  IL_00CA: castclass System.Windows.Controls.TextBox
+  IL_00CF: stfld System.Windows.Controls.TextBox txtEkO
+  IL_00D4: br IL_03F8
+  IL_00D9: ldarg.0
+  IL_00DA: ldarg.2
+  IL_00DB: castclass System.Windows.Controls.Label
+  IL_00E0: stfld System.Windows.Controls.Label label6
+  IL_00E5: br IL_03F8
+  IL_00EA: ldarg.0
+  IL_00EB: ldarg.2
+  IL_00EC: castclass System.Windows.Controls.Label
+  IL_00F1: stfld System.Windows.Controls.Label label7
+  IL_00F6: br IL_03F8
+  IL_00FB: ldarg.0
+  IL_00FC: ldarg.2
+  IL_00FD: castclass System.Windows.Controls.Label
+  IL_0102: stfld System.Windows.Controls.Label label10
+  IL_0107: br IL_03F8
+  IL_010C: ldarg.0
+  IL_010D: ldarg.2
+  IL_010E: castclass System.Windows.Controls.Label
+  IL_0113: stfld System.Windows.Controls.Label label1
+  IL_0118: br IL_03F8
+  IL_011D: ldarg.0
+  IL_011E: ldarg.2
+  IL_011F: castclass System.Windows.Controls.TextBox
+  IL_0124: stfld System.Windows.Controls.TextBox txtEkH
+  IL_0129: br IL_03F8
+  IL_012E: ldarg.0
+  IL_012F: ldarg.2
+  IL_0130: castclass System.Windows.Controls.TextBox
+  IL_0135: stfld System.Windows.Controls.TextBox txtEstarO
+  IL_013A: br IL_03F8
+  IL_013F: ldarg.0
+  IL_0140: ldarg.2
+  IL_0141: castclass System.Windows.Controls.Label
+  IL_0146: stfld System.Windows.Controls.Label label2
+  IL_014B: br IL_03F8
+  IL_0150: ldarg.0
+  IL_0151: ldarg.2
+  IL_0152: castclass System.Windows.Controls.Label
+  IL_0157: stfld System.Windows.Controls.Label label3
+  IL_015C: br IL_03F8
+  IL_0161: ldarg.0
+  IL_0162: ldarg.2
+  IL_0163: castclass System.Windows.Controls.TextBox
+  IL_0168: stfld System.Windows.Controls.TextBox txtEstarH
+  IL_016D: br IL_03F8
+  IL_0172: ldarg.0
+  IL_0173: ldarg.2
+  IL_0174: castclass System.Windows.Controls.TextBox
+  IL_0179: stfld System.Windows.Controls.TextBox txtEO
+  IL_017E: br IL_03F8
+  IL_0183: ldarg.0
+  IL_0184: ldarg.2
+  IL_0185: castclass System.Windows.Controls.Label
+  IL_018A: stfld System.Windows.Controls.Label label4
+  IL_018F: br IL_03F8
+  IL_0194: ldarg.0
+  IL_0195: ldarg.2
+  IL_0196: castclass System.Windows.Controls.Label
+  IL_019B: stfld System.Windows.Controls.Label label5
+  IL_01A0: br IL_03F8
+  IL_01A5: ldarg.0
+  IL_01A6: ldarg.2
+  IL_01A7: castclass System.Windows.Controls.TextBox
+  IL_01AC: stfld System.Windows.Controls.TextBox txtEH
+  IL_01B1: br IL_03F8
+  IL_01B6: ldarg.0
+  IL_01B7: ldarg.2
+  IL_01B8: castclass System.Windows.Controls.TextBox
+  IL_01BD: stfld System.Windows.Controls.TextBox txtCkO
+  IL_01C2: br IL_03F8
+  IL_01C7: ldarg.0
+  IL_01C8: ldarg.2
+  IL_01C9: castclass System.Windows.Controls.Label
+  IL_01CE: stfld System.Windows.Controls.Label label8
+  IL_01D3: br IL_03F8
+  IL_01D8: ldarg.0
+  IL_01D9: ldarg.2
+  IL_01DA: castclass System.Windows.Controls.Label
+  IL_01DF: stfld System.Windows.Controls.Label label9
+  IL_01E4: br IL_03F8
+  IL_01E9: ldarg.0
+  IL_01EA: ldarg.2
+  IL_01EB: castclass System.Windows.Controls.TextBox
+  IL_01F0: stfld System.Windows.Controls.TextBox txtCkH
+  IL_01F5: br IL_03F8
+  IL_01FA: ldarg.0
+  IL_01FB: ldarg.2
+  IL_01FC: castclass System.Windows.Controls.TextBox
+  IL_0201: stfld System.Windows.Controls.TextBox txtaO
+  IL_0206: br IL_03F8
+  IL_020B: ldarg.0
+  IL_020C: ldarg.2
+  IL_020D: castclass System.Windows.Controls.Label
+  IL_0212: stfld System.Windows.Controls.Label label11
+  IL_0217: br IL_03F8
+  IL_021C: ldarg.0
+  IL_021D: ldarg.2
+  IL_021E: castclass System.Windows.Controls.Label
+  IL_0223: stfld System.Windows.Controls.Label label12
+  IL_0228: br IL_03F8
+  IL_022D: ldarg.0
+  IL_022E: ldarg.2
+  IL_022F: castclass System.Windows.Controls.TextBox
+  IL_0234: stfld System.Windows.Controls.TextBox txtaH
+  IL_0239: br IL_03F8
+  IL_023E: ldarg.0
+  IL_023F: ldarg.2
+  IL_0240: castclass System.Windows.Controls.TextBox
+  IL_0245: stfld System.Windows.Controls.TextBox txtdstarO
+  IL_024A: br IL_03F8
+  IL_024F: ldarg.0
+  IL_0250: ldarg.2
+  IL_0251: castclass System.Windows.Controls.Label
+  IL_0256: stfld System.Windows.Controls.Label label13
+  IL_025B: br IL_03F8
+  IL_0260: ldarg.0
+  IL_0261: ldarg.2
+  IL_0262: castclass System.Windows.Controls.Label
+  IL_0267: stfld System.Windows.Controls.Label label14
+  IL_026C: br IL_03F8
+  IL_0271: ldarg.0
+  IL_0272: ldarg.2
+  IL_0273: castclass System.Windows.Controls.TextBox
+  IL_0278: stfld System.Windows.Controls.TextBox txtdstarH
+  IL_027D: br IL_03F8
+  IL_0282: ldarg.0
+  IL_0283: ldarg.2
+  IL_0284: castclass System.Windows.Controls.TextBox
+  IL_0289: stfld System.Windows.Controls.TextBox txtmO
+  IL_028E: br IL_03F8
+  IL_0293: ldarg.0
+  IL_0294: ldarg.2
+  IL_0295: castclass System.Windows.Controls.Label
+  IL_029A: stfld System.Windows.Controls.Label label15
+  IL_029F: br IL_03F8
+  IL_02A4: ldarg.0
+  IL_02A5: ldarg.2
+  IL_02A6: castclass System.Windows.Controls.Label
+  IL_02AB: stfld System.Windows.Controls.Label label16
+  IL_02B0: br IL_03F8
+  IL_02B5: ldarg.0
+  IL_02B6: ldarg.2
+  IL_02B7: castclass System.Windows.Controls.TextBox
+  IL_02BC: stfld System.Windows.Controls.TextBox txtmH
+  IL_02C1: br IL_03F8
+  IL_02C6: ldarg.0
+  IL_02C7: ldarg.2
+  IL_02C8: castclass System.Windows.Controls.Label
+  IL_02CD: stfld System.Windows.Controls.Label label19
+  IL_02D2: br IL_03F8
+  IL_02D7: ldarg.0
+  IL_02D8: ldarg.2
+  IL_02D9: castclass System.Windows.Controls.TextBox
+  IL_02DE: stfld System.Windows.Controls.TextBox txtResultsH
+  IL_02E3: br IL_03F8
+  IL_02E8: ldarg.0
+  IL_02E9: ldarg.2
+  IL_02EA: castclass System.Windows.Controls.Label
+  IL_02EF: stfld System.Windows.Controls.Label label20
+  IL_02F4: br IL_03F8
+  IL_02F9: ldarg.0
+  IL_02FA: ldarg.2
+  IL_02FB: castclass System.Windows.Controls.TextBox
+  IL_0300: stfld System.Windows.Controls.TextBox txtResultsO
+  IL_0305: br IL_03F8
+  IL_030A: ldarg.0
+  IL_030B: ldarg.2
+  IL_030C: castclass System.Windows.Controls.Label
+  IL_0311: stfld System.Windows.Controls.Label lblResultTypeH
+  IL_0316: br IL_03F8
+  IL_031B: ldarg.0
+  IL_031C: ldarg.2
+  IL_031D: castclass System.Windows.Controls.Label
+  IL_0322: stfld System.Windows.Controls.Label lblResultTypeO
+  IL_0327: br IL_03F8
+  IL_032C: ldarg.0
+  IL_032D: ldarg.2
+  IL_032E: castclass System.Windows.Controls.Label
+  IL_0333: stfld System.Windows.Controls.Label label21
+  IL_0338: br IL_03F8
+  IL_033D: ldarg.0
+  IL_033E: ldarg.2
+  IL_033F: castclass System.Windows.Controls.TextBlock
+  IL_0344: stfld System.Windows.Controls.TextBlock txtBlockResultsDesc
+  IL_0349: br IL_03F8
+  IL_034E: ldarg.0
+  IL_034F: ldarg.2
+  IL_0350: castclass System.Windows.Controls.Button
+  IL_0355: stfld System.Windows.Controls.Button btnClose
+  IL_035A: ldarg.0
+  IL_035B: ldfld System.Windows.Controls.Button btnClose
+  IL_0360: ldarg.0
+  IL_0361: <unknown 0xFE06>
+  IL_0363: bgt.un.s IL_0365
+  IL_0365: nop
+  IL_0366: ldloc.0
+  IL_0367: newobj Void .ctor(System.Object, IntPtr)
+  IL_036C: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_0371: nop
+  IL_0372: br IL_03F8
+  IL_0377: ldarg.0
+  IL_0378: ldarg.2
+  IL_0379: castclass System.Windows.Controls.Button
+  IL_037E: stfld System.Windows.Controls.Button btnExtractCSV
+  IL_0383: ldarg.0
+  IL_0384: ldfld System.Windows.Controls.Button btnExtractCSV
+  IL_0389: ldarg.0
+  IL_038A: <unknown 0xFE06>
+  IL_038C: bge.un.s IL_038E
+  IL_038E: nop
+  IL_038F: ldloc.0
+  IL_0390: newobj Void .ctor(System.Object, IntPtr)
+  IL_0395: callvirt Void add_Click(System.Windows.RoutedEventHandler)
+  IL_039A: nop
+  IL_039B: br.s IL_03F8
+  IL_039D: ldarg.0
+  IL_039E: ldarg.2
+  IL_039F: castclass System.Windows.Controls.Label
+  IL_03A4: stfld System.Windows.Controls.Label label17
+  IL_03A9: br.s IL_03F8
+  IL_03AB: ldarg.0
+  IL_03AC: ldarg.2
+  IL_03AD: castclass System.Windows.Controls.TextBox
+  IL_03B2: stfld System.Windows.Controls.TextBox txtParamX
+  IL_03B7: br.s IL_03F8
+  IL_03B9: ldarg.0
+  IL_03BA: ldarg.2
+  IL_03BB: castclass System.Windows.Controls.TextBox
+  IL_03C0: stfld System.Windows.Controls.TextBox txtd18OA
+  IL_03C5: br.s IL_03F8
+  IL_03C7: ldarg.0
+  IL_03C8: ldarg.2
+  IL_03C9: castclass System.Windows.Controls.Label
+  IL_03CE: stfld System.Windows.Controls.Label label18
+  IL_03D3: br.s IL_03F8
+  IL_03D5: ldarg.0
+  IL_03D6: ldarg.2
+  IL_03D7: castclass System.Windows.Controls.Label
+  IL_03DC: stfld System.Windows.Controls.Label label22
+  IL_03E1: br.s IL_03F8
+  IL_03E3: ldarg.0
+  IL_03E4: ldarg.2
+  IL_03E5: castclass System.Windows.Controls.TextBox
+  IL_03EA: stfld System.Windows.Controls.TextBox txtd2HA
+  IL_03EF: br.s IL_03F8
+  IL_03F1: ldarg.0
+  IL_03F2: ldc.i4.1
+  IL_03F3: stfld Boolean _contentLoaded
+  IL_03F8: ret
+
+.type HydroCalculator.Properties.Resources
+
+.type HydroCalculator.Properties.Settings
+

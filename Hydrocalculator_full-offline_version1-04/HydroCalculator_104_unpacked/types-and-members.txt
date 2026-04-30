@@ -1,0 +1,196 @@
+﻿Assembly: HydroCalculator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+EntryPoint: HydroCalculator.App.Main
+
+TYPE HydroCalculator.App
+  METHOD System.Void InitializeComponent()
+  METHOD System.Void Main()
+
+TYPE HydroCalculator.MainWindow
+  FIELD System.Data.DataTable hydroDataTable
+  FIELD System.Boolean globalErrorFlag
+  FIELD System.Boolean autoExtract
+  FIELD System.Windows.Controls.TabControl tabControl1
+  FIELD System.Windows.Controls.TabItem tabItemAbout
+  FIELD System.Windows.Controls.TextBlock textBlock1
+  FIELD System.Windows.Controls.TextBlock textBlock4
+  FIELD System.Windows.Controls.Label label9
+  FIELD System.Windows.Controls.TextBlock textBlock16
+  FIELD System.Windows.Controls.TextBlock textBlock17
+  FIELD System.Windows.Controls.TextBlock textBlock18
+  FIELD System.Windows.Controls.TabItem tabItemBatch
+  FIELD System.Windows.Controls.Button btnStartBatchCalculation
+  FIELD System.Windows.Controls.TextBox txtBoxFileName
+  FIELD System.Windows.Controls.Label lblPricingFilePath
+  FIELD System.Windows.Controls.Label label1
+  FIELD System.Windows.Controls.TextBox txtBoxProgress
+  FIELD System.Windows.Controls.Button btnBatchHelp
+  FIELD System.Windows.Controls.Button btnShowTemplate
+  FIELD System.Windows.Controls.TextBlock textBlock3
+  FIELD System.Windows.Controls.TabItem tabItemManual
+  FIELD System.Windows.Controls.GroupBox groupBox1
+  FIELD System.Windows.Controls.RadioButton radioButtonSteadyState
+  FIELD System.Windows.Controls.RadioButton radioButtonNonSteadyState
+  FIELD System.Windows.Controls.TextBlock textBlock2
+  FIELD System.Windows.Controls.TextBlock textBlock5
+  FIELD System.Windows.Controls.TextBlock textBlock6
+  FIELD System.Windows.Controls.GroupBox groupBox2
+  FIELD System.Windows.Controls.RadioButton radioButtonAmbientAir
+  FIELD System.Windows.Controls.RadioButton radioButtonPrecipitation
+  FIELD System.Windows.Controls.TextBlock textBlock7
+  FIELD System.Windows.Controls.TextBlock textBlock8
+  FIELD System.Windows.Controls.RadioButton radioButtonLEL
+  FIELD System.Windows.Controls.TextBlock textBlock10
+  FIELD System.Windows.Controls.TextBlock textBlock9
+  FIELD System.Windows.Controls.GroupBox groupBox3
+  FIELD System.Windows.Controls.Button btnManualCalculation
+  FIELD System.Windows.Controls.Label label2
+  FIELD System.Windows.Controls.TextBlock textBlock11
+  FIELD System.Windows.Controls.TextBox txtTemperature
+  FIELD System.Windows.Controls.Label label3
+  FIELD System.Windows.Controls.Label label4
+  FIELD System.Windows.Controls.TextBox txtRelativeHumidity
+  FIELD System.Windows.Controls.Label label5
+  FIELD System.Windows.Controls.TextBlock textBlock12
+  FIELD System.Windows.Controls.TextBlock textBlock13
+  FIELD System.Windows.Controls.TextBlock textBlock14
+  FIELD System.Windows.Controls.TextBox txtPoolStartO
+  FIELD System.Windows.Controls.TextBox txtPoolStartH
+  FIELD System.Windows.Controls.TextBox txtPoolFinalO
+  FIELD System.Windows.Controls.TextBox txtPoolFinalH
+  FIELD System.Windows.Controls.TextBox txtAmbientBetweenO
+  FIELD System.Windows.Controls.TextBox txtAmbientBetweenH
+  FIELD System.Windows.Controls.Label label6
+  FIELD System.Windows.Controls.Label label7
+  FIELD System.Windows.Controls.TextBlock textBlock15
+  FIELD System.Windows.Controls.TextBox txtPrecipitationBetweenO
+  FIELD System.Windows.Controls.TextBox txtPrecipitationBetweenH
+  FIELD System.Windows.Controls.TextBox txtLEL
+  FIELD System.Windows.Controls.Label label8
+  FIELD System.Windows.Controls.Label label10
+  FIELD System.Windows.Controls.Label label11
+  FIELD System.Windows.Controls.Label label12
+  FIELD System.Windows.Controls.Label label13
+  FIELD System.Windows.Controls.TextBlock textBlock19
+  FIELD System.Windows.Controls.TextBox txtKineticF_O
+  FIELD System.Windows.Controls.TextBox txtKineticF_H
+  FIELD System.Windows.Controls.Label label14
+  FIELD System.Boolean _contentLoaded
+  FIELD System.Double ambAirMoistH
+  FIELD System.Double ambAirMoistHAdj
+  FIELD System.Double ambAirMoistO
+  FIELD System.Double ambAirMoistOAdj
+  METHOD System.Void btnStartBatchCalculation_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void startCalculation()
+  METHOD System.Void addTableHeaders()
+  METHOD System.Void roundResults()
+  METHOD System.Void ExtractData(DataTable hydroData)
+  METHOD System.Void updateProgresDialog(String msg)
+  METHOD System.Void SaveRecordsToFile(StringBuilder sb)
+  METHOD System.Double calc_ambAirMoistH(Double aplusH, Double d2HR, Double estarH)
+  METHOD System.Double calc_ambAirMoistHAdj(Double d2HR, Double estarH, Double lelParam)
+  METHOD System.Double calc_ambAirMoistO(Double ao, Double d18OR, Double estarO)
+  METHOD System.Double calc_ambAirMoistOAdj(Double d18OR, Double estarO, Double lelParam)
+  METHOD System.Double d2HA_opt2(Double ah, Double d2hr, Double estarH)
+  METHOD System.Double d2HA_opt3(Double lelParam, Double d2hr, Double estarH, Double aplusH)
+  METHOD System.Double d18OA_opt3(Double lelparam, Double d18OR, Double estarO, Double aplusO)
+  METHOD System.Double d18OA_opt2(Double ao, Double d18OR, Double estarO)
+  METHOD System.Double EkH(Double h, Double CkH)
+  METHOD System.Double EkO(Double h, Double CkO)
+  METHOD System.Double EplusO(Double ao)
+  METHOD System.Double EplusH(Double aplusH)
+  METHOD System.Double EH(Double ekh, Double estarh, Double aplusH)
+  METHOD System.Double EO(Double eko, Double estaro, Double aplusO)
+  METHOD System.Double aplusH(Double T)
+  METHOD System.Double aplusO(Double T)
+  METHOD System.Double dstarH(Double h, Double d2HA, Double EH)
+  METHOD System.Double dstarO(Double h, Double d18OA, Double EO)
+  METHOD System.Double mH(Double h, Double EH, Double EkH)
+  METHOD System.Double mO(Double h, Double EO, Double EkO)
+  METHOD System.Double EI_H(Double d2HL, Double d2HP, Double dstarH, Double mH)
+  METHOD System.Double EI_O(Double d18OL, Double d18OP, Double dstarO, Double mO)
+  METHOD System.Double f_H(Double d2HL, Double dstarH, Double d2HP, Double mH)
+  METHOD System.Double f_O(Double d18OL, Double dstarO, Double d18OP, Double mO)
+  METHOD System.Boolean testDecimalValues(String s)
+  METHOD System.Void openInputFile()
+  METHOD System.Void GetDataFromCSVFile(String csv_file_path)
+  METHOD System.Void validateBatchData()
+  METHOD System.Data.DataTable GetDataTabletFromCSVFile2(String csv_file_path)
+  METHOD System.Void btnExit_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Boolean readManualInputValues()
+  METHOD System.Void btnManualCalculation_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void radioButtonAmbientAir_Checked(Object sender, RoutedEventArgs e)
+  METHOD System.Void radioButtonPrecipitation_Checked(Object sender, RoutedEventArgs e)
+  METHOD System.Void radioButtonLEL_Checked(Object sender, RoutedEventArgs e)
+  METHOD System.Void btnBatchHelp_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void btnShowTemplate_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void InitializeComponent()
+  METHOD System.Void System.Windows.Markup.IComponentConnector.Connect(Int32 connectionId, Object target)
+
+TYPE HydroCalculator.MainWindow+<>c__DisplayClass1
+  FIELD HydroCalculator.MainWindow <>4__this
+  FIELD System.String msg
+  METHOD System.Void <updateProgresDialog>b__0()
+
+TYPE HydroCalculator.ManualResults
+  FIELD System.Data.DataTable hydroData
+  FIELD System.Windows.Controls.TextBox txtEkO
+  FIELD System.Windows.Controls.Label label6
+  FIELD System.Windows.Controls.Label label7
+  FIELD System.Windows.Controls.Label label10
+  FIELD System.Windows.Controls.Label label1
+  FIELD System.Windows.Controls.TextBox txtEkH
+  FIELD System.Windows.Controls.TextBox txtEstarO
+  FIELD System.Windows.Controls.Label label2
+  FIELD System.Windows.Controls.Label label3
+  FIELD System.Windows.Controls.TextBox txtEstarH
+  FIELD System.Windows.Controls.TextBox txtEO
+  FIELD System.Windows.Controls.Label label4
+  FIELD System.Windows.Controls.Label label5
+  FIELD System.Windows.Controls.TextBox txtEH
+  FIELD System.Windows.Controls.TextBox txtCkO
+  FIELD System.Windows.Controls.Label label8
+  FIELD System.Windows.Controls.Label label9
+  FIELD System.Windows.Controls.TextBox txtCkH
+  FIELD System.Windows.Controls.TextBox txtaO
+  FIELD System.Windows.Controls.Label label11
+  FIELD System.Windows.Controls.Label label12
+  FIELD System.Windows.Controls.TextBox txtaH
+  FIELD System.Windows.Controls.TextBox txtdstarO
+  FIELD System.Windows.Controls.Label label13
+  FIELD System.Windows.Controls.Label label14
+  FIELD System.Windows.Controls.TextBox txtdstarH
+  FIELD System.Windows.Controls.TextBox txtmO
+  FIELD System.Windows.Controls.Label label15
+  FIELD System.Windows.Controls.Label label16
+  FIELD System.Windows.Controls.TextBox txtmH
+  FIELD System.Windows.Controls.Label label19
+  FIELD System.Windows.Controls.TextBox txtResultsH
+  FIELD System.Windows.Controls.Label label20
+  FIELD System.Windows.Controls.TextBox txtResultsO
+  FIELD System.Windows.Controls.Label lblResultTypeH
+  FIELD System.Windows.Controls.Label lblResultTypeO
+  FIELD System.Windows.Controls.Label label21
+  FIELD System.Windows.Controls.TextBlock txtBlockResultsDesc
+  FIELD System.Windows.Controls.Button btnClose
+  FIELD System.Windows.Controls.Button btnExtractCSV
+  FIELD System.Windows.Controls.Label label17
+  FIELD System.Windows.Controls.TextBox txtParamX
+  FIELD System.Windows.Controls.TextBox txtd18OA
+  FIELD System.Windows.Controls.Label label18
+  FIELD System.Windows.Controls.Label label22
+  FIELD System.Windows.Controls.TextBox txtd2HA
+  FIELD System.Boolean _contentLoaded
+  METHOD System.Void btnExtractCSV_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void btnClose_Click(Object sender, RoutedEventArgs e)
+  METHOD System.Void InitializeComponent()
+  METHOD System.Void System.Windows.Markup.IComponentConnector.Connect(Int32 connectionId, Object target)
+
+TYPE HydroCalculator.Properties.Resources
+  FIELD System.Resources.ResourceManager resourceMan
+  FIELD System.Globalization.CultureInfo resourceCulture
+  PROP System.Resources.ResourceManager ResourceManager
+  PROP System.Globalization.CultureInfo Culture
+
+TYPE HydroCalculator.Properties.Settings
+  FIELD HydroCalculator.Properties.Settings defaultInstance
+  PROP HydroCalculator.Properties.Settings Default

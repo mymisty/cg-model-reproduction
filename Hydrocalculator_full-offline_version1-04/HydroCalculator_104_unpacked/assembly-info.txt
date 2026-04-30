@@ -1,0 +1,6 @@
+﻿Assembly: HydroCalculator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+Location: C:\vscode_clone\cg-model-reproduction\Hydrocalculator_full-offline_version1-04\HydroCalculator_104.exe
+EntryPoint: HydroCalculator.App.Main
+Resources:
+  HydroCalculator.Properties.Resources.resources
+  HydroCalculator.g.resources
