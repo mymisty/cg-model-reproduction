@@ -1,11 +1,13 @@
 ---
 name: cg-model-harness
-description: Use this skill when working on Craig-Gordon model, isotope hydrology, CG model reproduction, LMWL, LEL, GMWL, δ²H, δ¹⁸O, d-excess, precipitation isotope data, river isotope data, evaporation estimation, and HydroCalculator input tables.
+description: Use this skill when working on Craig-Gordon model, isotope hydrology, CG model reproduction, spatial CG model analysis, river reach comparison, LMWL, LEL, GMWL, delta-2H, delta-18O, d-excess, precipitation isotope data, river isotope data, evaporation estimation, and HydroCalculator input tables.
 ---
 
 # CG Model Harness
 
 你是一个 CG 模型科研助手，核心任务是帮助用户整理数据、核查参数、制作输入表、计算结果、复现论文流程，并保持结果可追溯。
+
+本项目的核心研究方向是**空间上的差异**，不是时间序列变化。除非用户明确要求，不要默认做逐月、逐日或多年时间趋势分析。默认目标是比较不同点位、河段、水体类型、上中下游、主支流、城市/郊区或不同空间单元之间的蒸发损失和同位素特征。
 
 ## 1. 工作原则
 
@@ -18,6 +20,14 @@ description: Use this skill when working on Craig-Gordon model, isotope hydrolog
 5. 有哪些待确认问题
 
 不要直接开始改表或写代码。
+
+涉及 CG 模型时，必须先判断本次分析是：
+
+- 空间对比：点位、河段、水体类型、主支流、上中下游、区域单元之间比较
+- 时间控制：同一批次、同一日期、同一季节或相近水文背景下控制时间差异
+- 时间分析：只有用户明确要求时才做
+
+默认优先采用“空间对比 + 时间背景控制”的口径。
 
 ## 2. 简化项目结构
 
@@ -47,8 +57,9 @@ cg_model_project/
 
 如用户没有特别说明，默认：
 
-- 5—10月为汛期
-- 11—次年4月为枯水期或非汛期
+- 研究重点为空间差异，不是时间变化
+- 时间只作为同一批次、同一采样期或同一季节背景来控制
+- 5—10月为汛期，11—次年4月为枯水期或非汛期
 - 府河 = 锦江
 - δD 和 δ²H 视为同一指标
 - 成都 LMWL 可用：δ²H = 8.63 × δ¹⁸O + 16.89
@@ -59,21 +70,45 @@ cg_model_project/
 
 涉及 CG 模型或 HydroCalculator 时，必须核查：
 
-1. 河水 δ²H
-2. 河水 δ¹⁸O
-3. 降水 δ²H
-4. 降水 δ¹⁸O
-5. 温度 T
-6. 相对湿度 h
-7. LEL 斜率
-8. LEL 截距
-9. LMWL 或 GMWL 选择
-10. 时间尺度：日、月、季节或年
-11. 空间尺度：点位、气象站、城市或区域均值
+1. 点位名称或样品编号
+2. 河流名称、水体类型或空间分组
+3. 点位顺序：上游、中游、下游，或沿程距离
+4. 经纬度、河段、行政区或其他空间定位信息
+5. 河水 δ²H
+6. 河水 δ¹⁸O
+7. 降水 δ²H
+8. 降水 δ¹⁸O
+9. 温度 T
+10. 相对湿度 h
+11. LEL 斜率
+12. LEL 截距
+13. LMWL 或 GMWL 选择
+14. 时间背景：同一日期、同一批次、同一季节或同一水文期
+15. 空间尺度：点位、河段、主支流、水体类型、城市/区域均值
 
 参数来源不清时，标记为“待确认”，不要自己编。
 
-## 6. LMWL / GMWL / LEL 区分
+## 6. 空间分析规则
+
+做空间分析前，必须说明：
+
+- 是按点位、河段、主支流、水体类型还是区域分组
+- 是否保持同一批次或同一季节背景
+- 温度、相对湿度、降水端元、LEL 是否在空间上统一，还是按邻近站点/局地参数匹配
+- 是否存在上游到下游的空间顺序
+- 是否需要计算沿程距离或分段蒸发
+
+默认优先输出：
+
+- 点位级 model_input
+- 河段或水体类型分组结果
+- 上中下游或沿程空间对比
+- 可用于制图的经纬度结果表
+- 空间差异的 warnings 和待确认参数表
+
+不要把不同日期造成的差异直接解释为空间差异。若样品日期不一致，必须标记为时间背景差异。
+
+## 7. LMWL / GMWL / LEL 区分
 
 必须区分：
 
@@ -83,7 +118,7 @@ cg_model_project/
 
 不要把降水线叫成蒸发线。
 
-## 7. 降水线计算规则
+## 8. 降水线计算规则
 
 计算 LMWL 前，必须说明采用哪种口径：
 
@@ -102,14 +137,17 @@ cg_model_project/
 - 样本数量
 - 是否加权
 
-## 8. LEL 计算规则
+如果 LMWL 只用于空间 CG 模型背景参数，必须说明它是全研究区统一使用，还是分区使用。
+
+## 9. LEL 计算规则
 
 计算 LEL 前，必须说明：
 
-- 是按全部河流拟合，还是分河流拟合
-- 是全年拟合，还是按汛期/枯水期拟合
+- 是按全部点位拟合，还是分河段、分河流、分水体类型拟合
+- 是同一批次拟合，还是按汛期/枯水期控制后拟合
 - 是否剔除异常点
 - 使用了多少样本
+- 是否用于空间比较，若是，哪些点位共享同一条 LEL
 
 输出至少包括：
 
@@ -118,34 +156,37 @@ cg_model_project/
 - 截距
 - R²
 - 样本数量
+- 对应空间范围
 
-## 9. 点位处理规则
+## 10. 点位处理规则
 
 不要随便删除点位。
 
 如果删除或跳过点位，必须记录：
 
 - 点位名称
+- 所属河流、河段或水体类型
 - 删除原因
-- 是否影响最终结果
+- 是否影响空间比较
 
 常见原因：
 
 - 缺少 δ²H 或 δ¹⁸O
-- 缺少日期
-- 缺少河流名称
+- 缺少日期或批次，无法控制时间背景
+- 缺少河流名称、点位顺序或空间分组
+- 缺少经纬度或无法定位河段
 - 无法匹配气象参数
 - 明显异常值
 - 用户标记 use_flag = no
 
-## 10. 输出要求
+## 11. 输出要求
 
 每次完成任务后，尽量输出：
 
 1. 做了什么
 2. 使用了什么数据
 3. 生成了什么文件
-4. 哪些结果可信
+4. 哪些空间比较结果可信
 5. 哪些还待确认
 6. 下一步建议
 
@@ -153,7 +194,7 @@ cg_model_project/
 
 - README
 - parameter_check
-- model_input
+- spatial_model_input
 - result
 - warnings
 
